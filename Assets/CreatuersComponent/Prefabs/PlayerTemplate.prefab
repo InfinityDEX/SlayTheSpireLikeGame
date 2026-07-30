@@ -46,12 +46,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   creatureData: {fileID: 0}
-  creatureSprite: {fileID: 2032586817419662055}
+  creatureSpriteInspector: {fileID: 2032586817419662055}
   healthSlider: {fileID: 7478094135265977064}
   healthText: {fileID: 6969773802180973900}
-  shieldBatch: {fileID: 0}
   hpInspector: 0
-  shield: 0
+  shieldInspector: 0
+  muscleInspector: 0
   effectBatchManager: {fileID: 3032325467688393262}
 --- !u!1001 &2094367701845799053
 PrefabInstance:

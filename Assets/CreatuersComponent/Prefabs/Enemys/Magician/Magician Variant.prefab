@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 999664405998923605, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2938606954823358583, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -74,17 +78,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 6005535307997144627, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
---- !u!114 &3180304590792266660 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 474086430084682632, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
-  m_PrefabInstance: {fileID: 3077925796370726956}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 171d57f8aa91ae8498321e5380c9ba8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4393662286423047246 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1607663735973280866, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
@@ -112,6 +105,27 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7756170208897917588, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
   m_PrefabInstance: {fileID: 3077925796370726956}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &1746152135516377099
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4689811277305062072}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b7e7baeaa67e20343aa1b5f07e517d56, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &2670787181398934133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,13 +139,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   creatureData: {fileID: 11400000, guid: 490cbc21b0333eb418250b5dc6edf6b4, type: 2}
-  creatureSprite: {fileID: 4393662286423047246}
+  creatureSpriteInspector: {fileID: 4393662286423047246}
   healthSlider: {fileID: 5119423566219283521}
   healthText: {fileID: 4644832147849640933}
-  shieldBatch: {fileID: 3180304590792266660}
   hpInspector: 0
-  shield: 0
+  shieldInspector: 0
+  muscleInspector: 0
+  effectBatchManager: {fileID: 0}
   playerInspector: {fileID: 0}
+  animator: {fileID: 1746152135516377099}
+  magicCastSE: {fileID: 8300000, guid: d6ab26d146e91a34287b08907240684a, type: 3}
 --- !u!114 &5119423566219283521 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7907517925407575149, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}

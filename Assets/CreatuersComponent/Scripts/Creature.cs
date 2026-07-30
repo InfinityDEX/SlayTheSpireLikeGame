@@ -7,7 +7,8 @@ public class Creature : MonoBehaviour
     [SerializeField]
     private CreatureData creatureData;
     [SerializeField]
-    private Image creatureSprite;
+    private Image creatureSpriteInspector;
+    public Image creatureSprite { get; private set;}
     [SerializeField]
     private Slider healthSlider;
     [SerializeField]
@@ -32,10 +33,11 @@ public class Creature : MonoBehaviour
     private void Start()
     {
         hp = creatureData.maxHealth;
+        creatureSprite = creatureSpriteInspector;
         healthSlider.value = healthSlider.maxValue = creatureData.maxHealth;
         UpdateHealthText();
-        creatureSprite.sprite = creatureData.creatureSprite;
-        creatureSprite.color = new Color(1, 1, 1, 1);
+        creatureSpriteInspector.sprite = creatureData.creatureSprite;
+        creatureSpriteInspector.color = new Color(1, 1, 1, 1);
 
         hpInspector = hp;
         shieldInspector = shield;

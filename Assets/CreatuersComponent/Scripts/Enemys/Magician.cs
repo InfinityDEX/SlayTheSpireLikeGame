@@ -1,13 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Magician : Enemy
 {
-    public override void Action()
+    // 魔法の発動までの時間
+    private float currentCastTime = 0;
+    private float castTime = 0.5f;
+    private bool magicCasted = false;
+    
+    [Header("魔法使いのアニメータ")]
+    [SerializeField]
+    private Animator animator;
+
+    [Header("魔法発動音")]
+    [SerializeField]
+    private AudioClip magicCastSE;
+
+    public override bool Action()
     {
-        Debug.Log("魔法発動");
-        // プレイヤーに10点のダメージを与える
-        player.Damage(10);
+        // アニメーション起動
+        if(animator != null && !magicCasted)
+        {
+            animator.SetTrigger("CastMagic");
+            magicCasted = true;
+        }
+        currentCastTime += Time.deltaTime;
+        if(currentCastTime >= castTime)
+        {
+            Debug.Log("魔法発動");
+            if(magicCastSE != null) AudioController.Instance?.PlaySE(magicCastSE);
+            currentCastTime = 0;
+            // プレイヤーに10点のダメージを与える
+            player.Damage(10);
+            magicCasted = false;
+            return true;
+        }
+        return false;
     }
 }

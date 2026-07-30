@@ -109,14 +109,14 @@ public class BattleManager : MonoBehaviour
                 break;
 
             case BattlePhase.EnemyActionPhase:
-                // 敵の行動処理
-                EnemyAction();
+                
                 // プレイヤーor敵の死亡チェック
                 if (IsPlayerDead() || AreEnemiesDefeated())
                 {
                     currentPhase = BattlePhase.EndBattle;
                 }
-                else
+                // 敵の行動処理
+                else if(EnemyAction())
                 {
                     // もう1ターン続行
                     currentPhase = BattlePhase.BuffRefreshPhase;
@@ -249,12 +249,13 @@ public class BattleManager : MonoBehaviour
         enemyManager.enemies.ForEach(e => e.ResetBuff());
     }
 
-    private void EnemyAction()
+    private bool EnemyAction()
     {
-        foreach(var enemy in enemyManager.enemies)
-        {
-            enemy.Action();
-        }
+        return enemyManager.enemies.All(e => e.Action() == true);
+        // foreach(var enemy in enemyManager.enemies)
+        // {
+        //     enemy.Action();
+        // }
     }
 
     private void EndBattle()
