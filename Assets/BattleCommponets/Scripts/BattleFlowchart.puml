@@ -1,0 +1,20 @@
+@startuml
+start
+repeat :Draw Phase;
+    while(ターン終了ボタンを押すまでループ) 
+        :Use Card Phase;
+        if(プレイヤーの体力が0か、\n敵が全滅した) then (YES)
+            :End Battle;
+            stop
+        endif
+    endwhile 
+    :Player End Phase(Discard Phase);
+    :Buffs Refresh Phase;
+    :Enemy Action Phase;
+    if(プレイヤーの体力が0か、\n敵が全滅した) then (YES)
+        :End Battle;
+        stop
+    endif
+repeat while(プレイヤーが死んでない)
+stop
+@enduml
