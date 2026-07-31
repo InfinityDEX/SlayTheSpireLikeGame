@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviour
 {
@@ -261,5 +262,7 @@ public class BattleManager : MonoBehaviour
     private void EndBattle()
     {
         // バトル終了アニメ・遷移など
+
+        SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);
     }
 }

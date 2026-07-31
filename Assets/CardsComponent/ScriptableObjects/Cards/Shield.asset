@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87003d69f21fa86468784541ebd1868c, type: 3}
   m_Name: Shield
   m_EditorClassIdentifier: 
+  cardEffectId: 4
   cardName: "\u76FE"
-  cost: 1
   cardImage: {fileID: 21300000, guid: f54f3de0cc054db42901bb4de7f09435, type: 3}
+  castCardSE: {fileID: 8300000, guid: 1fb7f0c501d8c894c8aa3cf08dfcb5cd, type: 3}
+  cost: 1
   type: 1
   cardDescription: "5\u30D6\u30ED\u30C3\u30AF\u3092\u5F97\u308B"
   target: 1
-  cardEffectId: 4
   upgradedCard: {fileID: 11400000, guid: a7749fb2392422a4aac09fb62e848a26, type: 2}

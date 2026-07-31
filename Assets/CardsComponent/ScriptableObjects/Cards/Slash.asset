@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87003d69f21fa86468784541ebd1868c, type: 3}
   m_Name: Slash
   m_EditorClassIdentifier: 
+  cardEffectId: 2
   cardName: "\u65AC\u6483"
-  cost: 2
   cardImage: {fileID: 21300000, guid: a74270147d71d4f48828db2c9c592400, type: 3}
+  castCardSE: {fileID: 8300000, guid: 890ae1cfc85cf2745992464dcf0f6441, type: 3}
+  cost: 2
   type: 0
   cardDescription: "\u76F8\u624B\u306B10\u70B9\u306E\u30C0\u30E1\u30FC\u30B8\u3092\u4E0E\u3048\u308B"
   target: 0
-  cardEffectId: 2
   upgradedCard: {fileID: 11400000, guid: f95a129d13209ea43b61baef6ddea250, type: 2}

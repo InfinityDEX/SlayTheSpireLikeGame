@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87003d69f21fa86468784541ebd1868c, type: 3}
   m_Name: PumpUp
   m_EditorClassIdentifier: 
+  cardEffectId: 6
   cardName: "\u30D1\u30F3\u30D7\u30A2\u30C3\u30D7"
-  cost: 1
   cardImage: {fileID: 21300000, guid: 1f0f366fe91d1e34698ac55cad8a53a0, type: 3}
+  castCardSE: {fileID: 8300000, guid: 1fb7f0c501d8c894c8aa3cf08dfcb5cd, type: 3}
+  cost: 1
   type: 1
   cardDescription: "\u7B4B\u529B3\u3092\u5F97\u308B"
   target: 1
-  cardEffectId: 6
   upgradedCard: {fileID: 11400000, guid: 7ae60fc069981734ba37c05519aa055a, type: 2}
