@@ -6,7 +6,7 @@ public class CardDragHandler : MonoBehaviour
     [SerializeField] private LayerMask targetLayers = ~0; // 必要なら Layer を絞る
     [SerializeField] private float cardPlayDragDistance = 2; // カードを使用する為にカードを動かす必要のある最短距離
 
-    [SerializeField] private AudioClip cardPlaySound;
+    // [SerializeField] private AudioClip cardPlaySound;
     private Card holdCard = null;
     private Vector3 dragOffset;
     private Vector3 holdPos;
@@ -49,7 +49,7 @@ public class CardDragHandler : MonoBehaviour
                         if (selectCreature != null && selectCreature.gameObject.tag == "Enemy")
                         {
                             holdCard.Play(selectCreature);
-                            AudioController.Instance?.PlaySE(cardPlaySound);
+                            AudioController.Instance?.PlaySE(holdCard.data.castCardSE);
                             // カードを捨て札に置く
                             DeckManager deckManager = FindObjectOfType<DeckManager>();
                             if (deckManager != null)
@@ -73,7 +73,7 @@ public class CardDragHandler : MonoBehaviour
                         {
                             Debug.Log($"クリックしてからマウスを離すまでのマウスの移動距離：{Vector3.Distance(holdPos, point)}");
                             holdCard.Play(BattleManager.Instance.player);
-                            AudioController.Instance?.PlaySE(cardPlaySound);
+                            AudioController.Instance?.PlaySE(holdCard.data.castCardSE);
                             DeckManager deckManager = FindObjectOfType<DeckManager>();
                             if (deckManager != null)
                             {
