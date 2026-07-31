@@ -15,6 +15,16 @@ public class Magician : Enemy
     [SerializeField]
     private AudioClip magicCastSE;
 
+    private void Awake()
+    {
+        RegistTakeDamageEvent(ExcuteTakeDamageAnima);
+    }
+
+    private void ExcuteTakeDamageAnima(int damage, int hp)
+    {
+        animator.SetTrigger("TakeDamage");
+    }
+
     public override bool Action()
     {
         // アニメーション起動
@@ -30,7 +40,7 @@ public class Magician : Enemy
             if(magicCastSE != null) AudioController.Instance?.PlaySE(magicCastSE);
             currentCastTime = 0;
             // プレイヤーに10点のダメージを与える
-            player.Damage(10);
+            BattleManager.Instance.player.TakeDamage(10);
             magicCasted = false;
             return true;
         }

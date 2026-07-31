@@ -26,7 +26,6 @@ public class Creature : MonoBehaviour
     [Header("エフェクトバッチマネージャー")]
     [SerializeField]
     private EffectBatchManager effectBatchManager;
-
     private EffectBatch shieldBatch;
     private EffectBatch muscleBatch;
 
@@ -101,7 +100,20 @@ public class Creature : MonoBehaviour
         muscle = Mathf.Max(muscle - 1 , 0);
     }
 
-    public void Damage(int damage)
+    public delegate void TakeDamageEventHandler(int damage, int hp);
+    private event TakeDamageEventHandler takeDamageEvents;
+
+    public void RegistTakeDamageEvent(TakeDamageEventHandler e)
+    {
+        takeDamageEvents += e;
+    }
+
+    public void UnregistTakeDamageEvent(TakeDamageEventHandler e)
+    {
+        takeDamageEvents -= e;
+    }
+
+    public void TakeDamage(int damage)
     {
         int diff = damage;
         // まずシールドからダメージを受ける
@@ -119,6 +131,8 @@ public class Creature : MonoBehaviour
         }
         healthSlider.value = hp;
         UpdateHealthText();
+
+        takeDamageEvents?.Invoke(damage, hp);
     }
 
     private void UpdateHealthText()

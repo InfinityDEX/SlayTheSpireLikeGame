@@ -11,8 +11,8 @@ public class STAttack : CardEffect
     public override void Play(Creature target)
     {
         if(BattleManager.Instance.player.muscle > 0)
-            target.Damage((int)((float)damage * 1.25f));
+            target.TakeDamage((int)((float)damage * 1.25f));
         else
-            target.Damage(damage);
+            target.TakeDamage(damage);
     }
 }
