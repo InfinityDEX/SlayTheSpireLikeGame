@@ -50,6 +50,13 @@ public class CardDragHandler : MonoBehaviour
                         {
                             holdCard.Play(selectCreature);
                             AudioController.Instance?.PlaySE(holdCard.data.castCardSE);
+                            GameObject visualEffectPrefab = BattleManager.Instance?.visualEffectLibrary.GetEffectById(holdCard.data.visualEffectID);
+                            // ビジュアルエフェクトを生成
+                            if (visualEffectPrefab != null)
+                            {
+                                GameObject ve = Instantiate(visualEffectPrefab);
+                                ve.transform.position = selectCreature.transform.position;
+                            }
                             // カードを捨て札に置く
                             DeckManager deckManager = FindObjectOfType<DeckManager>();
                             if (deckManager != null)

@@ -15,6 +15,7 @@ MonoBehaviour:
   cardEffectId: 3
   cardName: "\u65AC\u6483+"
   cardImage: {fileID: 21300000, guid: a74270147d71d4f48828db2c9c592400, type: 3}
+  visualEffectID: 0
   castCardSE: {fileID: 8300000, guid: 890ae1cfc85cf2745992464dcf0f6441, type: 3}
   cost: 2
   type: 0

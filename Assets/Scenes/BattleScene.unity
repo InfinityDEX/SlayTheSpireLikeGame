@@ -207,6 +207,7 @@ MonoBehaviour:
   cardTemplatePrefab: {fileID: 3148922142676892650, guid: acced1113ef726c429a6840c70d75600, type: 3}
   playerInspector: {fileID: 1160299480}
   energyManagerInspector: {fileID: 893586649}
+  visualEffectLibraryInspector: {fileID: 371559359}
   currentPhase: 6
 --- !u!1 &195718300
 GameObject:
@@ -572,6 +573,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 323290816}
   m_CullTransparentMesh: 1
+--- !u!1 &371559356
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 371559358}
+  - component: {fileID: 371559359}
+  m_Layer: 0
+  m_Name: VisualEffectLibrary
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &371559358
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371559356}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &371559359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371559356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1c5ca0075a34449ac8d55571cdf53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effects:
+  - effectId: 0
+    effectPrefab: {fileID: 1676505620528656240, guid: 13b548a5938085045b4d2c506f225745, type: 3}
 --- !u!4 &414134277 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8550542868179864897, guid: acced1113ef726c429a6840c70d75600, type: 3}
@@ -859,7 +907,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   cardPlayDragDistance: 2
-  cardPlaySound: {fileID: 8300000, guid: 1fb7f0c501d8c894c8aa3cf08dfcb5cd, type: 3}
 --- !u!1 &532540228
 GameObject:
   m_ObjectHideFlags: 0
@@ -969,7 +1016,7 @@ Transform:
   - {fileID: 850239253}
   - {fileID: 641629678}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &732946620
 GameObject:

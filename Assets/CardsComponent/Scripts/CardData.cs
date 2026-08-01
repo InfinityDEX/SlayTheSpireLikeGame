@@ -20,6 +20,8 @@ public class CardData : ScriptableObject
     public string cardName; // カードの名前
     [Header("カードの画像")]
     public Sprite cardImage; // カードの画像
+    [Header("使用時のエフェクトのID")]
+    public int visualEffectID = -1;
     [Header("カード使用時のSE")]
     public AudioClip castCardSE; // カードの画像
     [Header("コスト")]

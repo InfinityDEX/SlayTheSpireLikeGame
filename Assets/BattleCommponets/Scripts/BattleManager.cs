@@ -30,13 +30,18 @@ public class BattleManager : MonoBehaviour
     [Header("プレイヤー")]
     [SerializeField]
     private Creature playerInspector;
+    public Creature player { get; private set;}
 
     [Header("エナジー管理オブジェクト")]
     [SerializeField]
     private EnergyManager energyManagerInspector;
     public EnergyManager energyManager { get; private set;}
 
-    public Creature player { get; private set;}
+    [Header("ビジュアルエフェクト一覧")]
+    [SerializeField]
+    private VisualEffectLibrary visualEffectLibraryInspector;
+    public VisualEffectLibrary visualEffectLibrary { get; private set;}
+
 
     private void Awake()
     {
@@ -52,6 +57,7 @@ public class BattleManager : MonoBehaviour
     private void Start()
     {
         player = playerInspector;
+        visualEffectLibrary = visualEffectLibraryInspector;
         energyManager = energyManagerInspector; 
         energyManager.RefreshEnergy();
         AudioClip bgm = BgmSelector.PickBattleBgm(currentStage);
