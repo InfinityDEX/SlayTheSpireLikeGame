@@ -157,8 +157,10 @@ MonoBehaviour:
   shieldInspector: 0
   muscleInspector: 0
   effectBatchManager: {fileID: 781556576310375559}
+  actionPattern: 0
   animator: {fileID: 1746152135516377099}
   magicCastSE: {fileID: 8300000, guid: d6ab26d146e91a34287b08907240684a, type: 3}
+  activateShieldSE: {fileID: 8300000, guid: 6223395f1f04ffd4381a91a8c6898d6a, type: 3}
 --- !u!114 &5119423566219283521 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7907517925407575149, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}

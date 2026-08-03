@@ -3,9 +3,9 @@ using UnityEngine;
 public class Magician : Enemy
 {
     // 魔法の発動までの時間
-    private float currentCastTime = 0;
+    private float currentTime = 0;
     private float castTime = 0.5f;
-    private bool magicCasted = false;
+    private bool inAction = false;
 
     // 行動パターン
     private enum ActionPattern
@@ -24,6 +24,10 @@ public class Magician : Enemy
     [Header("魔法発動音")]
     [SerializeField]
     private AudioClip magicCastSE;
+
+    [Header("シールド展開音")]
+    [SerializeField]
+    private AudioClip activateShieldSE;
 
     private void Awake()
     {
@@ -52,22 +56,25 @@ public class Magician : Enemy
         switch (actionPattern)
         {
             case ActionPattern.CastMagic:
-                if (CastMagic()) {
+                if (CastMagic()) 
+                {
                     actionPattern = GetRandomNonIdleAction();
                     return true;
                 }
                 break;
             case ActionPattern.Guard:
                 // 5シールドを与える
-                AddShield(5);
-                actionPattern = GetRandomNonIdleAction();
-                return true;
+                if (ActivateShield()) 
+                {
+                    actionPattern = GetRandomNonIdleAction();
+                    return true;
+                }
+                break;
             case ActionPattern.Idle:
                 Debug.LogError("本来であればここは通らないはず");
                 Debug.Log("様子をうかがっている");
                 return false;
         }
-        Debug.LogError("本来であればここは通らないはず");
         return false;
     }
 
@@ -78,20 +85,20 @@ public class Magician : Enemy
     private bool CastMagic()
     {
         // アニメーション起動
-        if(animator != null && !magicCasted)
+        if(animator != null && !inAction)
         {
             animator.SetTrigger("CastMagic");
-            magicCasted = true;
+            inAction = true;
         }
-        currentCastTime += Time.deltaTime;
-        if(currentCastTime >= castTime)
+        currentTime += Time.deltaTime;
+        if(currentTime >= castTime)
         {
             Debug.Log("魔法発動");
             if(magicCastSE != null) AudioController.Instance?.PlaySE(magicCastSE);
-            currentCastTime = 0;
+            currentTime = 0;
             // プレイヤーに10点のダメージを与える
             BattleManager.Instance.player.TakeDamage(10);
-            magicCasted = false;
+            inAction = false;
             if(BattleManager.Instance != null)
             {
                 var bm = BattleManager.Instance;
@@ -103,6 +110,41 @@ public class Magician : Enemy
                     
                     ve.transform.position = bm.player.transform.position;
                 }
+                actionPattern = ActionPattern.Idle;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private bool ActivateShield()
+    {
+        // アニメーション起動
+        if(animator != null && !inAction)
+        {
+            animator.SetTrigger("ActivateShield");
+            inAction = true;
+        }
+        currentTime += Time.deltaTime;
+        if(currentTime >= castTime)
+        {
+            Debug.Log("シールド展開");
+            if(activateShieldSE != null) AudioController.Instance?.PlaySE(activateShieldSE);
+            currentTime = 0;
+            inAction = false;
+            if(BattleManager.Instance != null)
+            {
+                // シールドを張る
+                AddShield(5);
+
+                var bm = BattleManager.Instance;
+                GameObject visualEffectPrefab = bm.visualEffectLibrary.GetEffectById(3);
+                if (visualEffectPrefab != null)
+                {
+                    var go = Instantiate(visualEffectPrefab);
+                    go.transform.position = transform.position;
+                }
+
                 actionPattern = ActionPattern.Idle;
             }
             return true;
