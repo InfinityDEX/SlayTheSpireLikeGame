@@ -620,6 +620,10 @@ MonoBehaviour:
   effects:
   - effectId: 0
     effectPrefab: {fileID: 1676505620528656240, guid: 13b548a5938085045b4d2c506f225745, type: 3}
+  - effectId: 1
+    effectPrefab: {fileID: 6760517459420999726, guid: 6340f1d17259b0c4696bf0be5781d9b8, type: 3}
+  - effectId: 2
+    effectPrefab: {fileID: 3415811013918050812, guid: 51e498080309b6c4d828314e47675d6e, type: 3}
 --- !u!4 &414134277 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8550542868179864897, guid: acced1113ef726c429a6840c70d75600, type: 3}

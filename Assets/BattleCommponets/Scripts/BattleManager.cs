@@ -76,7 +76,8 @@ public class BattleManager : MonoBehaviour
         DrawPhase,
         UseCardPhase,
         PlayerEndPhase,
-        BuffRefreshPhase,
+        PlayerBuffRefreshPhase,
+        EnemyBuffRefreshPhase,
         EnemyActionPhase,
         EndBattle,
         Idle
@@ -112,9 +113,13 @@ public class BattleManager : MonoBehaviour
                     deckManager.DiscardCardAll(); // 手札全捨て処理関数
                 }
                 // 敵の行動フェーズへ
+                currentPhase = BattlePhase.EnemyBuffRefreshPhase;
+                break;
+            case BattlePhase.EnemyBuffRefreshPhase:
+                RefreshEnemysBuffs();
+                // 敵の行動フェーズへ
                 currentPhase = BattlePhase.EnemyActionPhase;
                 break;
-
             case BattlePhase.EnemyActionPhase:
                 
                 // プレイヤーor敵の死亡チェック
@@ -126,13 +131,13 @@ public class BattleManager : MonoBehaviour
                 else if(EnemyAction())
                 {
                     // もう1ターン続行
-                    currentPhase = BattlePhase.BuffRefreshPhase;
+                    currentPhase = BattlePhase.PlayerBuffRefreshPhase;
                 }
                 break;
 
-            case BattlePhase.BuffRefreshPhase:
+            case BattlePhase.PlayerBuffRefreshPhase:
                 // バフや状態異常のリフレッシュ処理
-                RefreshBuffs();
+                RefreshPlayerBuffs();
                 energyManager.RefreshEnergy();
                 currentPhase = BattlePhase.DrawPhase;
                 break;
@@ -250,9 +255,12 @@ public class BattleManager : MonoBehaviour
     }
 
     // バフのリフレッシュ
-    private void RefreshBuffs()
+    private void RefreshPlayerBuffs()
     {
         player.ResetBuff();
+    }
+    private void RefreshEnemysBuffs()
+    {
         enemyManager.enemies.ForEach(e => e.ResetBuff());
     }
 

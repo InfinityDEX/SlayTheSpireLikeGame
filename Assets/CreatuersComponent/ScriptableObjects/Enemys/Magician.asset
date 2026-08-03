@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creatureName: "\u9B54\u6CD5\u4F7F\u3044"
   maxHealth: 20
-  attackPower: 5
   creatureSprite: {fileID: 21300000, guid: 7921fadfdc5009d47b71b73baf1f2934, type: 3}
+  attackPower: 5
   experience: 10
   gold: 20
