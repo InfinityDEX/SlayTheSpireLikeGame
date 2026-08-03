@@ -263,14 +263,20 @@ public class BattleManager : MonoBehaviour
     {
         enemyManager.enemies.ForEach(e => e.ResetBuff());
     }
-
+    
+    private int currentActionEnemy = 0;
     private bool EnemyAction()
     {
-        return enemyManager.enemies.All(e => e.Action() == true);
-        // foreach(var enemy in enemyManager.enemies)
-        // {
-        //     enemy.Action();
-        // }
+        if (enemyManager.enemies[currentActionEnemy].hp == 0 || enemyManager.enemies[currentActionEnemy].Action())
+        {
+            currentActionEnemy++;
+            if (enemyManager.enemies.Count <= currentActionEnemy)
+            {
+                currentActionEnemy = 0;
+                return true;
+            }
+        }
+        return false;
     }
 
     private void EndBattle()

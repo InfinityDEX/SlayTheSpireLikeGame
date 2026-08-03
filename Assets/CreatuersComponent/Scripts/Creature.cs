@@ -127,7 +127,7 @@ public class Creature : MonoBehaviour
         // 余剰ダメージ
         if(diff > 0)
         {
-            hp -= diff;
+            hp = Mathf.Max(hp - diff, 0);
         }
         healthSlider.value = hp;
         UpdateHealthText();
