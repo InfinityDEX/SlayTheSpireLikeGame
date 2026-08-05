@@ -23,6 +23,10 @@ public class Creature : MonoBehaviour
     private int muscleInspector = 0;
     public int muscle { get; private set; }
 
+    [Header("ダメージバッチ生成位置")]
+    [SerializeField]
+    private Transform damageBatchGeneratePoint;
+
     [Header("エフェクトバッチマネージャー")]
     [SerializeField]
     private EffectBatchManager effectBatchManager;
@@ -131,7 +135,10 @@ public class Creature : MonoBehaviour
         }
         healthSlider.value = hp;
         UpdateHealthText();
-
+        if(diff > 0 && damageBatchGeneratePoint != null)
+        {
+            BattleManager.Instance.damageBatchGenerator.GenerateDamageBatch(damageBatchGeneratePoint.position, diff);
+        }
         takeDamageEvents?.Invoke(damage, hp);
     }
 

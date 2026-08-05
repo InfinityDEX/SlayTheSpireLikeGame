@@ -42,6 +42,11 @@ public class BattleManager : MonoBehaviour
     private VisualEffectLibrary visualEffectLibraryInspector;
     public VisualEffectLibrary visualEffectLibrary { get; private set;}
 
+    [Header("ダメージバッチジェネレータ")]
+    [SerializeField]
+    private DamageBatchGenerator damageBatchGeneratorInspector;
+    public DamageBatchGenerator damageBatchGenerator{ get; private set;}
+
 
     private void Awake()
     {
@@ -56,6 +61,7 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
+        damageBatchGenerator = damageBatchGeneratorInspector;
         player = playerInspector;
         visualEffectLibrary = visualEffectLibraryInspector;
         energyManager = energyManagerInspector; 
