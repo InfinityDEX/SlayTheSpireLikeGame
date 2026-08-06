@@ -47,7 +47,6 @@ public class BattleManager : MonoBehaviour
     private DamageBatchGenerator damageBatchGeneratorInspector;
     public DamageBatchGenerator damageBatchGenerator{ get; private set;}
 
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -71,7 +70,6 @@ public class BattleManager : MonoBehaviour
         currentPhase = BattlePhase.InitializePhase;
     }
 
-
     // バトルのフローチャートに基づき、バトル進行用の状態管理・更新
     // ターン管理や進行をUpdate内から管理（例：状態遷移やループ）
     // 実際はコルーチンやイベントで処理を書いたほうが良いが、ここではシンプルに状態のみ用意
@@ -80,7 +78,6 @@ public class BattleManager : MonoBehaviour
     enum BattlePhase
     {
         InitializePhase,
-
         DrawPhase,
         UseCardPhase,
         PlayerEndPhase,

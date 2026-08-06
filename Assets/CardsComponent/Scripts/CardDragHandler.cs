@@ -92,6 +92,12 @@ public class CardDragHandler : MonoBehaviour
                             }
                             Destroy(holdCard.gameObject); // カードをゲーム空間から削除
                         }
+                        else
+                        {
+                            // カードを選択した状態で、指定した長さだけマウスホバーしなかった場合は、カードを使用しなかったものとして
+                            // 消費したコストをもとに戻す
+                            BattleManager.Instance.energyManager.AddEnergy(holdCard.data.cost);
+                        }
                         break;
                 }
             }
