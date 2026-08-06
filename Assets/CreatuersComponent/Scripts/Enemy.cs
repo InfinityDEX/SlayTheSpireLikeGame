@@ -8,4 +8,6 @@ public class Enemy : Creature
         Debug.Log("行動終了");
         return true;
     }    
+
+    public virtual void RefreshActionIcon() {}
 }

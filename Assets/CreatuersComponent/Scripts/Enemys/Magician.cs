@@ -29,6 +29,14 @@ public class Magician : Enemy
     [SerializeField]
     private AudioClip activateShieldSE;
 
+    [Header("魔法のダメージ")]
+    [SerializeField]
+    private int magicDamage = 10;
+
+    [Header("シールド展開で貼るシールド数")]
+    [SerializeField]
+    private int activateShieldNum = 5;
+
     private void Awake()
     {
         // ダメージを受けたときの処理をイベント処理に登録
@@ -41,6 +49,28 @@ public class Magician : Enemy
         animator.SetTrigger("TakeDamage");
     }
 
+    public override void RefreshActionIcon()
+    {
+        batchManager.DeleteActionBatches();
+
+        IconBatch batch = null;
+        switch(actionPattern)
+        {
+            case ActionPattern.CastMagic:
+                // 魔法発動アイコン表示（仮想処理。UIやバッチ生成など任意の処理を入れてください）
+                batch = batchManager.GenerateActionBatch(1);
+                batch.effectCount = magicDamage;
+                break;
+            case ActionPattern.Guard:
+                // シールド展開アイコン表示
+                batch = batchManager.GenerateActionBatch(0);
+                batch.effectCount = activateShieldNum;
+                break;
+            case ActionPattern.Idle:
+                break;
+        }
+    } 
+
     /// <summary>
     /// Idle以外の行動パターンをランダムで返す
     /// </summary>
@@ -51,6 +81,7 @@ public class Magician : Enemy
         int idx = Random.Range(0, patterns.Length);
         return patterns[idx];
     }
+
     public override bool Action()
     {
         switch (actionPattern)
@@ -63,7 +94,6 @@ public class Magician : Enemy
                 }
                 break;
             case ActionPattern.Guard:
-                // 5シールドを与える
                 if (ActivateShield()) 
                 {
                     actionPattern = GetRandomNonIdleAction();
@@ -96,8 +126,8 @@ public class Magician : Enemy
             Debug.Log("魔法発動");
             if(magicCastSE != null) AudioController.Instance?.PlaySE(magicCastSE);
             currentTime = 0;
-            // プレイヤーに10点のダメージを与える
-            BattleManager.Instance.player.TakeDamage(10);
+            // プレイヤーにダメージを与える
+            BattleManager.Instance.player.TakeDamage(magicDamage);
             inAction = false;
             if(BattleManager.Instance != null)
             {
@@ -135,7 +165,7 @@ public class Magician : Enemy
             if(BattleManager.Instance != null)
             {
                 // シールドを張る
-                AddShield(5);
+                AddShield(activateShieldNum);
 
                 var bm = BattleManager.Instance;
                 GameObject visualEffectPrefab = bm.visualEffectLibrary.GetEffectById(3);

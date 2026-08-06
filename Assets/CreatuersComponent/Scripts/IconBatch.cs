@@ -2,9 +2,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EffectBatch : MonoBehaviour
+public class IconBatch : MonoBehaviour
 {
-   [Header("効果アイコン")]
+   [Header("アイコン")]
    [SerializeField]
    private Image icon;
    

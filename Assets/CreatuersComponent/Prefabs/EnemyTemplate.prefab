@@ -112,7 +112,7 @@ MonoBehaviour:
   shieldInspector: 0
   muscleInspector: 0
   damageBatchGeneratePoint: {fileID: 2032886332851361333}
-  effectBatchManager: {fileID: 2336902722334880939}
+  batchManagerInspector: {fileID: 2336902722334880939}
 --- !u!1001 &1687181911964245512
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -235,7 +235,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76eb02fc4a4701f42a7df4e0d49ddd1d, type: 3}
+  m_Script: {fileID: 11500000, guid: 54cb7ec3c4d0e724bb9cec32c9bd9449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &7693061921805974473 stripped

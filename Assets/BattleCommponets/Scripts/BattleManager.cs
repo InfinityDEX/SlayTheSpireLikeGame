@@ -68,7 +68,7 @@ public class BattleManager : MonoBehaviour
         energyManager.RefreshEnergy();
         AudioClip bgm = BgmSelector.PickBattleBgm(currentStage);
         AudioController.Instance?.PlayBGM(bgm);
-        currentPhase = BattlePhase.DrawPhase;
+        currentPhase = BattlePhase.InitializePhase;
     }
 
 
@@ -79,6 +79,8 @@ public class BattleManager : MonoBehaviour
     // 簡易的なバトルステート列挙体
     enum BattlePhase
     {
+        InitializePhase,
+
         DrawPhase,
         UseCardPhase,
         PlayerEndPhase,
@@ -97,6 +99,16 @@ public class BattleManager : MonoBehaviour
     {
         switch (currentPhase)
         {
+            case BattlePhase.InitializePhase:
+                // 全ての敵クリーチャーがStart処理を終えるまで待つ
+                if(enemyManager.enemies.All(e => e.EndStart()))
+                {
+                    // 敵の次の行動を示す
+                    enemyManager.enemies.ForEach(e => e.RefreshActionIcon());
+                    // ドローフェーズへ
+                    currentPhase = BattlePhase.DrawPhase;
+                }
+                break;
             case BattlePhase.DrawPhase:
                 // ドローフェーズ開始処理
                 StartPlayerTurn();
@@ -145,6 +157,10 @@ public class BattleManager : MonoBehaviour
                 // バフや状態異常のリフレッシュ処理
                 RefreshPlayerBuffs();
                 energyManager.RefreshEnergy();
+
+                // 敵の次の行動を示す
+                enemyManager.enemies.ForEach(e => e.RefreshActionIcon());
+
                 currentPhase = BattlePhase.DrawPhase;
                 break;
 

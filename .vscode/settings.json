@@ -56,5 +56,9 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "スレスパもどき.sln"
+    "dotnet.defaultSolution": "スレスパもどき.sln",
+    "dotrush.roslyn.projectOrSolutionFiles": [
+        "d:\\ゲーム制作\\ゲーム\\スレスパもどき\\スレスパもどき.sln",
+        "d:\\ゲーム制作\\ゲーム\\スレスパもどき\\Assembly-CSharp.csproj"
+    ]
 }

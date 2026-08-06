@@ -27,16 +27,24 @@ public class Creature : MonoBehaviour
     [SerializeField]
     private Transform damageBatchGeneratePoint;
 
-    [Header("エフェクトバッチマネージャー")]
+    [Header("バッチマネージャー")]
     [SerializeField]
-    private EffectBatchManager effectBatchManager;
-    private EffectBatch shieldBatch;
-    private EffectBatch muscleBatch;
+    private IconBatchManager batchManagerInspector;
+    public IconBatchManager batchManager { get; private set; }
+    private IconBatch shieldBatch;
+    private IconBatch muscleBatch;
+    private bool endStart = false;
+
+    public bool EndStart()
+    {
+        return endStart;
+    }
 
     private void Start()
     {
-        hp = creatureData.maxHealth;
+        batchManager = batchManagerInspector;
         creatureSprite = creatureSpriteInspector;
+        hp = creatureData.maxHealth;
         healthSlider.value = healthSlider.maxValue = creatureData.maxHealth;
         UpdateHealthText();
         creatureSpriteInspector.sprite = creatureData.creatureSprite;
@@ -45,6 +53,7 @@ public class Creature : MonoBehaviour
         hpInspector = hp;
         shieldInspector = shield;
         muscleInspector = muscle;
+        endStart = true;
     }
 
     private void Update()
@@ -63,7 +72,7 @@ public class Creature : MonoBehaviour
         {
             if(shieldBatch == null)
             {
-                shieldBatch = effectBatchManager.GenerateEffectBatch(0);
+                shieldBatch = batchManagerInspector.GenerateEffectBatch(0);
             }
             shieldBatch.gameObject.SetActive(true);
             shieldBatch.effectCount = shield;
@@ -80,7 +89,7 @@ public class Creature : MonoBehaviour
         {
             if(muscleBatch == null)
             {
-                muscleBatch = effectBatchManager.GenerateEffectBatch(1);
+                muscleBatch = batchManagerInspector.GenerateEffectBatch(1);
             }
             muscleBatch.gameObject.SetActive(true);
             muscleBatch.effectCount = muscle;

@@ -8,15 +8,19 @@ using Unity.VisualScripting;
 using UnityEditor;
 #endif
 
-public class EffectBatchManager : MonoBehaviour
+public class IconBatchManager : MonoBehaviour
 {
-    [Header("Batch Group")]
+    [Header("Action Batch Group")]
     [SerializeField]
-    private GameObject batchGroup;
+    private GameObject actionBatchGroup;
+
+    [Header("Effect Batch Group")]
+    [SerializeField]
+    private GameObject effectBatchGroup;
 
     [Header("バッチプレハブ")]
     [SerializeField]
-    private EffectBatch batchPrefab;
+    private IconBatch batchPrefab;
 
     [System.Serializable]
     public struct IconEntry
@@ -28,15 +32,49 @@ public class EffectBatchManager : MonoBehaviour
     [Header("アイコンリスト")]
     [SerializeField]
     public List<IconEntry> iconList = new List<IconEntry>();
+
+    private List<IconBatch> actionBatches;
+    private List<IconBatch> effectBatches;
+
+    public void Awake()
+    {
+        actionBatches = new List<IconBatch>();
+        effectBatches = new List<IconBatch>();
+    }
+
     
     /// <summary>
-    /// 新しいバッチを追加。
+    /// 新しい行動バッチを追加。
+    /// </summary>
+    /// <param name="batchId">バッチ画像のID</param>
+    /// <returns>生成した行動バッチオブジェクト本体</returns>
+    public IconBatch GenerateActionBatch(int iconId)
+    {
+        var batch = GenerateBatch(iconId, actionBatchGroup.transform);
+        actionBatches.Add(batch);
+        return batch;
+    }
+
+    /// <summary>
+    /// 新しいエフェクトバッチを追加。
     /// </summary>
     /// <param name="batchId">バッチ画像のID</param>
     /// <returns>生成したエフェクトバッチオブジェクト本体</returns>
-    public EffectBatch GenerateEffectBatch(int iconId)
+    public IconBatch GenerateEffectBatch(int iconId)
     {
+        var batch = GenerateBatch(iconId, effectBatchGroup.transform);
+        effectBatches.Add(batch);
+        return batch;
+    }
 
+    /// <summary>
+    /// 新しいバッチを追加
+    /// </summary>
+    /// <param name="iconId">バッチ画像のID</param>
+    /// <param name="parent">生成したバッチの親オブジェクト</param>
+    /// <returns>生成したバッチ本体</returns>
+    private IconBatch GenerateBatch(int iconId, Transform parent)
+    {
         // iconIdに該当するSpriteを探す
         Sprite iconSprite = null;
         foreach (var entry in iconList)
@@ -56,16 +94,34 @@ public class EffectBatchManager : MonoBehaviour
             return null;
         }
 
-        EffectBatch effectBatch = Instantiate(batchPrefab, batchGroup.transform);
+        IconBatch effectBatch = Instantiate(batchPrefab, parent);
         // Spriteを渡してセット
         effectBatch.SetIconSprite(iconSprite);
         return effectBatch;
+    }
+
+    public void DeleteActionBatches()
+    {
+        DeleteBatches(actionBatches);
+    }
+
+    public void DeleteEffectBatches()
+    {
+        DeleteBatches(effectBatches);
+    }
+
+    private void DeleteBatches(List<IconBatch> batches)
+    {
+        batches.ForEach(e => {
+            if(e != null)
+                Destroy(e.gameObject);
+        });
     }
 }
 
 #if UNITY_EDITOR
 
-[CustomEditor(typeof(EffectBatchManager))]
+[CustomEditor(typeof(IconBatchManager))]
 public class EffectBatchManagerEditor : Editor
 {
     private SerializedProperty iconListProp;
