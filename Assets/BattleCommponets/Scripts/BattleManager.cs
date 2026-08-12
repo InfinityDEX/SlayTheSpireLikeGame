@@ -47,6 +47,10 @@ public class BattleManager : MonoBehaviour
     private DamageBatchGenerator damageBatchGeneratorInspector;
     public DamageBatchGenerator damageBatchGenerator{ get; private set;}
 
+    // [Header("生成する敵情報")]
+    // [SerializeField]
+    // private EnemyCombinationData enemyCombinationData;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -67,6 +71,7 @@ public class BattleManager : MonoBehaviour
         energyManager.RefreshEnergy();
         AudioClip bgm = BgmSelector.PickBattleBgm(currentStage);
         AudioController.Instance?.PlayBGM(bgm);
+        enemyManager.SetEnemy(EnemyCombinationsDataManager.Instance.GetData());
         currentPhase = BattlePhase.InitializePhase;
     }
 
@@ -88,6 +93,7 @@ public class BattleManager : MonoBehaviour
         Idle
     }
 
+    [Header("現在のフェーズ")]
     [SerializeField, ReadOnly(true)]
     private BattlePhase currentPhase = BattlePhase.Idle;
     private bool isBattleActive = true;

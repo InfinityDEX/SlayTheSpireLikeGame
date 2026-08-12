@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
@@ -15,8 +16,13 @@ public class EnemyManager : MonoBehaviour
         enemies = enemysInspector;
     }
 
-    public void SetEnemy(Enemy enemy)
+    public void SetEnemy(EnemyCombinationData data)
     {
-        enemies.Add(enemy);
+        foreach (var enemyData in data.enemyCombinations)
+        {
+            var enemy = Instantiate(enemyData.enemyPrefab, this.transform);
+            enemy.transform.position = enemyData.spawnPosition;
+            enemies.Add(enemy);
+        }
     }
 }
