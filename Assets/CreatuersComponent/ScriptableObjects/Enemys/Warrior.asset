@@ -9,9 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e8ba831af829824c8612cf7e02998f2, type: 3}
-  m_Name: IronClad
+  m_Script: {fileID: 11500000, guid: 0d1edd24e3e59e342a764cc8fc48a0be, type: 3}
+  m_Name: Warrior
   m_EditorClassIdentifier: 
-  creatureName: IronClad
-  maxHealth: 99999
-  creatureSprite: {fileID: 21300000, guid: 535ec10fb27eff54899edf550a923bba, type: 3}
+  creatureName: "\u6226\u58EB"
+  maxHealth: 50
+  creatureSprite: {fileID: 21300000, guid: fe52f992b0f19234b9e666ea370d0b21, type: 3}
+  attackPower: 0
+  experience: 0
+  gold: 0

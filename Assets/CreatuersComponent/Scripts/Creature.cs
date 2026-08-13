@@ -110,7 +110,6 @@ public class Creature : MonoBehaviour
     public void ResetBuff()
     {
         shield = 0;
-        muscle = Mathf.Max(muscle - 1 , 0);
     }
 
     public delegate void TakeDamageEventHandler(int damage, int hp);

@@ -209,7 +209,6 @@ MonoBehaviour:
   energyManagerInspector: {fileID: 893586649}
   visualEffectLibraryInspector: {fileID: 371559359}
   damageBatchGeneratorInspector: {fileID: 674680379}
-  enemyCombinationData: {fileID: 11400000, guid: 5ceea3ccca8773b448b6d85c9b0cb235, type: 2}
   currentPhase: 6
 --- !u!1 &195718300
 GameObject:
@@ -628,6 +627,8 @@ MonoBehaviour:
     effectPrefab: {fileID: 3415811013918050812, guid: 51e498080309b6c4d828314e47675d6e, type: 3}
   - effectId: 3
     effectPrefab: {fileID: 2331622404799432850, guid: 7a5031ca33b70c649baf6371c31ffa3b, type: 3}
+  - effectId: 4
+    effectPrefab: {fileID: 2331622404799432850, guid: cbbe1e184d3fd2045acd7cd7a40b76ae, type: 3}
 --- !u!4 &414134277 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8550542868179864897, guid: acced1113ef726c429a6840c70d75600, type: 3}

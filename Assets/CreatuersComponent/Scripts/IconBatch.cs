@@ -12,18 +12,32 @@ public class IconBatch : MonoBehaviour
    [SerializeField]
    private TextMeshProUGUI countView;
    
-   public int effectCount;
+   public int effectCount = 0;
+   
+   public int ratioCount = 0;
 
    // Start is called before the first frame update
    void Start()
    {
-      countView.text = $"{effectCount}";
+      IconUpdate();
    }
 
    // Update is called once per frame
    void Update()
    {
-      countView.text = $"{effectCount}";
+      IconUpdate();
+   }
+
+   private void IconUpdate()
+   {
+      if (effectCount == 0 && ratioCount == 0)
+      {
+         countView.text = "";
+      }
+      else
+      {
+         countView.text = $"{effectCount}{(ratioCount > 0 ? "×" + ratioCount.ToString() : "")}";
+      }
    }
 
    public void SetIconSprite(Sprite sprite)

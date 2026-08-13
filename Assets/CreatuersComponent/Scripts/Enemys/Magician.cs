@@ -57,14 +57,13 @@ public class Magician : Enemy
         switch(actionPattern)
         {
             case ActionPattern.CastMagic:
-                // 魔法発動アイコン表示（仮想処理。UIやバッチ生成など任意の処理を入れてください）
+                // 魔法発動アイコン表示
                 batch = batchManager.GenerateActionBatch(1);
                 batch.effectCount = magicDamage;
                 break;
             case ActionPattern.Guard:
                 // シールド展開アイコン表示
-                batch = batchManager.GenerateActionBatch(0);
-                batch.effectCount = activateShieldNum;
+                batch = batchManager.GenerateActionBatch(3);
                 break;
             case ActionPattern.Idle:
                 break;

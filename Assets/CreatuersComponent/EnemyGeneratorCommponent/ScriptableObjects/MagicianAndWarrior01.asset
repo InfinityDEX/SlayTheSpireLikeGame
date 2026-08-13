@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 883ff563ab19bbb4aa1539a8ca075252, type: 3}
-  m_Name: Magicians02
+  m_Name: MagicianAndWarrior01
   m_EditorClassIdentifier: 
   enemyCombinations:
   - enemyPrefab: {fileID: 2670787181398934133, guid: 86f5fdd2d40d0ff4daf80b700cd3c991, type: 3}
     spawnPosition: {x: 2.33, y: 0.73, z: 0}
+  - enemyPrefab: {fileID: 8730219540421818034, guid: 8edec4c964c4f4c48837d3766882c76e, type: 3}
+    spawnPosition: {x: 5.51, y: 0.26, z: 0}
