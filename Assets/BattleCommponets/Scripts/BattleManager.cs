@@ -21,7 +21,8 @@ public class BattleManager : MonoBehaviour
 
     [Header("敵マネージャー")]
     [SerializeField]
-    private EnemyManager enemyManager;
+    private EnemyManager enemyManagerInspector;
+    public EnemyManager enemyManager { get; private set;}
 
     [Header("カードプレハブ")]
     [SerializeField]
@@ -68,10 +69,11 @@ public class BattleManager : MonoBehaviour
         player = playerInspector;
         visualEffectLibrary = visualEffectLibraryInspector;
         energyManager = energyManagerInspector; 
+        enemyManager = enemyManagerInspector;
         energyManager.RefreshEnergy();
         AudioClip bgm = BgmSelector.PickBattleBgm(currentStage);
         AudioController.Instance?.PlayBGM(bgm);
-        enemyManager.SetEnemy(EnemyCombinationsDataManager.Instance.GetData());
+        enemyManagerInspector.SetEnemy(EnemyCombinationsDataManager.Instance.GetData());
         currentPhase = BattlePhase.InitializePhase;
     }
 
@@ -104,10 +106,10 @@ public class BattleManager : MonoBehaviour
         {
             case BattlePhase.InitializePhase:
                 // 全ての敵クリーチャーがStart処理を終えるまで待つ
-                if(enemyManager.enemies.All(e => e.EndStart()))
+                if(enemyManagerInspector.enemies.All(e => e.EndStart()))
                 {
                     // 敵の次の行動を示す
-                    enemyManager.enemies.ForEach(e => e.RefreshActionIcon());
+                    enemyManagerInspector.enemies.ForEach(e => e.RefreshActionIcon());
                     // ドローフェーズへ
                     currentPhase = BattlePhase.DrawPhase;
                 }
@@ -162,7 +164,7 @@ public class BattleManager : MonoBehaviour
                 energyManager.RefreshEnergy();
 
                 // 敵の次の行動を示す
-                enemyManager.enemies.ForEach(e => e.RefreshActionIcon());
+                enemyManagerInspector.enemies.ForEach(e => e.RefreshActionIcon());
 
                 currentPhase = BattlePhase.DrawPhase;
                 break;
@@ -276,7 +278,7 @@ public class BattleManager : MonoBehaviour
     // 全敵の生存チェック
     private bool AreEnemiesDefeated()
     {
-        return enemyManager.enemies.All(e => e.hp <= 0);
+        return enemyManagerInspector.enemies.All(e => e.hp <= 0);
     }
 
     // バフのリフレッシュ
@@ -286,16 +288,16 @@ public class BattleManager : MonoBehaviour
     }
     private void RefreshEnemysBuffs()
     {
-        enemyManager.enemies.ForEach(e => e.ResetBuff());
+        enemyManagerInspector.enemies.ForEach(e => e.ResetBuff());
     }
     
     private int currentActionEnemy = 0;
     private bool EnemyAction()
     {
-        if (enemyManager.enemies[currentActionEnemy].hp == 0 || enemyManager.enemies[currentActionEnemy].Action())
+        if (enemyManagerInspector.enemies[currentActionEnemy].hp == 0 || enemyManagerInspector.enemies[currentActionEnemy].Action())
         {
             currentActionEnemy++;
-            if (enemyManager.enemies.Count <= currentActionEnemy)
+            if (enemyManagerInspector.enemies.Count <= currentActionEnemy)
             {
                 currentActionEnemy = 0;
                 return true;

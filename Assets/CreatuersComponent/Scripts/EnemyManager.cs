@@ -7,13 +7,13 @@ public class EnemyManager : MonoBehaviour
 {
     [Header("敵")]
     [SerializeField]
-    private List<Enemy> enemysInspector = new List<Enemy>();
+    private List<Enemy> enemiesInspector = new List<Enemy>();
 
     public List<Enemy> enemies { get; private set; }
 
     private void Awake()
     {
-        enemies = enemysInspector;
+        enemies = enemiesInspector;
     }
 
     public void SetEnemy(EnemyCombinationData data)

@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class Warrior : Enemy
 {
-    // 魔法の発動までの時間
     private float currentTime = 0;
+    // 斬撃までの時間
     private float slashTime = 0.5f;
+    // 強化魔法発動までの時間
+    private float pumpUpTime = 0.5f;
     private bool inAction = false;
     // 行動パターン
     private enum ActionPattern
@@ -217,7 +219,7 @@ public class Warrior : Enemy
             inAction = true;
         }
         currentTime += Time.deltaTime;
-        if (currentTime >= slashTime)
+        if (currentTime >= pumpUpTime)
         {
             Debug.Log("身体強化(PumpUp)を発動");
             currentTime = 0;

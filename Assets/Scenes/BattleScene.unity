@@ -203,7 +203,7 @@ MonoBehaviour:
   currentStage: {fileID: 11400000, guid: 3ad44cac370aa114d8ecbc1701eadd49, type: 2}
   deckManager: {fileID: 1010414496}
   handArea: {fileID: 850239253}
-  enemyManager: {fileID: 770071691}
+  enemyManagerInspector: {fileID: 770071691}
   cardTemplatePrefab: {fileID: 3148922142676892650, guid: acced1113ef726c429a6840c70d75600, type: 3}
   playerInspector: {fileID: 1160299480}
   energyManagerInspector: {fileID: 893586649}
@@ -1199,7 +1199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54938a1d89500484d923bab044669380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemysInspector: []
+  enemiesInspector: []
 --- !u!1 &796198656
 GameObject:
   m_ObjectHideFlags: 0
