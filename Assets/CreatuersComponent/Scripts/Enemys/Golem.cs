@@ -144,6 +144,7 @@ public class Golem : Enemy
                 GameObject ve = Instantiate(visualEffectPrefab);
 
                 ve.transform.position = bm.player.transform.position;
+                ve.transform.Rotate(Vector3.forward, -90);
             }
 
             actionPattern = ActionPattern.Idle;
@@ -161,7 +162,7 @@ public class Golem : Enemy
         // アニメーション起動
         if (animator != null && !inAction)
         {
-            animator.SetTrigger("PumpUp");
+            animator.SetTrigger("Defense");
             inAction = true;
         }
         currentTime += Time.deltaTime;
