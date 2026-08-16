@@ -5,6 +5,7 @@ public class Golem : Enemy
     private float currentTime = 0;
     // パンチまでの時間
     private float punchTime = 0.5f;
+    // 防御魔法発動までの時間
     private float defenseTime = 0.5f;
     private bool inAction = false;
 
@@ -26,12 +27,6 @@ public class Golem : Enemy
     [Header("パンチダメージ")]
     [SerializeField]
     private int punchDamage = 10;
-
-    [Header("連撃斬撃の回数")]
-    [SerializeField]
-    private int consecutiveSlashCount = 3;
-
-    private int currentConsecutiveSlashCount = 1;
 
     [Header("パンチ音")]
     [SerializeField]
@@ -70,7 +65,7 @@ public class Golem : Enemy
                 batch.effectCount = punchDamage + muscle;
                 break;
             case ActionPattern.Defense:
-                // 連続斬撃発動アイコン表示
+                // 防御魔法発動アイコン表示
                 batch = batchManager.GenerateActionBatch(3);
                 break;
             case ActionPattern.Idle:

@@ -45,4 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyCombinationDatas:
-  - {fileID: 11400000, guid: 4fe7745943fdcc146b88858985c0248e, type: 2}
+  - {fileID: 11400000, guid: 0815aad4006b5cb4791702d2f8e247f9, type: 2}
