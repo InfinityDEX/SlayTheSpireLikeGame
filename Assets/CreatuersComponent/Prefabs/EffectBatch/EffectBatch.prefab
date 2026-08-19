@@ -266,6 +266,7 @@ MonoBehaviour:
   icon: {fileID: 6326508601429171844}
   countView: {fileID: 6576663915082385300}
   effectCount: 0
+  ratioCount: 0
 --- !u!1 &7037192958704636615
 GameObject:
   m_ObjectHideFlags: 0

@@ -146,7 +146,6 @@ MonoBehaviour:
   actionPattern: 0
   animator: {fileID: 8415566927299277154}
   punchDamage: 10
-  consecutiveSlashCount: 3
   punchSE: {fileID: 8300000, guid: a7522d5d4135bf74b911816273190f42, type: 3}
   defenseSE: {fileID: 8300000, guid: 23a36ee80d6d1dc4fb213d52f3668ae2, type: 3}
   defenceShieldNum: 10
