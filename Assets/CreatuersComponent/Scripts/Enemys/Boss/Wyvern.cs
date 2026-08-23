@@ -41,6 +41,10 @@ public class Wyvern : Enemy
     [SerializeField]
     private AudioClip fireBreathSE;
 
+    [Header("ファイアブレス発射位置(ワイバーンの口)")]
+    [SerializeField]
+    private Transform mouthPos;
+
     [Header("テンペストダメージ")]
     [SerializeField]
     private int tempestDamage = 30;
@@ -200,13 +204,15 @@ public class Wyvern : Enemy
             bm.player.TakeDamage(fireBreathDamage + muscle);
 
             // ビジュアルエフェクトを生成
-            GameObject visualEffectPrefab = bm.visualEffectLibrary.GetEffectById(1);
+            GameObject visualEffectPrefab = bm.visualEffectLibrary.GetEffectById(5);
             if (visualEffectPrefab != null)
             {
                 GameObject ve = Instantiate(visualEffectPrefab);
 
-                ve.transform.position = bm.player.transform.position;
-                ve.transform.Rotate(Vector3.forward, -90);
+                ve.transform.parent = mouthPos;
+                ve.transform.localPosition = Vector3.zero;
+                ve.transform.localScale = new Vector3(-1 * ve.transform.localScale.x, ve.transform.localScale.y, ve.transform.localScale.z);
+           
             }
             currentFlyTurns++;
             if (currentFlyTurns == turnsToSoarFromFly)

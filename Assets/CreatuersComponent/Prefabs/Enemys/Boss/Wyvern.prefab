@@ -1,10 +1,42 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1736720782505106659
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3643240136814454002}
+  m_Layer: 11
+  m_Name: Mouth
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3643240136814454002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736720782505106659}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.3737522, y: 0.39740738, z: 0}
+  m_LocalScale: {x: 0.47310403, y: 0.47310403, z: 0.47310403}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 523097236192751604}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &765030643505234081
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 999664405998923605, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
@@ -47,6 +79,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1607663735973280866, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 45dc6fda31e513b448bd9ae45aea8f21, type: 3}
     - target: {fileID: 2938606954823358583, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -54,6 +90,10 @@ PrefabInstance:
     - target: {fileID: 2938606954823358583, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7693061921805974473, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 7756170208897917588, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
       propertyPath: m_Name
@@ -113,7 +153,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6005535307997144627, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 999664405998923605, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3643240136814454002}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7756170208897917588, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8415566927299277154}
+    - targetCorrespondingSourceObject: {fileID: 7756170208897917588, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3481356426730308609}
   m_SourcePrefab: {fileID: 100100000, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
+--- !u!224 &523097236192751604 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 999664405998923605, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
+  m_PrefabInstance: {fileID: 765030643505234081}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1633588442328798868 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2032886332851361333, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}
@@ -159,7 +216,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &8415566927299277154
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -173,6 +230,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -203,6 +261,7 @@ MonoBehaviour:
   animator: {fileID: 8415566927299277154}
   fireBreathDamage: 15
   fireBreathSE: {fileID: 8300000, guid: 1ade78151e0e60241b10f64aa5e864c6, type: 3}
+  mouthPos: {fileID: 3643240136814454002}
   tempestDamage: 30
   tempestSE: {fileID: 8300000, guid: ed1f283717b016b45b79aa596e04e052, type: 3}
   turnsToSoarFromFly: 3
