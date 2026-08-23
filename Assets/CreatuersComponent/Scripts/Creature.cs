@@ -16,6 +16,7 @@ public class Creature : MonoBehaviour
     [SerializeField]
     private int hpInspector;
     public int hp { get; private set;}
+    public int maxHealth { get {return creatureData.maxHealth;} }
     [SerializeField]
     private int shieldInspector = 0;
     public int shield { get; private set; }

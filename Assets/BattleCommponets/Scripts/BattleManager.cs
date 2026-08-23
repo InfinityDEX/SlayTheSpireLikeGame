@@ -308,8 +308,13 @@ public class BattleManager : MonoBehaviour
 
     private void EndBattle()
     {
-        // バトル終了アニメ・遷移など
-
+        // TODO：バトル終了アニメ・遷移など
+        SaveData saveData = new();
+        saveData.MaxHelth = player.maxHealth;
+        saveData.CurrentHelth = player.hp;
+        string json = JsonUtility.ToJson(saveData, true);
+        string saveFilePath = System.IO.Path.Combine(Application.dataPath, "SaveData/SaveData.json");
+        System.IO.File.WriteAllText(saveFilePath, json);
         SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);
     }
 }
