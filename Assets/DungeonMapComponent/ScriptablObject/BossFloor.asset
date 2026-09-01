@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb83a927ace89e046b76900ba5a72746, type: 3}
+  m_Name: BossFloor
+  m_EditorClassIdentifier: Assembly-CSharp::MapGridInfo
+  gridSprite: {fileID: 3863977458548727277, guid: 3b41a2003db93d741a4942ce660f28c1, type: 3}
+  type: 2
