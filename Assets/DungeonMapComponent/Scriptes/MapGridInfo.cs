@@ -10,6 +10,7 @@ public class MapGridInfo : ScriptableObject
     [Serializable]
     public enum FloorInfo
     {
+        StartFloor,
         EnemyFloor, // 敵フロア
         EliteEnemyFloor, // エリート敵フロア
         BossFloor, // ボスフロア
