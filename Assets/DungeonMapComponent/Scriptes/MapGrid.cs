@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
 
 public class MapGrid : MonoBehaviour
 {
@@ -19,6 +20,35 @@ public class MapGrid : MonoBehaviour
     [Header("隣接する上層")]
     [SerializeField]
     private List<MapGrid> upperLayer;
+
+    [Header("グリッド間を繋ぐ線のPrefab")]
+    [SerializeField]
+    private UILineConnector line;
+#if UNITY_EDITOR
+    [Header("グリッド位置表示ディスプレイ(デバッグ用)")]
+    [SerializeField]
+    private TMPro.TextMeshProUGUI gridPosViewDisplay;
+#endif
+    /// <summary>
+    /// 隣接する上層のグリッドにLineRendererで線分を引く
+    /// </summary>
+    public void DrawLinesToUpperLayers()
+    {
+        if (upperLayer == null || line == null)
+            return;
+
+        foreach (var upper in upperLayer)
+        {
+            if (upper == null)
+                continue;
+
+            // このマスを親としてUILineConnectorインスタンスを生成
+            UILineConnector ulc = Instantiate(line, this.transform);
+
+            // 自身のgridImageとupperのgridImageのrectTransformを設定
+            ulc.transforms = new RectTransform[] { this.gridImage.rectTransform, upper.gridImage.rectTransform };
+        }
+    }
 
     /// <summary>
     /// グリッド情報を登録
@@ -48,5 +78,13 @@ public class MapGrid : MonoBehaviour
     {
         upperLayer.Add(grid);
     }
-
+#if UNITY_EDITOR
+    public void SetDebugView_GridPosition(int col, int row)
+    {
+        if(gridPosViewDisplay != null)
+        {
+            gridPosViewDisplay.text = $"Col:{col}\nRow:{row}";
+        }
+    }
+#endif
 }
