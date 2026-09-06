@@ -1,21 +1,30 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 public class DungeonMapFactory
 {    
     // マップグリッド情報のリスト
-    private List<MapGridInfo> mapGridInfoList = new List<MapGridInfo>();
+    private List<MapGridWithID> mapGridInfoList = new List<MapGridWithID>();
 
     /// <summary>
     /// マップグリッド情報をリストに追加
     /// </summary>
-    /// <param name="info">追加するMapGridInfo</param>
-    public void AddMapGridInfo(MapGridInfo info)
+    /// <param name="data">追加するMapGridInf</param>
+    public void AddMapGridInfo(MapGridWithID data)
     {
-        if (info != null && !mapGridInfoList.Contains(info))
+        // グリッド情報がちゃんと登録されていて、重複するデータがない（重複するIDがあってもダメ）場合は登録する。
+        if (data.info != null &&
+            !mapGridInfoList.Contains(data) &&
+            mapGridInfoList.All(item => item.id != data.id)
+            )
         {
-            mapGridInfoList.Add(info);
+            mapGridInfoList.Add(data);
+        }
+        else
+        {
+            Debug.LogError($"[DungeonMapFactory] AddMapGridInfo: 無効なデータが追加されようとしました。ID: {data.id}, Info: {(data.info != null ? data.info.name : "null")}");
         }
     }
 
@@ -28,7 +37,18 @@ public class DungeonMapFactory
         if (mapGridInfoList == null || mapGridInfoList.Count == 0)
             return null;
         int idx = UnityEngine.Random.Range(0, mapGridInfoList.Count);
-        return mapGridInfoList[idx];
+        return mapGridInfoList[idx].info;
+    }
+
+
+    /// <summary>
+    /// マップグリッド情報リストからIDを指定して抽出
+    /// </summary>
+    /// /// <param name="id">マップグリッドに紐づけられたID</param>
+    /// <returns>ランダムに選択されたMapGridInfo、リストが空の場合はnull</returns>
+    public MapGridInfo GetRandomMapGridInfo(int id)
+    {
+        return mapGridInfoList[id].info;
     }
 
     /// <summary>
@@ -52,6 +72,12 @@ public class DungeonMapFactory
         return mapGrids;
     }    
     
+    // TODO:GenerateDungeonMapをオーバーライドして永続化したダンジョンマップ情報(Json)から
+    // マップグリッド情報リストを生成できるようにする
+    // 
+    // マップグリッド情報リストさえ生成すればSpawnDungeonMapはそれを読み込むだけで
+    // マップを実際に画面上に生成できるため、SpawnDungeonMapの方は修整やオーバーライド不要
+
     /// <summary>
     /// ダンジョンマップ(マップグリッド)を画面上に配置・生成する処理
     /// <param name="mapGridInfos">スタートマスとボスマス以外のダンジョンマップ情報</param>

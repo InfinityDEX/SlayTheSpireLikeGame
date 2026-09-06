@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 
+[System.Serializable]
 public class MapGrid : MonoBehaviour
 {
     [Header("グリッド画像表示オブジェクト")]

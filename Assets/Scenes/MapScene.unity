@@ -154,10 +154,7 @@ MonoBehaviour:
   floorCount: 5
   xOffset: 2
   yOffset: 4
-  availableMapGridInfoList:
-  - {fileID: 11400000, guid: 964705489e0fa52488a4f1764b015f9d, type: 2}
-  - {fileID: 11400000, guid: c697b55a2b62ecb4b9a52aa89269521c, type: 2}
-  - {fileID: 11400000, guid: 87a9168f152dda2499d04fab18daa6cb, type: 2}
+  availableMapGridInfoList: {fileID: 11400000, guid: e6b47c39226e30541bdc256fc6d1b4de, type: 2}
   startGridInfo: {fileID: 11400000, guid: 3c2a50bab8953fd46b09620daebbc3a4, type: 2}
   bossGridInfo: {fileID: 11400000, guid: fc9f129ffd6a15a479414d00d4cdc6fb, type: 2}
 --- !u!4 &477543280

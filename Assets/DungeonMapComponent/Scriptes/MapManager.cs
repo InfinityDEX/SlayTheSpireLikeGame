@@ -29,7 +29,7 @@ public class MapManager : MonoBehaviour
 
     [Header("生成できるマップグリッド情報リスト")]
     [SerializeField]
-    private List<MapGridInfo> availableMapGridInfoList;
+    private MapGridInfoList availableMapGridInfoList;
     
     // マップのマス配置情報
     private List<List<MapGridInfo>> mapGridInfos;
@@ -48,11 +48,11 @@ public class MapManager : MonoBehaviour
 
     private void Start()
     {
-        // 全てのマップグリッド情報をジェネレータに登録
         var dungeonFactory = new DungeonMapFactory();
-        foreach (var info in availableMapGridInfoList)
+        // 全てのマップグリッド情報をファクトリーに登録
+        foreach (var item in availableMapGridInfoList.mapGridInfos)
         {
-            dungeonFactory.AddMapGridInfo(info);
+            dungeonFactory.AddMapGridInfo(item);
         }
 
         // マップのマス配置情報をランダムに生成

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce45fc65e8f4e584291b6912fcde23cc, type: 3}
+  m_Name: FirstDungeonMapGridList
+  m_EditorClassIdentifier: Assembly-CSharp::MapGridInfoList
+  mapGridInfos:
+  - id: 0
+    info: {fileID: 11400000, guid: c697b55a2b62ecb4b9a52aa89269521c, type: 2}
+  - id: 1
+    info: {fileID: 11400000, guid: 964705489e0fa52488a4f1764b015f9d, type: 2}
+  - id: 2
+    info: {fileID: 11400000, guid: 87a9168f152dda2499d04fab18daa6cb, type: 2}
+  startGridInfo: {fileID: 11400000, guid: 3c2a50bab8953fd46b09620daebbc3a4, type: 2}
+  bossGridInfo: {fileID: 11400000, guid: fc9f129ffd6a15a479414d00d4cdc6fb, type: 2}
