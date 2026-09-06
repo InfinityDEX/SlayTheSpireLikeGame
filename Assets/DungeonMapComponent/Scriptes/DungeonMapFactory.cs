@@ -37,9 +37,10 @@ public class DungeonMapFactory
         if (mapGridInfoList == null || mapGridInfoList.Count == 0)
             return null;
         int idx = UnityEngine.Random.Range(0, mapGridInfoList.Count);
-        return mapGridInfoList[idx].info;
+        var tmp = mapGridInfoList[idx].info;
+        tmp.id = idx;
+        return tmp;
     }
-
 
     /// <summary>
     /// マップグリッド情報リストからIDを指定して抽出
@@ -243,93 +244,36 @@ public class DungeonMapFactory
                         connectedCols.Add(toCol);
                     }
                 }
-                
-                // // どこにも繋がらなかった場合は、ランダムで1つだけ必ず接続する
-                // if (connectedCols.Count == 0)
-                // {
-                //     MapGrid toGrid = mapGrids[row + 1][Random.Range(0, candidateCols.Count)];
-                //     fromGrid.SetUpperLayer(toGrid);
-                //     toGrid.SetUnderLayer(fromGrid);
-                // }
             }
         }
 
-
-        // int centerCol = mapGrids.Count / 2;
-
-        // int colCount = mapGrids.Count;
-        // for (int col = 0; col < colCount - 1; col++)
-        // {
-        //     List<MapGrid> currentCol = mapGrids[col];
-        //     List<MapGrid> nextCol = mapGrids[col + 1];
-
-        //     for (int row = 0; row < currentCol.Count; row++)
-        //     {
-        //         MapGrid fromGrid = currentCol[row];
-
-        //         // 縦＋斜め右上・左上(col-1, col, col+1)にいる次行のマスとランダムで接続
-        //         List<int> candidateCols = new List<int>();
-        //         for (int offset = -1; offset <= 1; offset++)
-        //         {
-        //             int toCol = col + offset;
-        //             if (toCol >= 0 && toCol < mapGrids.Count)
-        //             {
-        //                 candidateCols.Add(toCol);
-        //             }
-        //         }
-        
-
-        //         // List<int> connectedCols = new List<int>();
-        //         // // ランダム接続を行う
-        //         // foreach (int toCol in candidateCols)
-        //         // {
-        //         //     // if (UnityEngine.Random.value < 0.5f && row < mapGrids[toCol + 1].Count)
-        //         //     // {
-        //         //         MapGrid toGrid = mapGrids[toCol + 1][row];
-        //         //         fromGrid.SetUpperLayer(toGrid);
-        //         //         toGrid.SetUnderLayer(fromGrid);
-        //         //         connectedCols.Add(toCol);
-        //         //     // }
-        //         // }
-           
-
-        //         // // どこにも繋がらなかった場合は、ランダムで1つだけ必ず接続する
-        //         // if (connectedRows.Count == 0 && candidateRows.Count > 0)
-        //         // {
-        //         //     int guaranteedRow = candidateRows[UnityEngine.Random.Range(0, candidateRows.Count)];
-        //         //     MapGrid toGrid = nextCol[guaranteedRow];
-        //         //     fromGrid.SetUpperLayer(toGrid);
-        //         //     toGrid.SetUnderLayer(fromGrid);
-        //         // }
-        //     }
-        // }
-
-        // // スタートマス（先頭=最下段）と隣のグリッド、ボスマス（末尾=最上段）をそれぞれ接続
-        // int startCol = centerCol;
-        // if (mapGrids[startCol].Count > 1)
-        // {
-        //     MapGrid startGrid = mapGrids[startCol][0];
-        //     MapGrid firstGrid = mapGrids[startCol][1];
-        //     startGrid.SetUpperLayer(firstGrid);
-        //     firstGrid.SetUnderLayer(startGrid);
-        // }
-        // int bossCol = centerCol;
-        // if (mapGrids[bossCol].Count > 2)
-        // {
-        //     MapGrid bossGrid = mapGrids[bossCol][mapGrids[bossCol].Count - 1];
-        //     MapGrid lastGrid = mapGrids[bossCol][mapGrids[bossCol].Count - 2];
-        //     bossGrid.SetUnderLayer(lastGrid);
-        //     lastGrid.SetUpperLayer(bossGrid);
-        // }
-
         // すべてのマップグリッドで線分を描画 
-        foreach (var column in mapGrids)
+        foreach (var row in mapGrids)
         {
-            foreach (var grid in column)
+            foreach (var grid in row)
             {
                 if (grid != null)
                 {
                     grid.DrawLinesToUpperLayers();
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// マップグリッドの位置情報整理
+    /// </summary>
+    /// <param name="mapGrids">マップグリッド配列（SpawnDungeonMapで生成した物を想定）</param>
+    public void OrganizeMapGridPos(ref List<List<MapGrid>> mapGrids)
+    {
+        for (int i = 0; i < mapGrids.Count; i++)
+        {
+            for (int j = 0; j < mapGrids[i].Count; j++)
+            {
+                if (mapGrids[i][j] != null)
+                {
+                    mapGrids[i][j].pos.row = i;
+                    mapGrids[i][j].pos.col = j;
                 }
             }
         }

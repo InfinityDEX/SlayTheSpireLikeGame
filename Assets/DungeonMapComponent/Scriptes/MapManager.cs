@@ -71,5 +71,38 @@ public class MapManager : MonoBehaviour
 
         // マップグリッド(マス)間をランダムに接続させる
         dungeonFactory.ConnectGridCells(ref mapGrids);
+
+        // マップグリッド(マス)の位置情報を更新する
+        dungeonFactory.OrganizeMapGridPos(ref mapGrids);
+
+        SaveDungeonMapData();
+    }
+
+    public void SaveDungeonMapData()
+    {
+        DungeonMapJson dungeonMapJson = new ();
+
+        for (int row = 0; row < mapGrids.Count; row++)
+        {
+            for (int column = 0; column < mapGrids[row].Count; column++)
+            {
+                MapGridJson mapGridJson = new();
+                mapGridJson.mapGridInfoID = mapGrids[row][column].gridInfoId;
+                mapGridJson.pos = mapGrids[row][column].pos;
+                foreach (var item in mapGrids[row][column].upperLayer)
+                {
+                    mapGridJson.upperMapGridPos.Add(item.pos);
+                }
+                foreach (var item in mapGrids[row][column].underLayer)
+                {
+                    mapGridJson.underMapGridPos.Add(item.pos);
+                }
+
+                dungeonMapJson.dungeonMapGrid.Add(mapGridJson);
+            }
+        }
+        var jsonText = JsonUtility.ToJson(dungeonMapJson, true);
+        string saveFilePath = System.IO.Path.Combine(Application.dataPath, "SaveData/CurrentDungeonData.json");
+        System.IO.File.WriteAllText(saveFilePath, jsonText);
     }
 }

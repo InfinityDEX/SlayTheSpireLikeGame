@@ -13,18 +13,23 @@ public class MapGrid : MonoBehaviour
     [Header("グリッド情報")]
     [SerializeField]
     private MapGridInfo gridInfo;
+    // マップグリッド情報のID
+    public int gridInfoId;
 
     [Header("隣接する下層")]
     [SerializeField]
-    private List<MapGrid> underLayer;
+    public List<MapGrid> underLayer;
 
     [Header("隣接する上層")]
     [SerializeField]
-    private List<MapGrid> upperLayer;
+    public List<MapGrid> upperLayer;
 
     [Header("グリッド間を繋ぐ線のPrefab")]
     [SerializeField]
     private UILineConnector line;
+
+    public MapGridJson.MapGridPos pos;
+
 #if UNITY_EDITOR
     [Header("グリッド位置表示ディスプレイ(デバッグ用)")]
     [SerializeField]
@@ -57,6 +62,7 @@ public class MapGrid : MonoBehaviour
     /// <param name="info">グリッド情報</param>
     public void SetInfo(MapGridInfo info)
     { 
+        gridInfoId = info.id;
         gridInfo = info;
         // グリッド情報の登録と同時にImageに画像データを登録する
         gridImage.sprite = gridInfo.gridSprite;

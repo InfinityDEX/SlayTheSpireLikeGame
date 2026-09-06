@@ -19,4 +19,6 @@ public class MapGridInfo : ScriptableObject
 
     [Header("フロア情報")]
     public FloorInfo type;
+
+    public int id;
 }
