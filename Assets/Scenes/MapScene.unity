@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9e8b0336bb2aa442901540cdec5f84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapManager
+  isAlwaysMakeNewDungeonMap: 0
   mapGridPrefab: {fileID: 6076545543227911746, guid: 591f8bc7b1fe1cc43b33de5fa0bce6fa, type: 3}
   mapGridCanvas: {fileID: 699272857}
   branchCount: 3

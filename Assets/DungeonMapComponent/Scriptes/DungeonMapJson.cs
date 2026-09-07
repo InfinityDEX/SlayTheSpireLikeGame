@@ -23,6 +23,24 @@ public class MapGridJson
     public List<MapGridPos> underMapGridPos;
 }
 
+// List<MapGridJson>のラッパークラス（DungeonMapJson用。JsonUtilityで扱う際に二重リストそのままだとコンバート出来なくなる使用への対処）
+[System.Serializable]
+public class DungeonFloorJson
+{
+    public DungeonFloorJson()
+    {
+        floorGrids = new();
+    }
+
+    public List<MapGridJson> floorGrids;
+
+    // DungeonMapJson側で通常の二次配列のように扱えるように配列演算子をオーバーライド
+    public MapGridJson this[int index]
+    {
+        get { return floorGrids[index]; }
+    }
+}
+
 [System.Serializable]
 public class DungeonMapJson
 {
@@ -30,5 +48,7 @@ public class DungeonMapJson
     {
         dungeonMapGrid = new();
     }
-    public List<MapGridJson> dungeonMapGrid;
+
+
+    public List<DungeonFloorJson> dungeonMapGrid;
 }

@@ -78,6 +78,36 @@ public class DungeonMapFactory
     // 
     // マップグリッド情報リストさえ生成すればSpawnDungeonMapはそれを読み込むだけで
     // マップを実際に画面上に生成できるため、SpawnDungeonMapの方は修整やオーバーライド不要
+   /// <summary>
+    /// 指定された列数に基づいてダンジョンマップのグリッド情報リストを生成
+    /// </summary>
+    /// <param name="branchCount">生成する分岐数</param>
+    /// <returns>各列ごとのグリッド情報リスト</returns>
+    public List<List<MapGridInfo>> GenerateDungeonMap(DungeonMapJson jsonData)
+    {
+        var mapGrids = new List<List<MapGridInfo>>();
+        var dungeonMapGrid = jsonData.dungeonMapGrid;
+        for (int i = 0; i < dungeonMapGrid.Count; i++)
+        {
+            var floor = new List<MapGridInfo>();
+            for (int j = 0; j < dungeonMapGrid[i].floorGrids.Count; j++)
+            {
+                // Idでマップのグリッドを検索する。
+                var infoWithId = mapGridInfoList.FirstOrDefault(infoWithId => infoWithId.id == dungeonMapGrid[i][j].mapGridInfoID);
+                var gridInfo = infoWithId.info;
+
+                // もしもId検索で引っかからなかったらエラー（infoWithIdの全てのメンバが0かnullのデフォルト値）
+                if (infoWithId.id == 0 && gridInfo == null)
+                {
+                    throw new System.Exception($"指定されたID ({dungeonMapGrid[i][j].mapGridInfoID}) のマップグリッド情報が見つかりません。");
+                }
+                floor.Add(gridInfo);
+            }
+            mapGrids.Add(floor);
+        }
+
+        return mapGrids;
+    }    
 
     /// <summary>
     /// ダンジョンマップ(マップグリッド)を画面上に配置・生成する処理
@@ -88,6 +118,7 @@ public class DungeonMapFactory
     /// <param name="mapGridCanvas">マップグリッドを配置するCanvas</param>
     /// <param name="xOffset">横方向のマップグリッド間の隙間</param>
     /// <param name="yOffset">縦方向のマップグリッド間の隙間</param>
+    /// <param name="isNewDungeon">セーブデータから読み込まれたものではない、今回初めて生成されるマップか？</param>
     /// <returns>マップグリッド配列（ダンジョンマップ）</returns>
     public List<List<MapGrid>> SpawnDungeonMap(
         List<List<MapGridInfo>> mapGridInfos,
@@ -96,7 +127,8 @@ public class DungeonMapFactory
         MapGrid mapGridPrefab,
         Canvas mapGridCanvas,
         float xOffset,
-        float yOffset
+        float yOffset,
+        bool isNewDungeon
         )
     {
         List<List<MapGrid>> mapGrids = null;
@@ -109,13 +141,20 @@ public class DungeonMapFactory
 
         for (int row = 0; row < mapGridInfos.Count; row++)
         {
+            // 新規で生成されたダンジョンではないなら、スタートマスとボスマスの情報がmapGridInfosに含まれてしまっている為、インスタンス生成をスキップ
+            if (!isNewDungeon && (row == 0 || row == mapGridInfos.Count - 1))
+            {
+                // TODO:スタートマスとボスマスはそれぞれ別のmapGridInfoListからIdを指定してインスタンス生成できるようにしたい（現状はスタートマスもボスマスも1つずつしか用意する予定はない為、
+                // ここの処理はスキップして、本ループの下に記載された処理にて決められたスタートマスとボスマスを登録している）
+                continue;
+            }
             var rowList = mapGridInfos[row];
             for (int col = 0; col < rowList.Count; col++)
             {
                 // 初期配置を中央揃えに（Y座標はCanvas中央を0として上方向に配置）
                 float totalWidth = (rowList.Count - 1) * xOffset;
                 float x = col * xOffset - totalWidth / 2f;
-                float y = row * yOffset;
+                float y = (row - (isNewDungeon ? 0 : 1)) * yOffset;
                 Vector3 position = new Vector3(x, y, 0);
                 // MapGridのインスタンスを生成
                 MapGrid gridInstance = Object.Instantiate(mapGridPrefab, mapGridCanvas.transform);
@@ -144,9 +183,6 @@ public class DungeonMapFactory
 
         // 1. 必要な開始・ボス用座標の計算
         float startBossX = 0f;
-        // int centerRow = mapGridInfos.Count / 2;
-        // float totalWidthForSB = (mapGridInfos.Count - 1) * xOffset;
-        // startBossX = centerRow * xOffset - totalWidthForSB / 2f;
 
         // 2. スタートマス生成（最初の列の下に配置）
         float startY = -yOffset;
@@ -159,7 +195,7 @@ public class DungeonMapFactory
 
         // 3. ボスマス生成（最後の列の上に配置）
         int rowCount = mapGridInfos.Count;
-        float bossY = rowCount * yOffset;
+        float bossY = (rowCount - (isNewDungeon ? 0 : 2)) * yOffset;
         Vector3 bossPosition = new Vector3(startBossX, bossY, 0f);
         MapGrid bossGridInstance = Object.Instantiate(mapGridPrefab, mapGridCanvas.transform);
         bossGridInstance.transform.localPosition = bossPosition;

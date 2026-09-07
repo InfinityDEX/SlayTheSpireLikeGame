@@ -1,8 +1,14 @@
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
+
+    [Header("DEBUG:常に新しくダンジョンマップを生成する")]
+    [SerializeField]
+    private bool isAlwaysMakeNewDungeonMap = false;
+    
     [Header("マップグリッドのPrefab")]
     [SerializeField]
     private MapGrid mapGridPrefab;
@@ -30,11 +36,12 @@ public class MapManager : MonoBehaviour
     [Header("生成できるマップグリッド情報リスト")]
     [SerializeField]
     private MapGridInfoList availableMapGridInfoList;
-    
+
     // マップのマス配置情報
     private List<List<MapGridInfo>> mapGridInfos;
     
     // マップのマスオブジェクトリスト
+    [SerializeField]
     private List<List<MapGrid>> mapGrids;
     
     // スタートマスとボスマス（終端）のMapGridInfo(1列しかないので別枠で管理)
@@ -46,6 +53,8 @@ public class MapManager : MonoBehaviour
     [SerializeField]
     private MapGridInfo bossGridInfo;
 
+    private string saveDataFilePath = "SaveData/CurrentDungeonData.json";
+
     private void Start()
     {
         var dungeonFactory = new DungeonMapFactory();
@@ -55,27 +64,70 @@ public class MapManager : MonoBehaviour
             dungeonFactory.AddMapGridInfo(item);
         }
 
-        // マップのマス配置情報をランダムに生成
-        mapGridInfos = dungeonFactory.GenerateDungeonMap(branchCount, floorCount);
+        // セーブデータ読み込み
+        var dungeonMapSaveData = SearchDungeonMapSaveData();
 
-        // ダンジョンマップの実体を生成
-        mapGrids = dungeonFactory.SpawnDungeonMap(
-            mapGridInfos,
-            startGridInfo,
-            bossGridInfo,
-            mapGridPrefab,
-            mapGridCanvas,
-            xOffset,
-            yOffset
-        );
+        if (!isAlwaysMakeNewDungeonMap && dungeonMapSaveData != null)
+        {
+            // セーブデータからマップを読み込み
+            mapGridInfos = dungeonFactory.GenerateDungeonMap(dungeonMapSaveData);
 
-        // マップグリッド(マス)間をランダムに接続させる
-        dungeonFactory.ConnectGridCells(ref mapGrids);
+            // ダンジョンマップの実体を生成
+            mapGrids = dungeonFactory.SpawnDungeonMap(
+                mapGridInfos,
+                startGridInfo,
+                bossGridInfo,
+                mapGridPrefab,
+                mapGridCanvas,
+                xOffset,
+                yOffset,
+                false
+            );
+        }
+        else
+        {
+            // マップのマス配置情報をランダムに生成
+            mapGridInfos = dungeonFactory.GenerateDungeonMap(branchCount, floorCount);
+        
+            // ダンジョンマップの実体を生成
+            mapGrids = dungeonFactory.SpawnDungeonMap(
+                mapGridInfos,
+                startGridInfo,
+                bossGridInfo,
+                mapGridPrefab,
+                mapGridCanvas,
+                xOffset,
+                yOffset,
+                true
+            );
 
-        // マップグリッド(マス)の位置情報を更新する
-        dungeonFactory.OrganizeMapGridPos(ref mapGrids);
+            
+            // マップグリッド(マス)間をランダムに接続させる
+            dungeonFactory.ConnectGridCells(ref mapGrids);
 
-        SaveDungeonMapData();
+            // マップグリッド(マス)の位置情報を更新する
+            dungeonFactory.OrganizeMapGridPos(ref mapGrids);
+
+            SaveDungeonMapData();
+        }
+
+    }
+
+    /// <summary>
+    /// セーブデータからダンジョンマップの情報（DungeonMapJson）を読み込む
+    /// </summary>
+    /// <returns>セーブファイルから取得したDungeonMapJsonオブジェクト</returns>
+    public DungeonMapJson SearchDungeonMapSaveData()
+    {
+        var saveFilePath = System.IO.Path.Combine(Application.dataPath, saveDataFilePath);
+        var jsonText = System.IO.File.ReadAllText(saveFilePath, Encoding.UTF8);
+        
+        // もしも見つからなかったらnullを返す
+        if (jsonText == null) return null;
+
+        DungeonMapJson dungeonMapJson = new ();
+        dungeonMapJson = JsonUtility.FromJson<DungeonMapJson>(jsonText);
+        return dungeonMapJson;
     }
 
     public void SaveDungeonMapData()
@@ -84,6 +136,7 @@ public class MapManager : MonoBehaviour
 
         for (int row = 0; row < mapGrids.Count; row++)
         {
+            DungeonFloorJson floor = new();
             for (int column = 0; column < mapGrids[row].Count; column++)
             {
                 MapGridJson mapGridJson = new();
@@ -98,11 +151,12 @@ public class MapManager : MonoBehaviour
                     mapGridJson.underMapGridPos.Add(item.pos);
                 }
 
-                dungeonMapJson.dungeonMapGrid.Add(mapGridJson);
+                floor.floorGrids.Add(mapGridJson);
             }
+            dungeonMapJson.dungeonMapGrid.Add(floor);
         }
         var jsonText = JsonUtility.ToJson(dungeonMapJson, true);
-        string saveFilePath = System.IO.Path.Combine(Application.dataPath, "SaveData/CurrentDungeonData.json");
-        System.IO.File.WriteAllText(saveFilePath, jsonText);
+        string saveFilePath = System.IO.Path.Combine(Application.dataPath, saveDataFilePath);
+        System.IO.File.WriteAllText(saveFilePath, jsonText, Encoding.UTF8);
     }
 }
