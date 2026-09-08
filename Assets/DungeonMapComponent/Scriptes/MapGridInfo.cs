@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Map Data", menuName = "Create Map /MapGrid Data")]
@@ -21,4 +22,7 @@ public class MapGridInfo : ScriptableObject
     public FloorInfo type;
 
     public int id;
+
+    // public List<MapGridJson.MapGridPos> upperMapGridList = null;
+    // public List<MapGridJson.MapGridPos> underMapGridList = null;
 }

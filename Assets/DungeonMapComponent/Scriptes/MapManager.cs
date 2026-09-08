@@ -81,8 +81,12 @@ public class MapManager : MonoBehaviour
                 mapGridCanvas,
                 xOffset,
                 yOffset,
-                false
+                false,
+                dungeonMapSaveData
             );
+            
+            // マップグリッド(マス)の位置情報を更新する
+            dungeonFactory.OrganizeMapGridPos(ref mapGrids);
         }
         else
         {
@@ -101,9 +105,8 @@ public class MapManager : MonoBehaviour
                 true
             );
 
-            
             // マップグリッド(マス)間をランダムに接続させる
-            dungeonFactory.ConnectGridCells(ref mapGrids);
+            dungeonFactory.ConnectRandomGridCells(ref mapGrids);
 
             // マップグリッド(マス)の位置情報を更新する
             dungeonFactory.OrganizeMapGridPos(ref mapGrids);
