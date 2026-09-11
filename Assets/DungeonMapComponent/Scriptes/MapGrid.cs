@@ -6,6 +6,10 @@ using UnityEngine.UI.Extensions;
 [System.Serializable]
 public class MapGrid : MonoBehaviour
 {
+    [Header("機能有効状態")]
+    [SerializeField]
+    public bool isEnabled = false; // デフォルトは無効
+
     [Header("グリッド画像表示オブジェクト")]
     [SerializeField]
     private Image gridImage;
@@ -35,6 +39,24 @@ public class MapGrid : MonoBehaviour
     [SerializeField]
     private TMPro.TextMeshProUGUI gridPosViewDisplay;
 #endif
+
+    /// <summary>
+    /// グリッド画像を点滅させる
+    /// </summary>
+    public void FlickerGrid(bool enable)
+    {
+        // 点滅機構はgridImageのオブジェクトが持っている
+        var flicker = gridImage.gameObject.GetComponent<MapGirdFlicker>();
+        if (flicker == null)
+        {
+            Debug.LogWarning("MapGirdFlicker コンポーネントが見つからなかったため、新規追加します。");
+       
+            // Flickerコンポーネントが存在しない場合はアタッチする
+            flicker = gridImage.gameObject.AddComponent<MapGirdFlicker>();
+        }
+        flicker.isEnabled = enable;
+    }
+
     /// <summary>
     /// 隣接する上層のグリッドにLineRendererで線分を引く
     /// </summary>

@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9e8b0336bb2aa442901540cdec5f84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapManager
-  isAlwaysMakeNewDungeonMap: 0
+  isAlwaysMakeNewDungeonMap: 1
   mapGridPrefab: {fileID: 6076545543227911746, guid: 591f8bc7b1fe1cc43b33de5fa0bce6fa, type: 3}
   mapGridCanvas: {fileID: 699272857}
   branchCount: 3
@@ -158,6 +158,8 @@ MonoBehaviour:
   availableMapGridInfoList: {fileID: 11400000, guid: e6b47c39226e30541bdc256fc6d1b4de, type: 2}
   startGridInfo: {fileID: 11400000, guid: 3c2a50bab8953fd46b09620daebbc3a4, type: 2}
   bossGridInfo: {fileID: 11400000, guid: fc9f129ffd6a15a479414d00d4cdc6fb, type: 2}
+  selectSE: {fileID: 8300000, guid: d7d644609f8f45a448cd19079a9f9be4, type: 3}
+  decideSE: {fileID: 8300000, guid: cb718b898b1e08b43b0dc9e4878a0884, type: 3}
 --- !u!4 &477543280
 Transform:
   m_ObjectHideFlags: 0
@@ -275,6 +277,71 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1001 &1102639738
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1864065497919632463, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
+      propertyPath: Loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1864065497919632463, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 73a4a19e60d93824f9e187751ed2e84a, type: 3}
+    - target: {fileID: 6226201337009032393, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.26903
+      objectReference: {fileID: 0}
+    - target: {fileID: 6226201337009032393, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.52838
+      objectReference: {fileID: 0}
+    - target: {fileID: 6226201337009032393, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6226201337009032393, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6226201337009032393, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6226201337009032393, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6226201337009032393, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6226201337009032393, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6226201337009032393, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6226201337009032393, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8697858716758601288, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
+      propertyPath: m_Name
+      value: AudioContller
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
 --- !u!1 &1293597183
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,4 +576,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 1293597186}
   - {fileID: 1755077065}
+  - {fileID: 1102639738}
   - {fileID: 477543280}

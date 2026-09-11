@@ -73,12 +73,6 @@ public class DungeonMapFactory
         return mapGrids;
     }    
     
-    // TODO:GenerateDungeonMapをオーバーライドして永続化したダンジョンマップ情報(Json)から
-    // マップグリッド情報リストを生成できるようにする
-    // 
-    // マップグリッド情報リストさえ生成すればSpawnDungeonMapはそれを読み込むだけで
-    // マップを実際に画面上に生成できるため、SpawnDungeonMapの方は修整やオーバーライド不要
-   /// <summary>
     /// 指定された列数に基づいてダンジョンマップのグリッド情報リストを生成
     /// </summary>
     /// <param name="branchCount">生成する分岐数</param>

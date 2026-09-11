@@ -48,15 +48,34 @@ public class MapManager : MonoBehaviour
     [Header("スタートマス情報")]
     [SerializeField]
     private MapGridInfo startGridInfo;
-    
     [Header("ボスマス(終端)情報")]
     [SerializeField]
     private MapGridInfo bossGridInfo;
 
+    // セーブデータの保存パス
     private string saveDataFilePath = "SaveData/CurrentDungeonData.json";
+
+    // 移動経路
+    private List<MapGridJson.MapGridPos> movePath;
+    
+    // 現在の位置
+    private MapGridJson.MapGridPos currentGridPos;
+
+    [Header("セレクト音")]
+    [SerializeField]
+    private AudioClip selectSE;
+
+    [Header("決定音")]
+    [SerializeField]
+    private AudioClip decideSE;
+
+    // 移動予定の列：currentGridPosのUpperLayerのインデックス
+    private int nextGridCol;
 
     private void Start()
     {
+        movePath = new();
+
         var dungeonFactory = new DungeonMapFactory();
         // 全てのマップグリッド情報をファクトリーに登録
         foreach (var item in availableMapGridInfoList.mapGridInfos)
@@ -65,12 +84,15 @@ public class MapManager : MonoBehaviour
         }
 
         // セーブデータ読み込み
-        var dungeonMapSaveData = SearchDungeonMapSaveData();
+        var loadedDungeonMapSaveData = SearchDungeonMapSaveData();
 
-        if (!isAlwaysMakeNewDungeonMap && dungeonMapSaveData != null)
+        // セーブデータの有無でマップ生成処理を分ける
+        if (!isAlwaysMakeNewDungeonMap && loadedDungeonMapSaveData != null)
         {
             // セーブデータからマップを読み込み
-            mapGridInfos = dungeonFactory.GenerateDungeonMap(dungeonMapSaveData);
+            mapGridInfos = dungeonFactory.GenerateDungeonMap(loadedDungeonMapSaveData);
+            movePath = loadedDungeonMapSaveData.movePath;
+            currentGridPos = loadedDungeonMapSaveData.currentGridPos;
 
             // ダンジョンマップの実体を生成
             mapGrids = dungeonFactory.SpawnDungeonMap(
@@ -82,7 +104,7 @@ public class MapManager : MonoBehaviour
                 xOffset,
                 yOffset,
                 false,
-                dungeonMapSaveData
+                loadedDungeonMapSaveData
             );
             
             // マップグリッド(マス)の位置情報を更新する
@@ -92,7 +114,7 @@ public class MapManager : MonoBehaviour
         {
             // マップのマス配置情報をランダムに生成
             mapGridInfos = dungeonFactory.GenerateDungeonMap(branchCount, floorCount);
-        
+
             // ダンジョンマップの実体を生成
             mapGrids = dungeonFactory.SpawnDungeonMap(
                 mapGridInfos,
@@ -110,10 +132,59 @@ public class MapManager : MonoBehaviour
 
             // マップグリッド(マス)の位置情報を更新する
             dungeonFactory.OrganizeMapGridPos(ref mapGrids);
+            
+            // 現在位置をスタートマス（row : 0, col : 0）に設定する
+            currentGridPos.row = 0;
+            currentGridPos.col = 0;
+            movePath.Add(currentGridPos);
 
+            // データセーブ
             SaveDungeonMapData();
         }
+    
+        // 最初に選択状態になるグリッドは、現在いるグリッドから進行可能なグリッド（UpperLayer）の中で
+        // 一番最初（左端）に登録されているグリッドを登録する
+        if (mapGrids[currentGridPos.row][currentGridPos.col].upperLayer != null &&
+            mapGrids[currentGridPos.row][currentGridPos.col].upperLayer.Count > 0)
+        {
+            nextGridCol = 0;
+        }
+    }
 
+    private void Update()
+    {
+        var nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridCol];
+        nextGrid.FlickerGrid(true);
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            // 今選択しているグリッドの点滅を止める
+            nextGrid.FlickerGrid(false);
+       
+            var upperLayerCount = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer.Count;
+            nextGridCol = (nextGridCol - 1 + upperLayerCount) % upperLayerCount;
+         
+            AudioController.Instance.PlaySE(selectSE);
+        }
+
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            // 今選択しているグリッドの点滅を止める
+            nextGrid.FlickerGrid(false);
+       
+            var upperLayerCount = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer.Count;
+            nextGridCol = (nextGridCol + 1) % upperLayerCount;
+         
+            AudioController.Instance.PlaySE(selectSE);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+
+            // TODO：選択したグリッドに合わせて画面遷移する
+            AudioController.Instance.PlaySE(selectSE);
+        }
+   
     }
 
     /// <summary>
@@ -128,11 +199,14 @@ public class MapManager : MonoBehaviour
         // もしも見つからなかったらnullを返す
         if (jsonText == null) return null;
 
-        DungeonMapJson dungeonMapJson = new ();
+        DungeonMapJson dungeonMapJson;
         dungeonMapJson = JsonUtility.FromJson<DungeonMapJson>(jsonText);
         return dungeonMapJson;
     }
 
+    /// <summary>
+    /// ダンジョンマップ情報の永続化（セーブ）
+    /// </summary>
     public void SaveDungeonMapData()
     {
         DungeonMapJson dungeonMapJson = new ();
@@ -158,6 +232,9 @@ public class MapManager : MonoBehaviour
             }
             dungeonMapJson.dungeonMapGrid.Add(floor);
         }
+        dungeonMapJson.movePath = movePath;
+        dungeonMapJson.currentGridPos = currentGridPos;
+
         var jsonText = JsonUtility.ToJson(dungeonMapJson, true);
         string saveFilePath = System.IO.Path.Combine(Application.dataPath, saveDataFilePath);
         System.IO.File.WriteAllText(saveFilePath, jsonText, Encoding.UTF8);

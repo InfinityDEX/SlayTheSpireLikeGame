@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1347901486664307948}
   - component: {fileID: 6145336858597294325}
+  - component: {fileID: 5887489429473373539}
   - component: {fileID: 8531844281141749439}
   m_Layer: 5
   m_Name: Image
@@ -45,6 +46,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7345671736092712843}
   m_CullTransparentMesh: 1
+--- !u!114 &5887489429473373539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7345671736092712843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 678025e9f9e6a2247b24132e104515c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapGirdFlicker
+  target: {fileID: 8531844281141749439}
+  cycle: 1
 --- !u!114 &8531844281141749439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,7 +80,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 1966556770823256587, guid: 784c9e8eeebd3a24ca5a6a78658208c3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -127,9 +142,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MapGrid
   gridImage: {fileID: 8531844281141749439}
   gridInfo: {fileID: 0}
+  gridInfoId: 0
   underLayer: []
   upperLayer: []
   line: {fileID: 9011468697966412431, guid: 50e6b7f01db468b4fa3e252834f434e4, type: 3}
+  pos:
+    row: 0
+    col: 0
   gridPosViewDisplay: {fileID: 5220248739471869222}
 --- !u!1 &9043561408240361751
 GameObject:
