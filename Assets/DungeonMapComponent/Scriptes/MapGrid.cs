@@ -16,7 +16,8 @@ public class MapGrid : MonoBehaviour
 
     [Header("グリッド情報")]
     [SerializeField]
-    private MapGridInfo gridInfo;
+    public MapGridInfo gridInfo;
+
     // マップグリッド情報のID
     public int gridInfoId;
 
@@ -43,18 +44,21 @@ public class MapGrid : MonoBehaviour
     /// <summary>
     /// グリッド画像を点滅させる
     /// </summary>
-    public void FlickerGrid(bool enable)
+    /// <param name="enable">点滅有効状態</param>
+    /// <param name="fastBlinkMode">高速点滅モードか</param>
+    public void FlickerGrid(bool enable, bool fastBlinkMode = false)
     {
         // 点滅機構はgridImageのオブジェクトが持っている
         var flicker = gridImage.gameObject.GetComponent<MapGirdFlicker>();
         if (flicker == null)
         {
             Debug.LogWarning("MapGirdFlicker コンポーネントが見つからなかったため、新規追加します。");
-       
+
             // Flickerコンポーネントが存在しない場合はアタッチする
             flicker = gridImage.gameObject.AddComponent<MapGirdFlicker>();
         }
         flicker.isEnabled = enable;
+        flicker.fastBlinkMode = fastBlinkMode;
     }
 
     /// <summary>

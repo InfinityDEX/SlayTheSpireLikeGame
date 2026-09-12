@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: ShopFloor
   m_EditorClassIdentifier: Assembly-CSharp::MapGridInfo
   gridSprite: {fileID: 1966556770823256587, guid: 784c9e8eeebd3a24ca5a6a78658208c3, type: 3}
-  type: 3
+  type: 4
+  id: 2

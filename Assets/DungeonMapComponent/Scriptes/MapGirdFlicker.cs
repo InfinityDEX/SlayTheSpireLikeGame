@@ -15,6 +15,14 @@ public class MapGirdFlicker : MonoBehaviour
     [SerializeField]
     private float cycle = 1;
 
+    [Header("高速点滅モード")]
+    [SerializeField]
+    public bool fastBlinkMode = false; // 高速点滅モード
+
+    [Header("高速点滅時の周期倍率（X倍速）")]
+    [SerializeField]
+    private float fastBlinkMultiplier = 4f; // 高速時はデフォルトで4倍速
+
     private double time;
 
     private void Awake()
@@ -32,12 +40,12 @@ public class MapGirdFlicker : MonoBehaviour
             // 内部時刻を経過させる
             time += Time.deltaTime;
 
-            // 周期cycleで繰り返す値の取得
-            // 0～cycleの範囲の値が得られる
-            var repeatValue = Mathf.Repeat((float)time, cycle);
+            // 高速点滅モード時は高速点滅周期で計算
+            float currentCycle = fastBlinkMode ? cycle / fastBlinkMultiplier : cycle;
+            var repeatValue = Mathf.Repeat((float)time, currentCycle);
 
             // 内部時刻timeにおける明滅状態を反映
-            target.enabled = repeatValue >= cycle * 0.5f;
+            target.enabled = repeatValue >= currentCycle * 0.5f;
         }
         else
         {

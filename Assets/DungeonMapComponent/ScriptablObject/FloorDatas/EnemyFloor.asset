@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: EnemyFloor
   m_EditorClassIdentifier: Assembly-CSharp::MapGridInfo
   gridSprite: {fileID: 4896855821476805719, guid: 4a17a7cb680529d49bfc4538bfe81918, type: 3}
-  type: 0
+  type: 1
+  id: 1

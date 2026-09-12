@@ -1,14 +1,23 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MapManager : MonoBehaviour
 {
-
     [Header("DEBUG:常に新しくダンジョンマップを生成する")]
     [SerializeField]
     private bool isAlwaysMakeNewDungeonMap = false;
     
+    [Header("ステージデータ")]
+    [SerializeField]
+    private StageData stageData;
+
+    [Header("敵パターンジェネレータ")]
+    [SerializeField]
+    private EnemyCombinationsDataGenerator enemyCombinationsDataGenerator;
+
     [Header("マップグリッドのPrefab")]
     [SerializeField]
     private MapGrid mapGridPrefab;
@@ -149,12 +158,14 @@ public class MapManager : MonoBehaviour
         {
             nextGridCol = 0;
         }
+
+        var nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridCol];
+        nextGrid.FlickerGrid(true);
     }
 
     private void Update()
     {
         var nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridCol];
-        nextGrid.FlickerGrid(true);
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -165,6 +176,9 @@ public class MapManager : MonoBehaviour
             nextGridCol = (nextGridCol - 1 + upperLayerCount) % upperLayerCount;
          
             AudioController.Instance.PlaySE(selectSE);
+
+            nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridCol];
+            nextGrid.FlickerGrid(true);
         }
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -176,15 +190,79 @@ public class MapManager : MonoBehaviour
             nextGridCol = (nextGridCol + 1) % upperLayerCount;
          
             AudioController.Instance.PlaySE(selectSE);
+
+            nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridCol];
+            nextGrid.FlickerGrid(true);
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
+           EnemyCombinationsDataGenerator.EnemyType enemyType = EnemyCombinationsDataGenerator.EnemyType.Enemy; // 未割当でエラーになってしまう為、一旦Enemyを登録
+            
+            bool shouldNotTransition = false;
+            switch (nextGrid.gridInfo.type)
+            {
+                case MapGridInfo.FloorInfo.StartFloor:
+                    shouldNotTransition = true;
+                    break; // 何もしない。
+                case MapGridInfo.FloorInfo.EnemyFloor:
+                    enemyType = EnemyCombinationsDataGenerator.EnemyType.Enemy;
+                    break;
+                case MapGridInfo.FloorInfo.EliteEnemyFloor:
+                    enemyType = EnemyCombinationsDataGenerator.EnemyType.EliteEnemy;
+                    break;
+                case MapGridInfo.FloorInfo.BossFloor:
+                    enemyType = EnemyCombinationsDataGenerator.EnemyType.Boss;
+                    break;
+                case MapGridInfo.FloorInfo.ShopFloor:
+                    shouldNotTransition = true;
+                    break; // TODO:現状は何もしない。ショップ実装後変更する。
+            }
 
-            // TODO：選択したグリッドに合わせて画面遷移する
-            AudioController.Instance.PlaySE(selectSE);
+            if (!shouldNotTransition)
+            {
+                // 高速点滅
+                nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridCol];
+                nextGrid.FlickerGrid(true, true);
+
+                // 選択したグリッドに合わせて画面遷移する
+                AudioController.Instance.PlaySE(decideSE);
+                enemyCombinationsDataGenerator.GenerateData(enemyType, stageData);
+                StartCoroutine(LoadBattleSceneAfterDelay(2f));
+            }
         }
-   
+    }
+
+    /// <summary>
+    /// 指定した遅延時間後にバトルシーンへ遷移するコルーチン
+    /// </summary>
+    /// <param name="delaySeconds">遅延時間（秒）</param>
+    /// <returns>IEnumerator</returns>
+    private IEnumerator LoadBattleSceneAfterDelay(float delaySeconds)
+    {
+        // 指定した秒数だけ待機
+        yield return new WaitForSeconds(delaySeconds);
+
+        // BGMをランダムで再生
+        var bgmCandidates = stageData.battleBgmCandidates;
+        if (bgmCandidates != null && bgmCandidates.Length > 0)
+        {
+            int randomIndex = Random.Range(0, bgmCandidates.Length);
+            AudioController.Instance.PlayBGM(bgmCandidates[randomIndex]);
+        }
+
+        // 移動経路（movePath）と現在のフロア（currentGridPos）を更新
+        movePath.Add(currentGridPos); // 現在位置を移動経路に追加
+        currentGridPos = new MapGridJson.MapGridPos{ 
+            row = currentGridPos.row + 1,
+            col = nextGridCol ,
+        };
+
+        // マップ保存
+        SaveDungeonMapData();
+
+        // バトルシーンへ遷移
+        SceneManager.LoadScene("BattleScene", LoadSceneMode.Single);
     }
 
     /// <summary>

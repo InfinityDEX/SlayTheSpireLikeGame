@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: BossFloor
   m_EditorClassIdentifier: Assembly-CSharp::MapGridInfo
   gridSprite: {fileID: 3863977458548727277, guid: 3b41a2003db93d741a4942ce660f28c1, type: 3}
-  type: 2
+  type: 3
+  id: 0

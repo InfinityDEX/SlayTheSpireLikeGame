@@ -7,9 +7,9 @@ public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance { get; private set; }
 
-    [Header("ステージ情報")]
-    [SerializeField] 
-    private StageData currentStage;
+    // [Header("ステージ情報")]
+    // [SerializeField] 
+    // private StageData currentStage;
 
     [Header("デッキマネージャー")]
     [SerializeField] 
@@ -71,15 +71,14 @@ public class BattleManager : MonoBehaviour
         energyManager = energyManagerInspector; 
         enemyManager = enemyManagerInspector;
         energyManager.RefreshEnergy();
-        AudioClip bgm = BgmSelector.PickBattleBgm(currentStage);
-        AudioController.Instance?.PlayBGM(bgm);
+        // AudioClip bgm = BgmSelector.PickBattleBgm(currentStage);
+        // AudioController.Instance?.PlayBGM(bgm);
         enemyManagerInspector.SetEnemy(EnemyCombinationsDataManager.Instance.GetData());
         currentPhase = BattlePhase.InitializePhase;
     }
 
     // バトルのフローチャートに基づき、バトル進行用の状態管理・更新
     // ターン管理や進行をUpdate内から管理（例：状態遷移やループ）
-    // 実際はコルーチンやイベントで処理を書いたほうが良いが、ここではシンプルに状態のみ用意
 
     // 簡易的なバトルステート列挙体
     enum BattlePhase
@@ -131,15 +130,12 @@ public class BattleManager : MonoBehaviour
 
             case BattlePhase.PlayerEndPhase:
                 // プレイヤーエンドフェーズ
-                if (deckManager != null)
-                {
-                    deckManager.DiscardCardAll(); // 手札全捨て処理関数
-                }
+                deckManager?.DiscardCardAll(); // 手札全捨て処理関数
                 // 敵の行動フェーズへ
                 currentPhase = BattlePhase.EnemyBuffRefreshPhase;
                 break;
             case BattlePhase.EnemyBuffRefreshPhase:
-                RefreshEnemysBuffs();
+                RefreshEnemiesBuffs();
                 // 敵の行動フェーズへ
                 currentPhase = BattlePhase.EnemyActionPhase;
                 break;
@@ -286,7 +282,7 @@ public class BattleManager : MonoBehaviour
     {
         player.ResetBuff();
     }
-    private void RefreshEnemysBuffs()
+    private void RefreshEnemiesBuffs()
     {
         enemyManagerInspector.enemies.ForEach(e => e.ResetBuff());
     }
