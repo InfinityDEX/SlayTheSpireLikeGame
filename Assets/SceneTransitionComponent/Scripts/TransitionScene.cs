@@ -1,5 +1,7 @@
 using UnityEngine;
 
+// UnityのUI（Button）で画面遷移したい場合にGameObjectに本コンポーネントを
+// アタッチしてシーン移動のメソッドを呼び出す。
 public class TransitionScene : MonoBehaviour
 {
     public void GoToTitleScene()

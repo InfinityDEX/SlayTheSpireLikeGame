@@ -62,7 +62,7 @@ public class MapManager : MonoBehaviour
     private MapGridInfo bossGridInfo;
 
     // セーブデータの保存パス
-    private string saveDataFilePath = "SaveData/CurrentDungeonData.json";
+    public static string saveDataFilePath { private set; get;} = "SaveData/CurrentDungeonData.json" ;
 
     // 移動経路
     private List<MapGridJson.MapGridPos> movePath;
@@ -255,7 +255,7 @@ public class MapManager : MonoBehaviour
         movePath.Add(currentGridPos); // 現在位置を移動経路に追加
         currentGridPos = new MapGridJson.MapGridPos{ 
             row = currentGridPos.row + 1,
-            col = nextGridCol ,
+            col = nextGridCol,
         };
 
         // マップ保存
@@ -272,11 +272,9 @@ public class MapManager : MonoBehaviour
     public DungeonMapJson SearchDungeonMapSaveData()
     {
         var saveFilePath = System.IO.Path.Combine(Application.dataPath, saveDataFilePath);
+        if (!System.IO.File.Exists(saveFilePath)) return null;
         var jsonText = System.IO.File.ReadAllText(saveFilePath, Encoding.UTF8);
-        
-        // もしも見つからなかったらnullを返す
-        if (jsonText == null) return null;
-
+   
         DungeonMapJson dungeonMapJson;
         dungeonMapJson = JsonUtility.FromJson<DungeonMapJson>(jsonText);
         return dungeonMapJson;

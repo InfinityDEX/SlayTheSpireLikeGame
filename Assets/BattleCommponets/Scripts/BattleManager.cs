@@ -175,7 +175,7 @@ public class BattleManager : MonoBehaviour
                 {
                     result = 0;
                 }
-                else if (enemiesDefeated)
+                else if (playerDead)
                 {
                     result = 1;
                 }
@@ -336,7 +336,14 @@ public class BattleManager : MonoBehaviour
         }
         else if (clearFlag == 1)
         {
-            SceneManager.LoadScene("GameObjectScene", LoadSceneMode.Additive);
+
+            string mapSaveFilePath = System.IO.Path.Combine(Application.dataPath, MapManager.saveDataFilePath);
+            if (System.IO.File.Exists(mapSaveFilePath))
+            {
+                System.IO.File.Delete(mapSaveFilePath);
+            }
+    
+            SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);
         }
         else 
         {

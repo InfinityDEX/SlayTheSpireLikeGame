@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: IronClad
   m_EditorClassIdentifier: 
   creatureName: IronClad
-  maxHealth: 99999
+  maxHealth: 100
   creatureSprite: {fileID: 21300000, guid: 535ec10fb27eff54899edf550a923bba, type: 3}
