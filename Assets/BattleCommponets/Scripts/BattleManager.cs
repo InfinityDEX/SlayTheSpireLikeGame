@@ -168,7 +168,22 @@ public class BattleManager : MonoBehaviour
             case BattlePhase.EndBattle:
                 // バトル終了処理
                 isBattleActive = false;
-                EndBattle();
+                int result;
+                bool playerDead = IsPlayerDead();
+                bool enemiesDefeated = AreEnemiesDefeated();
+                if (enemiesDefeated && !playerDead)
+                {
+                    result = 0;
+                }
+                else if (enemiesDefeated)
+                {
+                    result = 1;
+                }
+                else
+                {
+                    result = 2;
+                }
+                EndBattle(result);
                 currentPhase = BattlePhase.Idle;
                 break;
 
@@ -302,7 +317,11 @@ public class BattleManager : MonoBehaviour
         return false;
     }
 
-    private void EndBattle()
+    /// <summary>
+    /// バトル終了処理
+    /// </summary>
+    /// <param name="clearFlag">どうやってバトル終了するか？（０：プレイヤーの勝利　1：プレイヤー敗北）</param>
+    private void EndBattle(int clearFlag)
     {
         // TODO：バトル終了アニメ・遷移など
         SaveData saveData = new();
@@ -311,6 +330,18 @@ public class BattleManager : MonoBehaviour
         string json = JsonUtility.ToJson(saveData, true);
         string saveFilePath = System.IO.Path.Combine(Application.dataPath, "SaveData/SaveData.json");
         System.IO.File.WriteAllText(saveFilePath, json);
-        SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);
+        if (clearFlag == 0)
+        {
+            SceneManager.LoadScene("MapScene", LoadSceneMode.Single);
+        }
+        else if (clearFlag == 1)
+        {
+            SceneManager.LoadScene("GameObjectScene", LoadSceneMode.Additive);
+        }
+        else 
+        {
+            Debug.LogError("想定外の理由によるゲームオーバーが発生しました。clearFlag: " + clearFlag);
+            SceneManager.LoadScene("GameOverScene", LoadSceneMode.Single);
+        }
     }
 }
