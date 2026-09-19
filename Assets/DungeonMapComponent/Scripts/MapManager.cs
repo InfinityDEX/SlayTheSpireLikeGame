@@ -26,6 +26,10 @@ public class MapManager : MonoBehaviour
     [SerializeField]
     private Canvas mapGridCanvas;
 
+    [Header("経路線を配置するCanvas")]
+    [SerializeField]
+    private Canvas routeLineCanvas;
+
     [Header("マップの分岐数")]
     [SerializeField]
     private int branchCount = 3;
@@ -110,6 +114,7 @@ public class MapManager : MonoBehaviour
                 bossGridInfo,
                 mapGridPrefab,
                 mapGridCanvas,
+                routeLineCanvas,
                 xOffset,
                 yOffset,
                 false,
@@ -131,13 +136,14 @@ public class MapManager : MonoBehaviour
                 bossGridInfo,
                 mapGridPrefab,
                 mapGridCanvas,
+                routeLineCanvas,
                 xOffset,
                 yOffset,
                 true
             );
 
             // マップグリッド(マス)間をランダムに接続させる
-            dungeonFactory.ConnectRandomGridCells(ref mapGrids);
+            dungeonFactory.ConnectRandomGridCells(ref mapGrids, routeLineCanvas);
 
             // マップグリッド(マス)の位置情報を更新する
             dungeonFactory.OrganizeMapGridPos(ref mapGrids);

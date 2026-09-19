@@ -123,6 +123,7 @@ public class DungeonMapFactory
     /// <param name="bossGridInfo">ボスマスのダンジョンマップ情報</param>
     /// <param name="mapGridPrefab">マップグリッドのPrefab</param>
     /// <param name="mapGridCanvas">マップグリッドを配置するCanvas</param>
+    /// <param name="routeLineCanvas">経路線を配置するCanvas</param>
     /// <param name="xOffset">横方向のマップグリッド間の隙間</param>
     /// <param name="yOffset">縦方向のマップグリッド間の隙間</param>
     /// <param name="isNewDungeon">セーブデータから読み込まれたものではない、今回初めて生成されるマップか？</param>
@@ -133,6 +134,7 @@ public class DungeonMapFactory
         MapGridInfo bossGridInfo,
         MapGrid mapGridPrefab,
         Canvas mapGridCanvas,
+        Canvas routeLineCanvas,
         float xOffset,
         float yOffset,
         bool isNewDungeon,
@@ -237,37 +239,39 @@ public class DungeonMapFactory
         }
 
         // もしもセーブデータから生成したダンジョンマップだったら、マップ間の道を生成する。
-        if (!isNewDungeon && jsonData != null)
         {
-            for (int row = 0; row < mapGridInfos.Count - 1; row++)
+            if (!isNewDungeon && jsonData != null)
             {
-                var currentRow = mapGridInfos[row];
-                for (int col = 0; col < currentRow.Count; col++)
+                for (int row = 0; row < mapGridInfos.Count - 1; row++)
                 {
-                    // マス間の接続を行う（セーブデータから復元した場合、upperLayer・underLayerの情報を使って再接続する）
-                    var currentGridInfo = currentRow[col];
-                    // 上階層への接続
-                    foreach (var upperPos in jsonData.dungeonMapGrid[row][col].upperMapGridPos)
+                    var currentRow = mapGridInfos[row];
+                    for (int col = 0; col < currentRow.Count; col++)
                     {
-                        mapGrids[row][col].SetUpperLayer(mapGrids[upperPos.row][upperPos.col]);
-                    }
-                    // 下階層への接続
-                    foreach (var underPos in jsonData.dungeonMapGrid[row][col].underMapGridPos)
-                    {
-                        mapGrids[row][col].SetUnderLayer(mapGrids[underPos.row][underPos.col]);
+                        // マス間の接続を行う（セーブデータから復元した場合、upperLayer・underLayerの情報を使って再接続する）
+                        var currentGridInfo = currentRow[col];
+                        // 上階層への接続
+                        foreach (var upperPos in jsonData.dungeonMapGrid[row][col].upperMapGridPos)
+                        {
+                            mapGrids[row][col].SetUpperLayer(mapGrids[upperPos.row][upperPos.col]);
+                        }
+                        // 下階層への接続
+                        foreach (var underPos in jsonData.dungeonMapGrid[row][col].underMapGridPos)
+                        {
+                            mapGrids[row][col].SetUnderLayer(mapGrids[underPos.row][underPos.col]);
+                        }
                     }
                 }
             }
-        }
 
-        // すべてのマップグリッドで線分を描画 
-        foreach (var row in mapGrids)
-        {
-            foreach (var grid in row)
+            // すべてのマップグリッドで線分を描画 
+            foreach (var row in mapGrids)
             {
-                if (grid != null)
+                foreach (var grid in row)
                 {
-                    grid.DrawLinesToUpperLayers();
+                    if (grid != null)
+                    {
+                        grid.DrawLinesToUpperLayers(routeLineCanvas);
+                    }
                 }
             }
         }
@@ -279,7 +283,11 @@ public class DungeonMapFactory
     /// マス間を縦方向のみ（同じ縦＋斜め1マス上）でランダムに接続する
     /// </summary>
     /// <param name="mapGrids">マップグリッド配列（SpawnDungeonMapで生成した物を想定）</param>
-    public void ConnectRandomGridCells(ref List<List<MapGrid>> mapGrids)
+    /// <param name="routeLineCanvas">経路線を配置するCanvas</param>
+    public void ConnectRandomGridCells(
+        ref List<List<MapGrid>> mapGrids,
+        Canvas routeLineCanvas
+    )
     {
         if (mapGrids.Count <= 1)
         {
@@ -350,7 +358,7 @@ public class DungeonMapFactory
             {
                 if (grid != null)
                 {
-                    grid.DrawLinesToUpperLayers();
+                    grid.DrawLinesToUpperLayers(routeLineCanvas);
                 }
             }
         }

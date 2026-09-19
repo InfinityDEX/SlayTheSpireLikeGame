@@ -58,8 +58,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 678025e9f9e6a2247b24132e104515c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapGirdFlicker
+  isEnabled: 0
   target: {fileID: 8531844281141749439}
   cycle: 1
+  fastBlinkMode: 0
+  fastBlinkMultiplier: 4
 --- !u!114 &8531844281141749439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,12 +143,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e344de43fc1994687a9f88a6e99f70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapGrid
+  isEnabled: 0
   gridImage: {fileID: 8531844281141749439}
   gridInfo: {fileID: 0}
   gridInfoId: 0
   underLayer: []
   upperLayer: []
-  line: {fileID: 9011468697966412431, guid: 50e6b7f01db468b4fa3e252834f434e4, type: 3}
+  line: {fileID: 8130568839806005446, guid: 50e6b7f01db468b4fa3e252834f434e4, type: 3}
   pos:
     row: 0
     col: 0

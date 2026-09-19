@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4329029676138017516}
   - component: {fileID: 6030995055727027602}
-  - component: {fileID: 3904792966560856234}
-  - component: {fileID: 9011468697966412431}
+  - component: {fileID: 667401654805599419}
+  - component: {fileID: 6211310850713965202}
   m_Layer: 0
   m_Name: Line
   m_TagString: Untagged
@@ -46,7 +46,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8130568839806005446}
   m_CullTransparentMesh: 1
---- !u!114 &3904792966560856234
+--- !u!114 &667401654805599419
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -55,10 +55,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8130568839806005446}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b33b2e663e78774c9f0c9af55018725, type: 3}
+  m_Script: {fileID: 11500000, guid: 1206592b634bb0d4086cd3b6f6a6b3fd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityUIExtensions::UnityEngine.UI.Extensions.UILineRenderer
-  m_Material: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::UnityEngine.UI.Extensions.DashedUILineRenderer
+  m_Material: {fileID: 2100000, guid: 6b3d215dd69c00743ac257e3056eb6de, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -72,7 +72,7 @@ MonoBehaviour:
   m_useNativeSize: 0
   m_points:
   - {x: 0, y: 0}
-  lineThickness: 0.17
+  lineThickness: 0.2
   relativeSize: 0
   lineList: 0
   lineCaps: 0
@@ -81,7 +81,7 @@ MonoBehaviour:
   LineJoins: 0
   BezierMode: 0
   drivenExternally: 0
---- !u!114 &9011468697966412431
+--- !u!114 &6211310850713965202
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
@@ -31,7 +32,7 @@ public class MapGrid : MonoBehaviour
 
     [Header("グリッド間を繋ぐ線のPrefab")]
     [SerializeField]
-    private UILineConnector line;
+    private GameObject line;
 
     public MapGridJson.MapGridPos pos;
 
@@ -64,7 +65,8 @@ public class MapGrid : MonoBehaviour
     /// <summary>
     /// 隣接する上層のグリッドにLineRendererで線分を引く
     /// </summary>
-    public void DrawLinesToUpperLayers()
+    /// <param name="routeLineCanvas">経路線を配置するCanvas</param>
+    public void DrawLinesToUpperLayers(Canvas routeLineCanvas)
     {
         if (upperLayer == null || line == null)
             return;
@@ -74,8 +76,12 @@ public class MapGrid : MonoBehaviour
             if (upper == null)
                 continue;
 
-            // このマスを親としてUILineConnectorインスタンスを生成
-            UILineConnector ulc = Instantiate(line, this.transform);
+            // routeLineCanvasを親として線インスタンスを生成
+            Object lineIns = Instantiate(line, routeLineCanvas.transform);
+
+            // 頂点コネクタとラインレンダラを線オブジェクトのインスタンスから取得
+            UILineConnector ulc = lineIns.GetComponent<UILineConnector>();
+            DashedUILineRenderer dulr = lineIns.GetComponent<DashedUILineRenderer>();
 
             // 自身のgridImageとupperのgridImageのrectTransformを設定
             ulc.transforms = new RectTransform[] { this.gridImage.rectTransform, upper.gridImage.rectTransform };
