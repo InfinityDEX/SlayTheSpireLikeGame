@@ -168,6 +168,10 @@ public class DungeonMapFactory
                 Vector3 position = new (x, y, 0);
                 // MapGridのインスタンスを生成
                 MapGrid gridInstance = Object.Instantiate(mapGridPrefab, mapGridCanvas.transform);
+                
+                // デバッグしやすいように名前にMapGridの座標を付ける
+                gridInstance.name = $"MapGrid_{row}_{col}";
+
                 // 座標を設定
                 gridInstance.transform.localPosition = position;
                 // グリッド情報をセット
@@ -263,6 +267,9 @@ public class DungeonMapFactory
                 }
             }
 
+            // マップグリッドの座標情報初期化
+            OrganizeMapGridPos(ref mapGrids);
+
             // すべてのマップグリッドで線分を描画 
             foreach (var row in mapGrids)
             {
@@ -350,7 +357,10 @@ public class DungeonMapFactory
                 }
             }
         }
-
+        
+        // マップグリッドの座標情報初期化
+        OrganizeMapGridPos(ref mapGrids);
+        
         // すべてのマップグリッドで線分を描画 
         foreach (var row in mapGrids)
         {
@@ -367,8 +377,8 @@ public class DungeonMapFactory
     /// <summary>
     /// マップグリッドの位置情報整理
     /// </summary>
-    /// <param name="mapGrids">マップグリッド配列（SpawnDungeonMapで生成した物を想定）</param>
-    public void OrganizeMapGridPos(ref List<List<MapGrid>> mapGrids)
+    /// <param name="mapGrids">マップグリッド配列</param>
+    private void OrganizeMapGridPos(ref List<List<MapGrid>> mapGrids)
     {
         for (int i = 0; i < mapGrids.Count; i++)
         {

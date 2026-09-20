@@ -50,6 +50,78 @@ namespace UnityEngine.UI.Extensions
         private readonly List<PathSegment> pathSegments = new();
         private readonly List<UIVertex> vertexStream = new();
 
+        private Material runtimeMaterial;
+
+        private static readonly int LengthPropertyId = Shader.PropertyToID("_Length");
+        private static readonly int SpacePropertyId = Shader.PropertyToID("_Space");
+        private static readonly int ColorPropertyId = Shader.PropertyToID("_Color");
+
+        protected override void Awake()
+        {
+            base.Awake();
+            EnsureRuntimeMaterial();
+        }
+
+        protected override void OnDestroy()
+        {
+            if (runtimeMaterial != null)
+            {
+                if (material == runtimeMaterial)
+                {
+                    material = null;
+                }
+
+                Destroy(runtimeMaterial);
+                runtimeMaterial = null;
+            }
+
+            base.OnDestroy();
+        }
+
+        /// <summary>
+        /// Graphic.material は共有アセットを返すため、線ごとにランタイム用マテリアルを確保する。
+        /// </summary>
+        public Material EnsureRuntimeMaterial()
+        {
+            if (runtimeMaterial != null)
+            {
+                return runtimeMaterial;
+            }
+
+            var source = material;
+            if (source == null)
+            {
+                return null;
+            }
+
+            runtimeMaterial = new Material(source.shader);
+            runtimeMaterial.CopyPropertiesFromMaterial(source);
+            runtimeMaterial.name = source.name + " (Instance)";
+            runtimeMaterial.hideFlags = HideFlags.HideAndDontSave;
+            material = runtimeMaterial;
+            SetMaterialDirty();
+            return runtimeMaterial;
+        }
+
+        /// <summary>
+        /// この線だけのマテリアルパラメータを更新する。
+        /// </summary>
+        public void SetDashStyle(float length, float space, Color color)
+        {
+            var lineMaterial = EnsureRuntimeMaterial();
+            if (lineMaterial == null)
+            {
+                return;
+            }
+
+            lineMaterial.SetFloat(LengthPropertyId, length);
+            lineMaterial.SetFloat(SpacePropertyId, space);
+            lineMaterial.SetColor(ColorPropertyId, color);
+            SetMaterialDirty();
+            canvasRenderer.materialCount = 1;
+            canvasRenderer.SetMaterial(lineMaterial, 0);
+        }
+
         protected override void OnPopulateMesh(VertexHelper vh)
         {
             // まず通常のUILineRendererにメッシュを作らせる

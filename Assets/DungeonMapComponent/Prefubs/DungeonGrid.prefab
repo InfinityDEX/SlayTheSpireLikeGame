@@ -149,7 +149,7 @@ MonoBehaviour:
   gridInfoId: 0
   underLayer: []
   upperLayer: []
-  line: {fileID: 8130568839806005446, guid: 50e6b7f01db468b4fa3e252834f434e4, type: 3}
+  pathLinePrefab: {fileID: 8130568839806005446, guid: 50e6b7f01db468b4fa3e252834f434e4, type: 3}
   pos:
     row: 0
     col: 0

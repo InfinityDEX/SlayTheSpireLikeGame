@@ -81,7 +81,7 @@ public class MapManager : MonoBehaviour
     [Header("決定音")]
     [SerializeField]
     private AudioClip decideSE;
-
+    
     // 移動予定の列：currentGridPosのUpperLayerのインデックス
     private int nextGridCol;
 
@@ -120,9 +120,11 @@ public class MapManager : MonoBehaviour
                 false,
                 loadedDungeonMapSaveData
             );
-            
-            // マップグリッド(マス)の位置情報を更新する
-            dungeonFactory.OrganizeMapGridPos(ref mapGrids);
+
+            // ↓ MapGridの座標初期化を経路線オブジェクトをインスタンス化する前に生成したい為、内部で呼び出すように修正
+
+            // // マップグリッド(マス)の位置情報を更新する
+            // dungeonFactory.OrganizeMapGridPos(ref mapGrids);
         }
         else
         {
@@ -145,8 +147,10 @@ public class MapManager : MonoBehaviour
             // マップグリッド(マス)間をランダムに接続させる
             dungeonFactory.ConnectRandomGridCells(ref mapGrids, routeLineCanvas);
 
-            // マップグリッド(マス)の位置情報を更新する
-            dungeonFactory.OrganizeMapGridPos(ref mapGrids);
+            // ↓ MapGridの座標初期化を経路線オブジェクトをインスタンス化する前に生成したい為、内部で呼び出すように修正
+
+            // // マップグリッド(マス)の位置情報を更新する
+            // dungeonFactory.OrganizeMapGridPos(ref mapGrids);
             
             // 現在位置をスタートマス（row : 0, col : 0）に設定する
             currentGridPos.row = 0;
@@ -166,7 +170,17 @@ public class MapManager : MonoBehaviour
         }
 
         var nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridCol];
+
+        // 進行予定のマスを点滅させる
         nextGrid.FlickerGrid(true);
+
+        // 進行経路データを渡して着色する
+        var startGrid = mapGrids[0][0]; // 最初のマスから辿っていく
+        // 進行予定の経路も含めいて線に色を付ける
+        var nextMovePath = new List<MapGridJson.MapGridPos>(movePath);
+        nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridCol];
+        nextMovePath.Add(nextGrid.pos);
+        startGrid.ColoringRouteLine(nextMovePath);
     }
 
     private void Update()
@@ -175,35 +189,19 @@ public class MapManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            // 今選択しているグリッドの点滅を止める
-            nextGrid.FlickerGrid(false);
-       
-            var upperLayerCount = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer.Count;
-            nextGridCol = (nextGridCol - 1 + upperLayerCount) % upperLayerCount;
-         
-            AudioController.Instance.PlaySE(selectSE);
-
-            nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridCol];
-            nextGrid.FlickerGrid(true);
+            // カーソルを左に移動
+            MoveSelectCursor(nextGrid, -1);
         }
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            // 今選択しているグリッドの点滅を止める
-            nextGrid.FlickerGrid(false);
-       
-            var upperLayerCount = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer.Count;
-            nextGridCol = (nextGridCol + 1) % upperLayerCount;
-         
-            AudioController.Instance.PlaySE(selectSE);
-
-            nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridCol];
-            nextGrid.FlickerGrid(true);
+            // カーソルを右に移動
+            MoveSelectCursor(nextGrid, 1);
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-           EnemyCombinationsDataGenerator.EnemyType enemyType = EnemyCombinationsDataGenerator.EnemyType.Enemy; // 未割当でエラーになってしまう為、一旦Enemyを登録
+            EnemyCombinationsDataGenerator.EnemyType enemyType = EnemyCombinationsDataGenerator.EnemyType.Enemy; // 未割当でエラーになってしまう為、一旦Enemyを登録
             
             bool shouldNotTransition = false;
             switch (nextGrid.gridInfo.type)
@@ -240,6 +238,37 @@ public class MapManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 選択するマップグリッドを変更する
+    /// </summary>
+    /// <param name="currentNextGrid">現在選択中のマップグリッド</param>
+    /// <param name="dir">移動方向（右：１　左：-1）</param>
+    private void MoveSelectCursor(MapGrid currentNextGrid, int dir)
+    {
+        if (dir != 1 && dir != -1) throw new System.ArgumentException("dirは1または-1でなければなりません。", nameof(dir));
+        
+        // 経路線のマテリアルを一旦リセットする
+        mapGrids[0][0].ResetAllLinkLineMaterial();
+
+        // 今選択しているグリッドの点滅を止める
+        currentNextGrid.FlickerGrid(false);
+
+        // dir方向にカーソル移動した際に範囲外になるなら、ループしてdir方向の反対側の端を選択する
+        var upperLayerCount = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer.Count;
+        nextGridCol = (nextGridCol + dir + upperLayerCount) % upperLayerCount;
+        
+        AudioController.Instance.PlaySE(selectSE);
+
+        currentNextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridCol];
+        
+        currentNextGrid.FlickerGrid(true);
+
+        // 進行予定の経路も含めいて線に色を付ける
+        var nextMovePath = new List<MapGridJson.MapGridPos>(movePath);
+        nextMovePath.Add(currentNextGrid.pos);
+        mapGrids[0][0].ColoringRouteLine(nextMovePath);
+    }
+
+    /// <summary>
     /// 指定した遅延時間後にバトルシーンへ遷移するコルーチン
     /// </summary>
     /// <param name="delaySeconds">遅延時間（秒）</param>
@@ -258,11 +287,11 @@ public class MapManager : MonoBehaviour
         }
 
         // 移動経路（movePath）と現在のフロア（currentGridPos）を更新
-        movePath.Add(currentGridPos); // 現在位置を移動経路に追加
         currentGridPos = new MapGridJson.MapGridPos{ 
             row = currentGridPos.row + 1,
             col = nextGridCol,
         };
+        movePath.Add(currentGridPos); // 現在位置を移動経路に追加
 
         // マップ保存
         SaveDungeonMapData();
@@ -314,7 +343,9 @@ public class MapManager : MonoBehaviour
             }
             dungeonMapJson.dungeonMapGrid.Add(floor);
         }
+
         dungeonMapJson.movePath = movePath;
+        
         dungeonMapJson.currentGridPos = currentGridPos;
 
         var jsonText = JsonUtility.ToJson(dungeonMapJson, true);

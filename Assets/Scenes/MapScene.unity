@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9e8b0336bb2aa442901540cdec5f84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapManager
-  isAlwaysMakeNewDungeonMap: 1
+  isAlwaysMakeNewDungeonMap: 0
   stageData: {fileID: 11400000, guid: 3ad44cac370aa114d8ecbc1701eadd49, type: 2}
   enemyCombinationsDataGenerator: {fileID: 2036516770}
   mapGridPrefab: {fileID: 6076545543227911746, guid: 591f8bc7b1fe1cc43b33de5fa0bce6fa, type: 3}
@@ -565,7 +565,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1755077065}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1293597187
@@ -696,12 +697,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1755077063}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 18.9155, y: 10.3501, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1293597186}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1881641004
 GameObject:
@@ -820,7 +821,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1293597186}
-  - {fileID: 1755077065}
   - {fileID: 1102639738}
   - {fileID: 477543280}
   - {fileID: 898365607}
