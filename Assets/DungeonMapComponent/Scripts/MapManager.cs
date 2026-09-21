@@ -9,6 +9,12 @@ public class MapManager : MonoBehaviour
     [Header("DEBUG:常に新しくダンジョンマップを生成する")]
     [SerializeField]
     private bool isAlwaysMakeNewDungeonMap = false;
+
+    [Header("メインカメラ")]
+    [SerializeField]
+    private Camera mainCamera;
+
+    private float mainCameraDefault_YPos;
     
     [Header("ステージデータ")]
     [SerializeField]
@@ -88,7 +94,7 @@ public class MapManager : MonoBehaviour
     private void Start()
     {
         movePath = new();
-
+        
         var dungeonFactory = new DungeonMapFactory();
         // 全てのマップグリッド情報をファクトリーに登録
         foreach (var item in availableMapGridInfoList.mapGridInfos)
@@ -161,15 +167,16 @@ public class MapManager : MonoBehaviour
             SaveDungeonMapData();
         }
     
+        var currentGrid = mapGrids[currentGridPos.row][currentGridPos.col];
         // 最初に選択状態になるグリッドは、現在いるグリッドから進行可能なグリッド（UpperLayer）の中で
         // 一番最初（左端）に登録されているグリッドを登録する
-        if (mapGrids[currentGridPos.row][currentGridPos.col].upperLayer != null &&
-            mapGrids[currentGridPos.row][currentGridPos.col].upperLayer.Count > 0)
+        if (currentGrid.upperLayer != null &&
+            currentGrid.upperLayer.Count > 0)
         {
             nextGridUpperLayerIndex = 0;
         }
 
-        var nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridUpperLayerIndex];
+        var nextGrid = currentGrid.upperLayer[nextGridUpperLayerIndex];
 
         // 進行予定のマスを点滅させる
         nextGrid.FlickerGrid(true);
@@ -181,6 +188,12 @@ public class MapManager : MonoBehaviour
         nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridUpperLayerIndex];
         nextMovePath.Add(nextGrid.pos);
         startGrid.ColoringRouteLine(nextMovePath);
+
+        // カメラのY座標を現在のマスと次のフロアの中間になるように設定する
+        mainCameraDefault_YPos = (currentGrid.transform.position.y + nextGrid.transform.position.y) / 2;
+        Vector3 cameraPos = mainCamera.transform.position;
+        cameraPos.y = mainCameraDefault_YPos;
+        mainCamera.transform.position = cameraPos;
     }
 
     private void Update()
