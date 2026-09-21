@@ -140,7 +140,7 @@ public class MapGrid : MonoBehaviour
         // 移動経路を全て着色するまで進行先のMapGridのColoringRouteLineを呼び出し再帰処理を行う。
         if (currentCheckFloor + 1 < movePath.Count)
         {
-            upperLayer[nextRouteCol].ColoringRouteLine(movePath, currentCheckFloor + 1);
+            upperLayer.Find( currentMapGrid => currentMapGrid.pos.col == nextRouteCol).ColoringRouteLine(movePath, currentCheckFloor + 1);
         }
     }
 

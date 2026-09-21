@@ -82,8 +82,8 @@ public class MapManager : MonoBehaviour
     [SerializeField]
     private AudioClip decideSE;
     
-    // 移動予定の列：currentGridPosのUpperLayerのインデックス
-    private int nextGridCol;
+    // 次に進むグリッドが、現在マスのupperLayerの何番目かを表すインデックス
+    private int nextGridUpperLayerIndex;
 
     private void Start()
     {
@@ -166,10 +166,10 @@ public class MapManager : MonoBehaviour
         if (mapGrids[currentGridPos.row][currentGridPos.col].upperLayer != null &&
             mapGrids[currentGridPos.row][currentGridPos.col].upperLayer.Count > 0)
         {
-            nextGridCol = 0;
+            nextGridUpperLayerIndex = 0;
         }
 
-        var nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridCol];
+        var nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridUpperLayerIndex];
 
         // 進行予定のマスを点滅させる
         nextGrid.FlickerGrid(true);
@@ -178,14 +178,14 @@ public class MapManager : MonoBehaviour
         var startGrid = mapGrids[0][0]; // 最初のマスから辿っていく
         // 進行予定の経路も含めいて線に色を付ける
         var nextMovePath = new List<MapGridJson.MapGridPos>(movePath);
-        nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridCol];
+        nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridUpperLayerIndex];
         nextMovePath.Add(nextGrid.pos);
         startGrid.ColoringRouteLine(nextMovePath);
     }
 
     private void Update()
     {
-        var nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridCol];
+        var nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridUpperLayerIndex];
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -226,7 +226,7 @@ public class MapManager : MonoBehaviour
             if (!shouldNotTransition)
             {
                 // 高速点滅
-                nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridCol];
+                nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridUpperLayerIndex];
                 nextGrid.FlickerGrid(true, true);
 
                 // 選択したグリッドに合わせて画面遷移する
@@ -254,11 +254,11 @@ public class MapManager : MonoBehaviour
 
         // dir方向にカーソル移動した際に範囲外になるなら、ループしてdir方向の反対側の端を選択する
         var upperLayerCount = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer.Count;
-        nextGridCol = (nextGridCol + dir + upperLayerCount) % upperLayerCount;
+        nextGridUpperLayerIndex = (nextGridUpperLayerIndex + dir + upperLayerCount) % upperLayerCount;
         
         AudioController.Instance.PlaySE(selectSE);
 
-        currentNextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridCol];
+        currentNextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridUpperLayerIndex];
         
         currentNextGrid.FlickerGrid(true);
 
@@ -287,10 +287,8 @@ public class MapManager : MonoBehaviour
         }
 
         // 移動経路（movePath）と現在のフロア（currentGridPos）を更新
-        currentGridPos = new MapGridJson.MapGridPos{ 
-            row = currentGridPos.row + 1,
-            col = nextGridCol,
-        };
+        currentGridPos = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridUpperLayerIndex].pos;
+        
         movePath.Add(currentGridPos); // 現在位置を移動経路に追加
 
         // マップ保存
