@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9e8b0336bb2aa442901540cdec5f84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapManager
-  isAlwaysMakeNewDungeonMap: 1
+  isAlwaysMakeNewDungeonMap: 0
   mainCamera: {fileID: 1293597185}
   stageData: {fileID: 11400000, guid: 3ad44cac370aa114d8ecbc1701eadd49, type: 2}
   enemyCombinationsDataGenerator: {fileID: 2036516770}

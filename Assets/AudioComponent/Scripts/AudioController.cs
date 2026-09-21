@@ -4,12 +4,25 @@ public class AudioController : MonoBehaviour
 {
     public static AudioController Instance { get; private set; } // シングルトン
 
-    [SerializeField] private AudioSource bgmSource;
-    [SerializeField] private AudioSource seSource;
-
-    [SerializeField] [Range(0f, 1f)] private float masterVolume = 1f;
-    [SerializeField] [Range(0f, 1f)] private float bgmVolume = 0.7f;
-    [SerializeField] [Range(0f, 1f)] private float seVolume = 1f;
+    [Header("BGM用AudioSource")]
+    [SerializeField]
+    private AudioSource bgmSource;
+    
+    [Header("SE用AudioSource")]
+    [SerializeField]
+    private AudioSource seSource;
+    
+    [Header("マスター音量")]
+    [SerializeField][Range(0f, 1f)]
+    private float masterVolume = 1f;
+    
+    [Header("BGM音量")]
+    [SerializeField][Range(0f, 1f)]
+    private float bgmVolume = 0.7f;
+    
+    [Header("SE音量")]
+    [SerializeField][Range(0f, 1f)]
+    private float seVolume = 1f;
 
     private void Awake()
     {
