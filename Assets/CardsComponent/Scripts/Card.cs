@@ -1,34 +1,58 @@
 using UnityEngine;
 using TMPro;
 
+/// <summary>
+/// カード実体クラス
+/// 
+/// カードの効果や見た目の定義を管理する
+/// </summary>
 public class Card : MonoBehaviour
 {
+    /// <summary>
+    /// カードデータ
+    /// </summary>
     public CardData data;
+
+    /// <summary>
+    /// カードID
+    /// </summary>
     public int id;
 
-    public CardEffectManager cardEffectManager;
+    [SerializeField, Header("カード名表示GUI")]
+    private TextMeshProUGUI cardNameText;
+    
+    [SerializeField, Header("カード効果テキスト表示GUI")]
+    private TextMeshProUGUI cardDescriptionText;
+    
+    [SerializeField, Header("カード効果表示GUI")]
+    private TextMeshProUGUI cardCostText;
+    
+    [SerializeField, Header("カード種別表示GUI")]
+    private TextMeshProUGUI cardTypeText;
 
-    //////////////////////////////////////////////////////////////
-    /// MonoBehaviourの関数
-    //////////////////////////////////////////////////////////////
+    [SerializeField, Header("カード画像表示GUI")]
+    private UnityEngine.UI.Image cardImage;
 
     private void Start()
     {
         InitializeCardUI();
     }
 
-    //////////////////////////////////////////////////////////////
-    /// カードの効果に関する処理
-    //////////////////////////////////////////////////////////////
+    /// <summary>
+    /// カード効果の実行
+    /// </summary>
+    /// <param name="creature">ターゲット生物</param>
     public void Play(Creature creature)
     {
         CardEffectManager.instance.Play(data.cardEffectId, creature);
         Debug.Log(data.cardName + "を使用");
     }
 
-    //////////////////////////////////////////////////////////////
-    // カードデータを受け取ってカードを初期化する処理
-    //////////////////////////////////////////////////////////////
+    /// <summary>
+    /// カードデータ初期化処理
+    /// </summary>
+    /// <param name="cardData">カードデータ</param>
+    /// <param name="cardId">カードID</param>
     public void Setup(CardData cardData, int cardId)
     {
         data = cardData;
@@ -36,22 +60,9 @@ public class Card : MonoBehaviour
         InitializeCardUI();
     }
 
-
-    //////////////////////////////////////////////////////////////
-    /// カードのUIに関する処理
-    //////////////////////////////////////////////////////////////
-    
-    [SerializeField]
-    private TextMeshProUGUI cardNameText;
-    [SerializeField]
-    private TextMeshProUGUI cardDescriptionText;
-    [SerializeField]
-    private TextMeshProUGUI cardCostText;
-    [SerializeField]
-    private TextMeshProUGUI cardTypeText;
-    [SerializeField]
-    private UnityEngine.UI.Image cardImage;
-
+    /// <summary>
+    /// カードの見た目初期化処理
+    /// </summary>
     public void InitializeCardUI()
     {
         cardNameText.text = data.cardName;

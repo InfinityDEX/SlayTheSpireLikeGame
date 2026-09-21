@@ -1,11 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-// 全てのカードの情報を管理するクラス
+/// <summary>
+/// 全てのカードの情報を管理するクラス
+/// 
+/// バトル開始時、デッキ内のカードデータはカードのIDで管理されていて、
+/// このクラスのデータ（本クラスをもとに作成したScriptableObjectの実データ）を参照しデッキ生成する。
+/// こうすることでデッキデータにはカードの効果等の詳細部分を記載しなくて良くなる。
+/// </summary>
 [CreateAssetMenu(fileName = "AllCardData", menuName = "Create Card Library Data")]
 public class CardLibrary : ScriptableObject
 {
@@ -17,10 +22,13 @@ public class CardLibrary : ScriptableObject
         public CardData cardData;
     }
 
-    [Header("カード一覧")]
+    [SerializeField, Header("カード一覧")]
     public List<CardWithID> cardDatas;
-#if UNITY_EDITOR
 
+#if UNITY_EDITOR
+/// <summary>
+/// 以下、エディタ拡張
+/// </summary>
 [CustomEditor(typeof(CardLibrary))]
 public class CardLibraryEditor : Editor
 {

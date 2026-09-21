@@ -1,15 +1,27 @@
-using System;
 using UnityEngine;
 
 public class CardDragHandler : MonoBehaviour
 {
-    [SerializeField] private LayerMask targetLayers = ~0; // 必要なら Layer を絞る
-    [SerializeField] private float cardPlayDragDistance = 2; // カードを使用する為にカードを動かす必要のある最短距離
+    [SerializeField, Header("ドラッグ先のレイヤー")]
+    private LayerMask targetLayers = ~0; // 必要なら Layer を絞る
 
-    // [SerializeField] private AudioClip cardPlaySound;
+    [SerializeField, Header("カードプレイ判定とする為にカードを動かす必要のある最短距離")]
+    private float cardPlayDragDistance = 2;
+
+    /// <summary>
+    /// 現在ホールド中のカード実体
+    /// </summary>
     private Card holdCard = null;
-    private Vector3 dragOffset;
+
+    /// <summary>
+    /// マウスをホールド開始した位置
+    /// </summary>
     private Vector3 holdPos;
+
+    /// <summary>
+    /// マウスホールド開始位置から掴んでいるカードの中心位置とのオフセット
+    /// </summary>
+    private Vector3 dragOffset;
 
     private void Update()
     {
@@ -43,7 +55,7 @@ public class CardDragHandler : MonoBehaviour
 
                 switch(holdCard.data.target)
                 {
-                    case Target.Enemy:
+                    case CardData.Target.Enemy:
                         Collider2D hit = Physics2D.OverlapPoint(point, targetLayers);
                         var selectCreature = hit?.GetComponent<Creature>();
                         if (selectCreature != null && selectCreature.gameObject.tag == "Enemy")
@@ -75,7 +87,7 @@ public class CardDragHandler : MonoBehaviour
                             BattleManager.Instance.EnergyManager.RecoveryEnergy(holdCard.data.cost);
                         }
                         break;
-                    case Target.Player:
+                    case CardData.Target.Player:
                         if(Vector3.Distance(holdPos, point) >= cardPlayDragDistance)
                         {
                             Debug.Log($"クリックしてからマウスを離すまでのマウスの移動距離：{Vector3.Distance(holdPos, point)}");
@@ -106,6 +118,10 @@ public class CardDragHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// ゲーム内のワールド座標系で見たときのマウス座標を取得する
+    /// </summary>
+    /// <returns>ワールド座標系上のマウス座標</returns>
     private Vector3 GetMouseWorldPosition()
     {
         Vector3 screenPos = Input.mousePosition;

@@ -1,12 +1,15 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 
+/// <summary>
+/// 山札GUIクラス
+/// </summary>
 public class DrawPailGUI : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField, Header("山札残り枚数")]
     private TextMeshProUGUI counter;
-    [SerializeField]
+    
+    [SerializeField, Header("デッキマネージャ")]
     private DeckManager deckManager;
 
     private void Update()

@@ -1,12 +1,15 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 
+/// <summary>
+/// 捨て札UIクラス
+/// </summary>
 public class DiscardPailGUI : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField, Header("捨て札数")]
     private TextMeshProUGUI counter;
-    [SerializeField]
+    
+    [SerializeField, Header("デッキマネージャ")]
     private DeckManager deckManager;
 
     private void Update()

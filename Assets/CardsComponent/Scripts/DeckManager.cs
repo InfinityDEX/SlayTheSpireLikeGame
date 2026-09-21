@@ -1,13 +1,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// デッキマネージャクラス
+/// 
+/// 山札、捨て札、手札を管理する。
+/// </summary>
 public class DeckManager : MonoBehaviour
 {
-    public List<CardData> drawPile = new(); // 山札
-    public List<CardInHand> hand = new List<CardInHand>(); // 手札
-    public List<CardData> discardPile = new(); // 捨て札
+    /// <summary>
+    /// 山札
+    /// </summary>
+    public List<CardData> drawPile = new();
+    
+    /// <summary>
+    /// 手札
+    /// </summary>
+    public List<CardInHand> hand = new List<CardInHand>();
+    
+    /// <summary>
+    /// 捨て札
+    /// </summary>
+    public List<CardData> discardPile = new();
 
-    // DeckManagerのインスタンス生成時に、DeckData.jsonから山札を生成する
     [Header("カードライブラリ（全カードデータ）")]
     public CardLibrary cardLibrary;
 
@@ -16,7 +31,9 @@ public class DeckManager : MonoBehaviour
         LoadDeckFromJson();
     }
 
-    // DeckData.jsonからデータを読み込み、drawPileを構築する
+    /// <summary>
+    /// DeckData.jsonからデータを読み込み、drawPileを構築する処理
+    /// </summary>
     private void LoadDeckFromJson()
     {
         // StreamingAssetsからDeckData.jsonを読み込む
@@ -49,11 +66,14 @@ public class DeckManager : MonoBehaviour
             }
         }
 
-        // 必要なら山札をシャッフル
+        // 山札をシャッフル
         Shuffle(drawPile);
     }
 
-    // カードをシャッフル
+    /// <summary>
+    /// カードをシャッフルする処理
+    /// </summary>
+    /// <param name="list">山札</param>
     private void Shuffle(List<CardData> list)
     {
         for (int i = 0; i < list.Count; i++)
@@ -65,7 +85,9 @@ public class DeckManager : MonoBehaviour
         }
     }
 
-    // DeckData.json取得構造体
+    /// <summary>
+    /// DeckData.json取得用のカードエントリクラス
+    /// </summary>
     [System.Serializable]
     private class CardEntry
     {
@@ -73,6 +95,9 @@ public class DeckManager : MonoBehaviour
         public int count;
     }
 
+    /// <summary>
+    /// デッキデータのJson構造定義クラス
+    /// </summary>
     [System.Serializable]
     private class DeckDataJson
     {
@@ -80,12 +105,16 @@ public class DeckManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 手札(CardInHand)のCardにセットされるCard.idを使ってカードを捨て札（墓地）に置く
+    /// 手札クラス
     /// </summary>
     [System.Serializable]
     public class CardInHand
     {
+        /// <summary>
+        /// カードデータ
+        /// </summary>
         public CardData cardData;
+
         public int cardId; // Cardクラスのidを利用
 
         public CardInHand(CardData data, int id)
@@ -109,7 +138,6 @@ public class DeckManager : MonoBehaviour
         }
     }
 
-
     /// <summary>
     /// 手札を全て破棄する
     /// </summary>
@@ -122,6 +150,7 @@ public class DeckManager : MonoBehaviour
         }
         hand.Clear();
     }
+    
     /// <summary>
     /// カードをドローする処理（カードのidをCardクラス用に付与）
     /// </summary>
