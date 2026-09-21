@@ -201,10 +201,10 @@ public class Wyvern : Enemy
             if (fireBreathSE != null) AudioController.Instance?.PlaySE(fireBreathSE);
             currentTime = 0;
             inAction = false;
-            bm.player.TakeDamage(fireBreathDamage + muscle);
+            bm.Player.TakeDamage(fireBreathDamage + muscle);
 
             // ビジュアルエフェクトを生成
-            GameObject visualEffectPrefab = bm.visualEffectLibrary.GetEffectById(5);
+            GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(5);
             if (visualEffectPrefab != null)
             {
                 GameObject ve = Instantiate(visualEffectPrefab);
@@ -243,17 +243,17 @@ public class Wyvern : Enemy
             Debug.Log("テンペスト発動");
             var bm = BattleManager.Instance;
             if (tempestSE != null) AudioController.Instance?.PlaySE(tempestSE);
-            bm.player.TakeDamage(tempestDamage + muscle);
+            bm.Player.TakeDamage(tempestDamage + muscle);
             currentTime = 0;
             inAction = false;
 
             // ビジュアルエフェクトを生成
-            GameObject visualEffectPrefab = bm.visualEffectLibrary.GetEffectById(1);
+            GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(1);
             if (visualEffectPrefab != null)
             {
                 GameObject ve = Instantiate(visualEffectPrefab);
 
-                ve.transform.position = bm.player.transform.position;
+                ve.transform.position = bm.Player.transform.position;
                 ve.transform.Rotate(Vector3.forward, -90);
             }
 

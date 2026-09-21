@@ -130,15 +130,15 @@ public class Golem : Enemy
             if (punchSE != null) AudioController.Instance?.PlaySE(punchSE);
             currentTime = 0;
             inAction = false;
-            bm.player.TakeDamage(punchDamage + muscle);
+            bm.Player.TakeDamage(punchDamage + muscle);
 
             // ビジュアルエフェクトを生成
-            GameObject visualEffectPrefab = bm.visualEffectLibrary.GetEffectById(1);
+            GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(1);
             if (visualEffectPrefab != null)
             {
                 GameObject ve = Instantiate(visualEffectPrefab);
 
-                ve.transform.position = bm.player.transform.position;
+                ve.transform.position = bm.Player.transform.position;
                 ve.transform.Rotate(Vector3.forward, -90);
             }
 
@@ -169,13 +169,13 @@ public class Golem : Enemy
             var bm = BattleManager.Instance;
 
             // 全ての敵キャラにShieldを付与する
-            var enemyMG = bm.enemyManager;
+            var enemyMG = bm.EnemyManager;
             foreach(var enemy in enemyMG.enemies)
             {
                 // Shieldを付与
                 enemy.AddShield(defenceShieldNum);
 
-                GameObject visualEffectPrefab = bm.visualEffectLibrary.GetEffectById(3);
+                GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(3);
                 if (visualEffectPrefab != null)
                 {
                     var go = Instantiate(visualEffectPrefab);

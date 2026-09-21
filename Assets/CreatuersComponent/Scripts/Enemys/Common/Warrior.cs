@@ -149,15 +149,15 @@ public class Warrior : Enemy
             if (slashSE != null) AudioController.Instance?.PlaySE(slashSE);
             currentTime = 0;
             inAction = false;
-            bm.player.TakeDamage(slashDamage + muscle);
+            bm.Player.TakeDamage(slashDamage + muscle);
 
             // ビジュアルエフェクトを生成
-            GameObject visualEffectPrefab = bm.visualEffectLibrary.GetEffectById(0);
+            GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(0);
             if (visualEffectPrefab != null)
             {
                 GameObject ve = Instantiate(visualEffectPrefab);
 
-                ve.transform.position = bm.player.transform.position;
+                ve.transform.position = bm.Player.transform.position;
             }
 
             actionPattern = ActionPattern.Idle;
@@ -182,15 +182,15 @@ public class Warrior : Enemy
             var bm = BattleManager.Instance;
             if (slashSE != null) AudioController.Instance?.PlaySE(slashSE);
             currentTime = 0;
-            bm.player.TakeDamage(slashDamage + muscle);
+            bm.Player.TakeDamage(slashDamage + muscle);
 
             // ビジュアルエフェクトを生成
-            GameObject visualEffectPrefab = bm.visualEffectLibrary.GetEffectById(0);
+            GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(0);
             if (visualEffectPrefab != null)
             {
                 GameObject ve = Instantiate(visualEffectPrefab);
 
-                ve.transform.position = bm.player.transform.position;
+                ve.transform.position = bm.Player.transform.position;
             }
 
             if (consecutiveSlashCount <= currentConsecutiveSlashCount)
@@ -229,7 +229,7 @@ public class Warrior : Enemy
             AddMuscle(muscleNum);
                 
             var bm = BattleManager.Instance;
-            GameObject visualEffectPrefab = bm.visualEffectLibrary.GetEffectById(4);
+            GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(4);
             if (visualEffectPrefab != null)
             {
                 var go = Instantiate(visualEffectPrefab);

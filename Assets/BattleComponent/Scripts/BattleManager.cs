@@ -1,59 +1,48 @@
-using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// バトルマネージャクラス
+/// 
+/// バトルの進行や、プレイヤーおよびエネミーの死亡判定を行う。
+/// シングルトン。
+/// </summary>
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance { get; private set; }
 
-    // [Header("ステージ情報")]
-    // [SerializeField] 
-    // private StageData currentStage;
-
-    [Header("デッキマネージャー")]
-    [SerializeField] 
+    [field:SerializeField, Header("デッキマネージャー")]
     private DeckManager deckManager;
 
-    [Header("手札表示エリア(親オブジェクト)")]
-    [SerializeField]
+    [field:SerializeField, Header("手札表示エリア(親オブジェクト)")]
     private Transform handArea;
 
-    [Header("敵マネージャー")]
-    [SerializeField]
-    private EnemyManager enemyManagerInspector;
-    public EnemyManager enemyManager { get; private set;}
+    [field:SerializeField, Header("敵マネージャー")]
+    public EnemyManager EnemyManager { get; private set;}
 
-    [Header("カードプレハブ")]
-    [SerializeField]
+    [field:SerializeField, Header("カードプレハブ")]
     private GameObject cardTemplatePrefab;
 
-    [Header("プレイヤー")]
-    [SerializeField]
-    private Creature playerInspector;
-    public Creature player { get; private set;}
+    [field:SerializeField, Header("プレイヤー")]
+    public Creature Player { get; private set;}
 
-    [Header("エナジー管理オブジェクト")]
-    [SerializeField]
-    private EnergyManager energyManagerInspector;
-    public EnergyManager energyManager { get; private set;}
+    [field:SerializeField, Header("エナジー管理オブジェクト")]
+    public EnergyManager EnergyManager { get; private set;}
 
-    [Header("ビジュアルエフェクト一覧")]
-    [SerializeField]
-    private VisualEffectLibrary visualEffectLibraryInspector;
-    public VisualEffectLibrary visualEffectLibrary { get; private set;}
+    [field:SerializeField, Header("ビジュアルエフェクト一覧")]
+    public VisualEffectLibrary VisualEffectLibrary { get; private set;}
 
-    [Header("ダメージバッチジェネレータ")]
-    [SerializeField]
-    private DamageBatchGenerator damageBatchGeneratorInspector;
-    public DamageBatchGenerator damageBatchGenerator{ get; private set;}
+    [field:SerializeField, Header("ダメージバッチジェネレータ")]
+    public DamageBatchGenerator DamageBatchGenerator { get; private set;}
 
-    // [Header("生成する敵情報")]
-    // [SerializeField]
-    // private EnemyCombinationData enemyCombinationData;
+    [SerializeField, Header("現在のフェーズ")]
+    private BattlePhase currentPhase = BattlePhase.Idle;
+    private bool isBattleActive = true;
 
     private void Awake()
     {
+        // シングルトン違反判定
         if (Instance != null && Instance != this)
         {
             Debug.LogError("BattleManagerが複数存在しようとしています。");
@@ -62,19 +51,26 @@ public class BattleManager : MonoBehaviour
         }
         Instance = this;
     }
-
+    
     private void Start()
     {
-        damageBatchGenerator = damageBatchGeneratorInspector;
-        player = playerInspector;
-        visualEffectLibrary = visualEffectLibraryInspector;
-        energyManager = energyManagerInspector; 
-        enemyManager = enemyManagerInspector;
-        energyManager.RefreshEnergy();
-        // AudioClip bgm = BgmSelector.PickBattleBgm(currentStage);
-        // AudioController.Instance?.PlayBGM(bgm);
-        enemyManagerInspector.SetEnemy(EnemyCombinationsDataManager.Instance.GetData());
+        // エナジーの初期化（回復）
+        EnergyManager.RefreshEnergy();
+
+        // EnemyCombinationDataManagerから今回生成するエネミー群データを取得してEnemyManagerもセットする
+        EnemyManager.SetEnemy(EnemyCombinationsDataManager.Instance.GetData());
+
+        // バトルフェーズを初期化フェーズにする
         currentPhase = BattlePhase.InitializePhase;
+    }
+
+    private void Update()
+    {
+        Player = Player;
+        if (isBattleActive)
+        {
+            BattleLoop();
+        }
     }
 
     // バトルのフローチャートに基づき、バトル進行用の状態管理・更新
@@ -94,21 +90,19 @@ public class BattleManager : MonoBehaviour
         Idle
     }
 
-    [Header("現在のフェーズ")]
-    [SerializeField, ReadOnly(true)]
-    private BattlePhase currentPhase = BattlePhase.Idle;
-    private bool isBattleActive = true;
-
+    /// <summary>
+    /// バトルループ
+    /// </summary>
     private void BattleLoop()
     {
         switch (currentPhase)
         {
             case BattlePhase.InitializePhase:
                 // 全ての敵クリーチャーがStart処理を終えるまで待つ
-                if(enemyManagerInspector.enemies.All(e => e.EndStart()))
+                if(EnemyManager.enemies.All(e => e.EndStart()))
                 {
                     // 敵の次の行動を示す
-                    enemyManagerInspector.enemies.ForEach(e => e.RefreshActionIcon());
+                    EnemyManager.enemies.ForEach(e => e.RefreshActionIcon());
                     // ドローフェーズへ
                     currentPhase = BattlePhase.DrawPhase;
                 }
@@ -157,10 +151,10 @@ public class BattleManager : MonoBehaviour
             case BattlePhase.PlayerBuffRefreshPhase:
                 // バフや状態異常のリフレッシュ処理
                 RefreshPlayerBuffs();
-                energyManager.RefreshEnergy();
+                EnergyManager.RefreshEnergy();
 
                 // 敵の次の行動を示す
-                enemyManagerInspector.enemies.ForEach(e => e.RefreshActionIcon());
+                EnemyManager.enemies.ForEach(e => e.RefreshActionIcon());
 
                 currentPhase = BattlePhase.DrawPhase;
                 break;
@@ -194,15 +188,9 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        player = playerInspector;
-        if (isBattleActive)
-        {
-            BattleLoop();
-        }
-    }
-
+    /// <summary>
+    /// プレイヤーターンの開始時処理
+    /// </summary>
     private void StartPlayerTurn()
     {
         // プレイヤーターン開始時の処理: カードを5枚引く
@@ -224,12 +212,11 @@ public class BattleManager : MonoBehaviour
                 Destroy(child.gameObject);
             }
 
-            // アーチのパラメータ
+            // 手札の配置（アーチ状）のパラメータ
             int cardCount = deckManager.hand.Count;
             float archRadius = 10f; // 弧の大きさ（調整可。単位はローカル座標）
             float archAngle = 50f; // 全体で使う角度の最大値(度)。180より小
             float angleStep = cardCount > 1 ? archAngle / (cardCount - 1) : 0;
-
             float startAngle = -archAngle / 2f;
 
             // 右から順に配置（handの先頭が右端に来る）
@@ -250,12 +237,10 @@ public class BattleManager : MonoBehaviour
                     0f
                 );
 
+                // カード配置
                 cardObj.transform.localScale = new Vector3(1.5f, 1.5f, 1);
-
                 cardObj.transform.localPosition = localPos;
-
-                // カードをアーチの接線方向に少し傾け、自然なファンに
-                cardObj.transform.localRotation = Quaternion.Euler(0f, 0f, angle * -0.5f);
+                cardObj.transform.localRotation = Quaternion.Euler(0f, 0f, angle * -0.5f); // カードをアーチの接線方向に少し傾け、自然なファンに
 
                 // Cardスクリプトの取得
                 Card cardScript = cardObj.GetComponent<Card>();
@@ -267,10 +252,12 @@ public class BattleManager : MonoBehaviour
                 }
             }
         }
-        // 今後、他のプレイヤーターン開始処理をここに追加予定
+        // TODO：今後、他のプレイヤーターン開始処理をここに追加予定
     }
 
-    // プレイヤーターンを終了する
+    /// <summary>
+    /// プレイヤーターン終了処理
+    /// </summary>
     public void EndPlayerTurn(){
         Debug.Log("ターン終了");
         if(currentPhase == BattlePhase.UseCardPhase)
@@ -279,36 +266,53 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    // バトル終了判定／敵全滅判定など
+    /// <summary>
+    /// バトル終了判定／敵全滅判定など 
+    /// </summary>
+    /// <returns></returns>
     private bool IsPlayerDead()
     {
-        Debug.Log($"プレイヤーのHP：{player.hp}");
-        return player.hp <= 0;
+        Debug.Log($"プレイヤーのHP：{Player.hp}");
+        return Player.hp <= 0;
     }
 
-    // 全敵の生存チェック
+    /// <summary>
+    /// エネミーの生存チェック
+    /// </summary>
+    /// <returns>全てのエネミーが死んでいるか？</returns>
     private bool AreEnemiesDefeated()
     {
-        return enemyManagerInspector.enemies.All(e => e.hp <= 0);
+        return EnemyManager.enemies.All(e => e.hp <= 0);
     }
 
-    // バフのリフレッシュ
+    /// <summary>
+    /// プレイヤーにかかっているバフのリフレッシュ
+    /// </summary>
     private void RefreshPlayerBuffs()
     {
-        player.ResetBuff();
+        Player.ResetBuff();
     }
+
+    /// <summary>
+    /// エネミーにかかっているバフのリフレッシュ
+    /// </summary>
     private void RefreshEnemiesBuffs()
     {
-        enemyManagerInspector.enemies.ForEach(e => e.ResetBuff());
+        EnemyManager.enemies.ForEach(e => e.ResetBuff());
     }
     
     private int currentActionEnemy = 0;
+    
+    /// <summary>
+    /// エネミーの行動処理
+    /// </summary>
+    /// <returns>エネミーの行動がすべて終わったか？</returns>
     private bool EnemyAction()
     {
-        if (enemyManagerInspector.enemies[currentActionEnemy].hp == 0 || enemyManagerInspector.enemies[currentActionEnemy].Action())
+        if (EnemyManager.enemies[currentActionEnemy].hp == 0 || EnemyManager.enemies[currentActionEnemy].Action())
         {
             currentActionEnemy++;
-            if (enemyManagerInspector.enemies.Count <= currentActionEnemy)
+            if (EnemyManager.enemies.Count <= currentActionEnemy)
             {
                 currentActionEnemy = 0;
                 return true;
@@ -320,29 +324,34 @@ public class BattleManager : MonoBehaviour
     /// <summary>
     /// バトル終了処理
     /// </summary>
-    /// <param name="clearFlag">どうやってバトル終了するか？（０：プレイヤーの勝利　1：プレイヤー敗北）</param>
+    /// <param name="clearFlag">バトル終了要因（０：プレイヤーの勝利　1：プレイヤー敗北）</param>
     private void EndBattle(int clearFlag)
     {
         // TODO：バトル終了アニメ・遷移など
+
+        // ゲームデータの保存
         SaveData saveData = new();
-        saveData.MaxHelth = player.maxHealth;
-        saveData.CurrentHelth = player.hp;
+        saveData.MaxHelth = Player.maxHealth;
+        saveData.CurrentHelth = Player.hp;
         string json = JsonUtility.ToJson(saveData, true);
         string saveFilePath = System.IO.Path.Combine(Application.dataPath, "SaveData/SaveData.json");
         System.IO.File.WriteAllText(saveFilePath, json);
+
+        // シーン遷移分岐
         if (clearFlag == 0)
         {
+            // マップシーンに移動
             SceneManager.LoadScene("MapScene", LoadSceneMode.Single);
         }
         else if (clearFlag == 1)
         {
-
+            // ゲームオーバーシーンに移動
             string mapSaveFilePath = System.IO.Path.Combine(Application.dataPath, MapManager.saveDataFilePath);
             if (System.IO.File.Exists(mapSaveFilePath))
             {
+                // マップ進行データを破棄して、次回プレイ時に初めからゲームが開始される状態にする
                 System.IO.File.Delete(mapSaveFilePath);
             }
-    
             SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);
         }
         else 

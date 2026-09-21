@@ -10,6 +10,6 @@ public class STAttack : CardEffect
 
     public override void Play(Creature target)
     {
-        target.TakeDamage(damage + BattleManager.Instance.player.muscle);
+        target.TakeDamage(damage + BattleManager.Instance.Player.muscle);
     }
 }

@@ -196,16 +196,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32c084d81f26e0f4dadbd79a419dbaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentStage: {fileID: 11400000, guid: 3ad44cac370aa114d8ecbc1701eadd49, type: 2}
   deckManager: {fileID: 1010414496}
   handArea: {fileID: 850239253}
-  enemyManagerInspector: {fileID: 770071691}
+  <EnemyManager>k__BackingField: {fileID: 770071691}
   cardTemplatePrefab: {fileID: 3148922142676892650, guid: acced1113ef726c429a6840c70d75600, type: 3}
-  playerInspector: {fileID: 1160299480}
-  energyManagerInspector: {fileID: 893586649}
-  visualEffectLibraryInspector: {fileID: 371559359}
-  damageBatchGeneratorInspector: {fileID: 674680379}
-  currentPhase: 6
+  <Player>k__BackingField: {fileID: 1160299480}
+  <EnergyManager>k__BackingField: {fileID: 893586649}
+  <VisualEffectLibrary>k__BackingField: {fileID: 371559359}
+  <DamageBatchGenerator>k__BackingField: {fileID: 674680379}
+  currentPhase: 0
 --- !u!1 &195718300
 GameObject:
   m_ObjectHideFlags: 0

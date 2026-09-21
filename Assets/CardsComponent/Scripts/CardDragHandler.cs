@@ -36,7 +36,7 @@ public class CardDragHandler : MonoBehaviour
         if (Input.GetMouseButtonUp(0) && holdCard != null)
         {
             // コストが支払えるか確認して、払えたらカードの効果を適用する。
-            if(BattleManager.Instance.energyManager.UseEnergy(holdCard.data.cost))
+            if(BattleManager.Instance.EnergyManager.UseEnergy(holdCard.data.cost))
             {
                 Vector3 world = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector2 point = new Vector2(world.x, world.y);
@@ -50,7 +50,7 @@ public class CardDragHandler : MonoBehaviour
                         {
                             holdCard.Play(selectCreature);
                             AudioController.Instance?.PlaySE(holdCard.data.castCardSE);
-                            GameObject visualEffectPrefab = BattleManager.Instance?.visualEffectLibrary.GetEffectById(holdCard.data.visualEffectID);
+                            GameObject visualEffectPrefab = BattleManager.Instance?.VisualEffectLibrary.GetEffectById(holdCard.data.visualEffectID);
                             // ビジュアルエフェクトを生成
                             if (visualEffectPrefab != null)
                             {
@@ -72,14 +72,14 @@ public class CardDragHandler : MonoBehaviour
                         else
                         {
                             // 敵をターゲットに取らなかった場合は使用したコストをもとに戻す
-                            BattleManager.Instance.energyManager.AddEnergy(holdCard.data.cost);
+                            BattleManager.Instance.EnergyManager.RecoveryEnergy(holdCard.data.cost);
                         }
                         break;
                     case Target.Player:
                         if(Vector3.Distance(holdPos, point) >= cardPlayDragDistance)
                         {
                             Debug.Log($"クリックしてからマウスを離すまでのマウスの移動距離：{Vector3.Distance(holdPos, point)}");
-                            holdCard.Play(BattleManager.Instance.player);
+                            holdCard.Play(BattleManager.Instance.Player);
                             AudioController.Instance?.PlaySE(holdCard.data.castCardSE);
                             DeckManager deckManager = FindObjectOfType<DeckManager>();
                             if (deckManager != null)
@@ -96,7 +96,7 @@ public class CardDragHandler : MonoBehaviour
                         {
                             // カードを選択した状態で、指定した長さだけマウスホバーしなかった場合は、カードを使用しなかったものとして
                             // 消費したコストをもとに戻す
-                            BattleManager.Instance.energyManager.AddEnergy(holdCard.data.cost);
+                            BattleManager.Instance.EnergyManager.RecoveryEnergy(holdCard.data.cost);
                         }
                         break;
                 }

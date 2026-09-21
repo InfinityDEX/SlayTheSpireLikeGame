@@ -126,18 +126,18 @@ public class Magician : Enemy
             if(magicCastSE != null) AudioController.Instance?.PlaySE(magicCastSE);
             currentTime = 0;
             // プレイヤーにダメージを与える
-            BattleManager.Instance.player.TakeDamage(magicDamage);
+            BattleManager.Instance.Player.TakeDamage(magicDamage);
             inAction = false;
             if(BattleManager.Instance != null)
             {
                 var bm = BattleManager.Instance;
-                GameObject visualEffectPrefab = bm.visualEffectLibrary.GetEffectById(2);
+                GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(2);
                 // ビジュアルエフェクトを生成
                 if (visualEffectPrefab != null)
                 {
                     GameObject ve = Instantiate(visualEffectPrefab);
                     
-                    ve.transform.position = bm.player.transform.position;
+                    ve.transform.position = bm.Player.transform.position;
                 }
                 actionPattern = ActionPattern.Idle;
             }
@@ -167,7 +167,7 @@ public class Magician : Enemy
                 AddShield(activateShieldNum);
 
                 var bm = BattleManager.Instance;
-                GameObject visualEffectPrefab = bm.visualEffectLibrary.GetEffectById(3);
+                GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(3);
                 if (visualEffectPrefab != null)
                 {
                     var go = Instantiate(visualEffectPrefab);

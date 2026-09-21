@@ -1,27 +1,31 @@
 using UnityEngine;
 
+/// <summary>
+/// オーディオコントローラークラス
+/// 
+/// 音系の操作を管理する。
+/// シングルトン。
+/// </summary>
 public class AudioController : MonoBehaviour
 {
     public static AudioController Instance { get; private set; } // シングルトン
 
-    [Header("BGM用AudioSource")]
-    [SerializeField]
+    [SerializeField, Header("BGM用AudioSource")]
     private AudioSource bgmSource;
     
-    [Header("SE用AudioSource")]
-    [SerializeField]
+    [SerializeField, Header("SE用AudioSource")]
     private AudioSource seSource;
     
-    [Header("マスター音量")]
-    [SerializeField][Range(0f, 1f)]
+    [SerializeField, Header("マスター音量")]
+    [Range(0f, 1f)]
     private float masterVolume = 1f;
     
-    [Header("BGM音量")]
-    [SerializeField][Range(0f, 1f)]
+    [SerializeField, Header("BGM音量")]
+    [Range(0f, 1f)]
     private float bgmVolume = 0.7f;
     
-    [Header("SE音量")]
-    [SerializeField][Range(0f, 1f)]
+    [SerializeField, Header("SE音量")]
+    [Range(0f, 1f)]
     private float seVolume = 1f;
 
     private void Awake()
@@ -36,6 +40,11 @@ public class AudioController : MonoBehaviour
         ApplyVolume();
     }
 
+    /// <summary>
+    /// BGMの再生処理
+    /// </summary>
+    /// <param name="clip">再生したい音源</param>
+    /// <param name="loop">ループするか？</param>
     public void PlayBGM(AudioClip clip, bool loop = true)
     {
         // 音源がnullだった場合再生しない
@@ -48,8 +57,15 @@ public class AudioController : MonoBehaviour
         bgmSource.Play();
     }
 
+    /// <summary>
+    /// BGMを停止する
+    /// </summary>
     public void StopBGM() => bgmSource.Stop();
 
+    /// <summary>
+    /// SEの再生
+    /// </summary>
+    /// <param name="clip">再生したい音源</param>
     public void PlaySE(AudioClip clip)
     {
         // 音源がnullだった場合再生しない
@@ -57,24 +73,42 @@ public class AudioController : MonoBehaviour
         seSource.PlayOneShot(clip);
     }
 
+    /// <summary>
+    /// マスター音量の設定
+    /// </summary>
+    /// <param name="value">設定するボリューム</param>
     public void SetMasterVolume(float value)
     {
         masterVolume = value;
         ApplyVolume(); // AudioSourceのボリュームを再計算
     }
 
+    /// <summary>
+    ///BGM音量の設定
+    /// </summary>
+    /// <param name="volume">設定するボリューム</param>
     public void SetBGMVolume(float volume)
     {
         bgmVolume = volume;
         ApplyVolume(); // AudioSourceのボリュームを再計算
     }
 
+    /// <summary>
+    /// SE音源の設定
+    /// </summary>
+    /// <param name="volume">設定するボリューム</param>
     public void SetSEVolume(float volume)
     {
         seVolume = volume;
         ApplyVolume(); // AudioSourceのボリュームを再計算
     }
 
+    /// <summary>
+    /// 音量の適用
+    /// 
+    /// マスター音量とBGM・SE音量の値を計算し、
+    /// 実際のAudioSourceに適用する。
+    /// </summary>
     private void ApplyVolume()
     {
         bgmSource.volume = bgmVolume * masterVolume;
