@@ -25,6 +25,6 @@ public class STAttack : CardEffect
     /// <param name="target">攻撃対象</param>
     public override void Play(Creature target)
     {
-        target.TakeDamage(damage + BattleManager.Instance.Player.muscle);
+        target.TakeDamage(damage + BattleManager.Instance.Player.Muscle);
     }
 }

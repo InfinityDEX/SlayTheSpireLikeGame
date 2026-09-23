@@ -38,6 +38,10 @@ public class BattleManager : MonoBehaviour
 
     [SerializeField, Header("現在のフェーズ")]
     private BattlePhase currentPhase = BattlePhase.Idle;
+    
+    /// <summary>
+    /// バトル中かどうか
+    /// </summary>
     private bool isBattleActive = true;
 
     private void Awake()
@@ -99,14 +103,15 @@ public class BattleManager : MonoBehaviour
         {
             case BattlePhase.InitializePhase:
                 // 全ての敵クリーチャーがStart処理を終えるまで待つ
-                if(EnemyManager.enemies.All(e => e.EndStart()))
+                if(EnemyManager.Enemies.All(e => e.IsEndStartFunc()))
                 {
                     // 敵の次の行動を示す
-                    EnemyManager.enemies.ForEach(e => e.RefreshActionIcon());
+                    EnemyManager.Enemies.ForEach(e => e.RefreshActionIcon());
                     // ドローフェーズへ
                     currentPhase = BattlePhase.DrawPhase;
                 }
                 break;
+
             case BattlePhase.DrawPhase:
                 // ドローフェーズ開始処理
                 StartPlayerTurn();
@@ -128,11 +133,13 @@ public class BattleManager : MonoBehaviour
                 // 敵の行動フェーズへ
                 currentPhase = BattlePhase.EnemyBuffRefreshPhase;
                 break;
+                
             case BattlePhase.EnemyBuffRefreshPhase:
                 RefreshEnemiesBuffs();
                 // 敵の行動フェーズへ
                 currentPhase = BattlePhase.EnemyActionPhase;
                 break;
+
             case BattlePhase.EnemyActionPhase:
                 
                 // プレイヤーor敵の死亡チェック
@@ -154,7 +161,7 @@ public class BattleManager : MonoBehaviour
                 EnergyManager.RefreshEnergy();
 
                 // 敵の次の行動を示す
-                EnemyManager.enemies.ForEach(e => e.RefreshActionIcon());
+                EnemyManager.Enemies.ForEach(e => e.RefreshActionIcon());
 
                 currentPhase = BattlePhase.DrawPhase;
                 break;
@@ -272,8 +279,8 @@ public class BattleManager : MonoBehaviour
     /// <returns></returns>
     private bool IsPlayerDead()
     {
-        Debug.Log($"プレイヤーのHP：{Player.hp}");
-        return Player.hp <= 0;
+        Debug.Log($"プレイヤーのHP：{Player.Hp}");
+        return Player.Hp <= 0;
     }
 
     /// <summary>
@@ -282,7 +289,7 @@ public class BattleManager : MonoBehaviour
     /// <returns>全てのエネミーが死んでいるか？</returns>
     private bool AreEnemiesDefeated()
     {
-        return EnemyManager.enemies.All(e => e.hp <= 0);
+        return EnemyManager.Enemies.All(e => e.Hp <= 0);
     }
 
     /// <summary>
@@ -290,7 +297,7 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void RefreshPlayerBuffs()
     {
-        Player.ResetBuff();
+        Player.ResetBlock();
     }
 
     /// <summary>
@@ -298,7 +305,7 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void RefreshEnemiesBuffs()
     {
-        EnemyManager.enemies.ForEach(e => e.ResetBuff());
+        EnemyManager.Enemies.ForEach(e => e.ResetBlock());
     }
     
     private int currentActionEnemy = 0;
@@ -309,10 +316,10 @@ public class BattleManager : MonoBehaviour
     /// <returns>エネミーの行動がすべて終わったか？</returns>
     private bool EnemyAction()
     {
-        if (EnemyManager.enemies[currentActionEnemy].hp == 0 || EnemyManager.enemies[currentActionEnemy].Action())
+        if (EnemyManager.Enemies[currentActionEnemy].Hp == 0 || EnemyManager.Enemies[currentActionEnemy].Action())
         {
             currentActionEnemy++;
-            if (EnemyManager.enemies.Count <= currentActionEnemy)
+            if (EnemyManager.Enemies.Count <= currentActionEnemy)
             {
                 currentActionEnemy = 0;
                 return true;
@@ -332,7 +339,7 @@ public class BattleManager : MonoBehaviour
         // ゲームデータの保存
         SaveData saveData = new();
         saveData.MaxHelth = Player.maxHealth;
-        saveData.CurrentHelth = Player.hp;
+        saveData.CurrentHelth = Player.Hp;
         string json = JsonUtility.ToJson(saveData, true);
         string saveFilePath = System.IO.Path.Combine(Application.dataPath, "SaveData/SaveData.json");
         System.IO.File.WriteAllText(saveFilePath, json);
