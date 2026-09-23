@@ -5,6 +5,9 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+/// <summary>
+/// IDとマップグリッド情報を紐付け
+/// </summary>
 [Serializable]
 public struct MapGridWithID
 {
@@ -12,11 +15,27 @@ public struct MapGridWithID
     public MapGridInfo info;
 }
 
+/// <summary>
+/// マップグリッド情報リストクラス
+/// 
+/// MapGridWithIDで紐づけられたIDを指定することで、対応するMapGridInfoを呼び出すことができる。
+/// </summary>
 [CreateAssetMenu(fileName = "Map Data", menuName = "Create Map /MapGrid Data List")]
 public class MapGridInfoList : ScriptableObject
 {
+    /// <summary>
+    /// マップグリッド情報リスト
+    /// </summary>
     public List<MapGridWithID> mapGridInfos;
+
+    /// <summary>
+    /// スタートマップグリッド情報（1種だけなので非リスト）
+    /// </summary>
     public MapGridInfo startGridInfo;
+    
+    /// <summary>
+    /// ボスマップグリッド情報（1種だけなので非リスト）
+    /// </summary>
     public MapGridInfo bossGridInfo;
 
     /// <summary>
@@ -34,7 +53,11 @@ public class MapGridInfoList : ScriptableObject
         return null;
     }
 
+// 以下エディタ拡張
 #if UNITY_EDITOR
+    /// <summary>
+    /// MapGridInfoListのエディタ拡張
+    /// </summary>
     [CustomEditor(typeof(MapGridInfoList))]
     public class MpaGridInfoListEditor : Editor
     {

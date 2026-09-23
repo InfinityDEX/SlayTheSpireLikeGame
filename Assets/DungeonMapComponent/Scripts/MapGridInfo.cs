@@ -1,19 +1,23 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// マップグリッド情報クラス
+/// 
+/// マップグリッドの種別やアイコン画像等を定義
+/// </summary>
 [CreateAssetMenu(fileName = "Map Data", menuName = "Create Map /MapGrid Data")]
 public class MapGridInfo : ScriptableObject
 {
-    [Header("グリッド画像")]
+    [Header("マップグリッド画像ソース")]
     public Sprite gridSprite;
 
     [Serializable]
     public enum FloorInfo
     {
-        StartFloor,
-        EnemyFloor, // 敵フロア
-        EliteEnemyFloor, // エリート敵フロア
+        StartFloor, // スタートフロア
+        EnemyFloor, // エネミーフロア
+        EliteEnemyFloor, // エリートエネミーフロア
         BossFloor, // ボスフロア
         ShopFloor, // ショップフロア
     }
@@ -22,7 +26,4 @@ public class MapGridInfo : ScriptableObject
     public FloorInfo type;
 
     public int id;
-
-    // public List<MapGridJson.MapGridPos> upperMapGridList = null;
-    // public List<MapGridJson.MapGridPos> underMapGridList = null;
 }

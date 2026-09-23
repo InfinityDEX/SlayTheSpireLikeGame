@@ -1,11 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
 
+/// <summary>
+/// ダンジョンマップ生成クラス
+/// </summary>
 public class DungeonMapFactory
 {    
-    // マップグリッド情報のリスト
+    /// <summary>
+    /// マップグリッド情報のリスト
+    /// </summary>
     private List<MapGridWithID> mapGridInfoList = new List<MapGridWithID>();
 
     /// <summary>
@@ -73,6 +77,7 @@ public class DungeonMapFactory
         return mapGrids;
     }    
     
+    /// <summary>
     /// 指定された列数に基づいてダンジョンマップのグリッド情報リストを生成
     /// </summary>
     /// <param name="branchCount">生成する分岐数</param>
@@ -97,16 +102,6 @@ public class DungeonMapFactory
                 {
                     throw new System.Exception($"指定されたID ({dungeonMapGrid[i][j].mapGridInfoID}) のマップグリッド情報が見つかりません。");
                 }
-
-                // // マップグリッド接続先登録
-                // foreach (var upperPos in dungeonMapGrid[i][j].upperMapGridPos)
-                // {
-                //     gridInfo.upperMapGridList.Add(upperPos);
-                // }
-                // foreach (var underPos in dungeonMapGrid[i][j].underMapGridPos)
-                // {
-                //     gridInfo.underMapGridList.Add(underPos);
-                // }
            
                 floor.Add(gridInfo);
             }
@@ -188,7 +183,7 @@ public class DungeonMapFactory
                 }
                 mapGrids[row].Add(gridInstance);
 #if UNITY_EDITOR
-                gridInstance.SetDebugView_GridPosition(col, row);
+                gridInstance.SetDebugView_GridPosition();
 #endif
             }
         }
@@ -259,7 +254,7 @@ public class DungeonMapFactory
                             mapGrids[row][col].SetUpperLayer(mapGrids[upperPos.row][upperPos.col]);
                         }
                         // 下階層への接続
-                        foreach (var underPos in jsonData.dungeonMapGrid[row][col].underMapGridPos)
+                        foreach (var underPos in jsonData.dungeonMapGrid[row][col].lowerMapGridPos)
                         {
                             mapGrids[row][col].SetUnderLayer(mapGrids[underPos.row][underPos.col]);
                         }
@@ -300,8 +295,6 @@ public class DungeonMapFactory
         {
             return;
         }
-
-        int rowCount = mapGrids.Count;
 
         // スタートマスと２階層目のマスを全て接続
         MapGrid startGrid = mapGrids[0][0];

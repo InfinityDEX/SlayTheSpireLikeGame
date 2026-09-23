@@ -4,91 +4,89 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MapManager : MonoBehaviour
+/// <summary>
+/// ダンジョンマップマネージャクラス
+/// </summary>
+public class DungeonMapManager : MonoBehaviour
 {
-    [Header("DEBUG:常に新しくダンジョンマップを生成する")]
-    [SerializeField]
+    [field:SerializeField, Header("DEBUG:常に新しくダンジョンマップを生成する")]
     private bool isAlwaysMakeNewDungeonMap = false;
 
-    [Header("メインカメラ")]
-    [SerializeField]
+    [field:SerializeField, Header("メインカメラ")]
     private Camera mainCamera;
 
+    /// <summary>
+    /// メインカメラのデフォルトY座標
+    /// </summary>
     private float mainCameraDefault_YPos;
     
-    [Header("ステージデータ")]
-    [SerializeField]
+    [field:SerializeField, Header("ステージデータ")]
     private StageData stageData;
 
-    [Header("敵パターンジェネレータ")]
-    [SerializeField]
+    [field:SerializeField, Header("敵パターンジェネレータ")]
     private EnemyCombinationsDataGenerator enemyCombinationsDataGenerator;
 
-    [Header("マップグリッドのPrefab")]
-    [SerializeField]
+    [field:SerializeField, Header("マップグリッドのPrefab")]
     private MapGrid mapGridPrefab;
 
-    [Header("マップグリッドを配置するCanvas")]
-    [SerializeField]
+    [field:SerializeField, Header("マップグリッドを配置するCanvas")]
     private Canvas mapGridCanvas;
 
-    [Header("経路線を配置するCanvas")]
-    [SerializeField]
+    [field:SerializeField, Header("経路線を配置するCanvas")]
     private Canvas routeLineCanvas;
 
-    [Header("マップの分岐数")]
-    [SerializeField]
+    [field:SerializeField, Header("マップの分岐数")]
     private int branchCount = 3;
 
-    [Header("マップのフロア数")]
-    [SerializeField]
+    [field:SerializeField, Header("マップのフロア数")]
     private int floorCount = 5;
 
-    [Header("グリッド同士の横スペース")]
-    [SerializeField]
-    private float xOffset = 2.0f; // グリッド同士の横スペース
+    [field:SerializeField, Header("グリッド同士の横スペース")]
+    private float xOffset = 2.0f;
 
-    [Header("グリッド同士の縦スペース")]
-    [SerializeField]
-    private float yOffset = 4.0f; // グリッド同士の縦スペース
+    [field:SerializeField, Header("グリッド同士の縦スペース")]
+    private float yOffset = 4.0f;
 
-    [Header("生成できるマップグリッド情報リスト")]
-    [SerializeField]
+    [field:SerializeField, Header("生成できるマップグリッド情報リスト")]
     private MapGridInfoList availableMapGridInfoList;
 
     // マップのマス配置情報
     private List<List<MapGridInfo>> mapGridInfos;
     
     // マップのマスオブジェクトリスト
-    [SerializeField]
     private List<List<MapGrid>> mapGrids;
     
     // スタートマスとボスマス（終端）のMapGridInfo(1列しかないので別枠で管理)
-    [Header("スタートマス情報")]
-    [SerializeField]
+    [field:SerializeField, Header("スタートマス情報")]
     private MapGridInfo startGridInfo;
-    [Header("ボスマス(終端)情報")]
-    [SerializeField]
+
+    [field:SerializeField, Header("ボスマス(終端)情報")]
     private MapGridInfo bossGridInfo;
 
-    // セーブデータの保存パス
+    /// <summary>
+    /// セーブデータの保存パス
+    /// </summary>
     public static string saveDataFilePath { private set; get;} = "SaveData/CurrentDungeonData.json" ;
 
-    // 移動経路
-    private List<MapGridJson.MapGridPos> movePath;
+    /// <summary>
+    /// 移動経路
+    /// </summary>
+    private List<MapGridJsonEntity.MapGridPos> movePath;
     
-    // 現在の位置
-    private MapGridJson.MapGridPos currentGridPos;
+    /// <summary>
+    /// 現在の位置
+    /// </summary>
+    private MapGridJsonEntity.MapGridPos currentGridPos;
 
-    [Header("セレクト音")]
-    [SerializeField]
+    [field:SerializeField, Header("セレクト音")]
     private AudioClip selectSE;
 
-    [Header("決定音")]
-    [SerializeField]
+    [field:SerializeField, Header("決定音")]
     private AudioClip decideSE;
-    
-    // 次に進むグリッドが、現在マスのupperLayerの何番目かを表すインデックス
+
+    /// <summary>
+    /// 次に進むマップグリッドが、現在いるマップグリッドのupperLayerの何番目かを表すインデックス
+    /// </summary>
     private int nextGridUpperLayerIndex;
 
     private void Start()
@@ -126,11 +124,6 @@ public class MapManager : MonoBehaviour
                 false,
                 loadedDungeonMapSaveData
             );
-
-            // ↓ MapGridの座標初期化を経路線オブジェクトをインスタンス化する前に生成したい為、内部で呼び出すように修正
-
-            // // マップグリッド(マス)の位置情報を更新する
-            // dungeonFactory.OrganizeMapGridPos(ref mapGrids);
         }
         else
         {
@@ -152,11 +145,6 @@ public class MapManager : MonoBehaviour
 
             // マップグリッド(マス)間をランダムに接続させる
             dungeonFactory.ConnectRandomGridCells(ref mapGrids, routeLineCanvas);
-
-            // ↓ MapGridの座標初期化を経路線オブジェクトをインスタンス化する前に生成したい為、内部で呼び出すように修正
-
-            // // マップグリッド(マス)の位置情報を更新する
-            // dungeonFactory.OrganizeMapGridPos(ref mapGrids);
             
             // 現在位置をスタートマス（row : 0, col : 0）に設定する
             currentGridPos.row = 0;
@@ -184,7 +172,7 @@ public class MapManager : MonoBehaviour
         // 進行経路データを渡して着色する
         var startGrid = mapGrids[0][0]; // 最初のマスから辿っていく
         // 進行予定の経路も含めいて線に色を付ける
-        var nextMovePath = new List<MapGridJson.MapGridPos>(movePath);
+        var nextMovePath = new List<MapGridJsonEntity.MapGridPos>(movePath);
         nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridUpperLayerIndex];
         nextMovePath.Add(nextGrid.pos);
         startGrid.ColoringRouteLine(nextMovePath);
@@ -276,7 +264,7 @@ public class MapManager : MonoBehaviour
         currentNextGrid.FlickerGrid(true);
 
         // 進行予定の経路も含めいて線に色を付ける
-        var nextMovePath = new List<MapGridJson.MapGridPos>(movePath);
+        var nextMovePath = new List<MapGridJsonEntity.MapGridPos>(movePath);
         nextMovePath.Add(currentNextGrid.pos);
         mapGrids[0][0].ColoringRouteLine(nextMovePath);
     }
@@ -338,16 +326,18 @@ public class MapManager : MonoBehaviour
             DungeonFloorJson floor = new();
             for (int column = 0; column < mapGrids[row].Count; column++)
             {
-                MapGridJson mapGridJson = new();
-                mapGridJson.mapGridInfoID = mapGrids[row][column].gridInfoId;
-                mapGridJson.pos = mapGrids[row][column].pos;
+                MapGridJsonEntity mapGridJson = new()
+                {
+                    mapGridInfoID = mapGrids[row][column].gridInfoId,
+                    pos = mapGrids[row][column].pos
+                };
                 foreach (var item in mapGrids[row][column].upperLayer)
                 {
                     mapGridJson.upperMapGridPos.Add(item.pos);
                 }
-                foreach (var item in mapGrids[row][column].underLayer)
+                foreach (var item in mapGrids[row][column].lowerLayer)
                 {
-                    mapGridJson.underMapGridPos.Add(item.pos);
+                    mapGridJson.lowerMapGridPos.Add(item.pos);
                 }
 
                 floor.floorGrids.Add(mapGridJson);

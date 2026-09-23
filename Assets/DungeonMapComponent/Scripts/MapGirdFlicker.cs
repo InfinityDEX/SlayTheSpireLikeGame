@@ -1,29 +1,30 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// ダンジョンマップグリッドを点滅させるクラス
+/// </summary>
 public class MapGirdFlicker : MonoBehaviour
 {
-    [Header("機能有効状態")]
-    [SerializeField]
-    public bool isEnabled = false; // デフォルトは無効
+    [field:SerializeField, Header("機能有効状態")]
+    public bool isBlinkEnabled = false; // デフォルトは無効
 
-    [Header("点滅させる対象")]
-    [SerializeField]
+    [field:SerializeField, Header("点滅させる対象")]
     private Graphic target;
 
-    [Header("点滅周期[s]")]
-    [SerializeField]
-    private float cycle = 1;
+    [field:SerializeField, Header("点滅周期[s]")]
+    private float blinkCycle = 1;
 
-    [Header("高速点滅モード")]
-    [SerializeField]
-    public bool fastBlinkMode = false; // 高速点滅モード
+    [field:SerializeField, Header("高速点滅モード")]
+    public bool fastBlinkMode = false;
 
-    [Header("高速点滅時の周期倍率（X倍速）")]
-    [SerializeField]
+    [field:SerializeField, Header("高速点滅時の周期倍率（X倍速）")]
     private float fastBlinkMultiplier = 4f; // 高速時はデフォルトで4倍速
 
-    private double time;
+    /// <summary>
+    /// 点滅してからの経過時間
+    /// </summary>
+    private double elapsedBlinkTime;
 
     private void Awake()
     {
@@ -35,14 +36,15 @@ public class MapGirdFlicker : MonoBehaviour
     {
         if (target == null)
             return;
-        if (isEnabled)
+
+        if (isBlinkEnabled)
         {
             // 内部時刻を経過させる
-            time += Time.deltaTime;
+            elapsedBlinkTime += Time.deltaTime;
 
             // 高速点滅モード時は高速点滅周期で計算
-            float currentCycle = fastBlinkMode ? cycle / fastBlinkMultiplier : cycle;
-            var repeatValue = Mathf.Repeat((float)time, currentCycle);
+            float currentCycle = fastBlinkMode ? blinkCycle / fastBlinkMultiplier : blinkCycle;
+            var repeatValue = Mathf.Repeat((float)elapsedBlinkTime, currentCycle);
 
             // 内部時刻timeにおける明滅状態を反映
             target.enabled = repeatValue >= currentCycle * 0.5f;
@@ -51,6 +53,9 @@ public class MapGirdFlicker : MonoBehaviour
         {
             // 常に表示
             target.enabled = true;
+
+            // 明滅してからの経過時間を0にする
+            elapsedBlinkTime = 0;
         }
     }
 }

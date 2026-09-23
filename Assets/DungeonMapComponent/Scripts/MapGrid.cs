@@ -4,46 +4,51 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 
-[System.Serializable]
+/// <summary>
+/// マップグリッドクラス
+/// </summary>
 public class MapGrid : MonoBehaviour
 {
-    [Header("機能有効状態")]
-    [SerializeField]
+    [field:SerializeField, Header("機能有効状態")]
     public bool isEnabled = false; // デフォルトは無効
 
-    [Header("グリッド画像表示オブジェクト")]
-    [SerializeField]
+    [field:SerializeField, Header("グリッド画像表示オブジェクト")]
     private Image gridImage;
 
-    [Header("グリッド情報")]
-    [SerializeField]
+    [field:SerializeField, Header("グリッド情報")]
     public MapGridInfo gridInfo;
 
-    // マップグリッド情報のID
+    /// <summary>
+    /// マップグリッド情報のID
+    /// </summary>
     public int gridInfoId;
 
-    [Header("隣接する下層")]
-    [SerializeField]
-    public List<MapGrid> underLayer;
-
-    [Header("隣接する上層")]
-    [SerializeField]
+    [field:SerializeField, Header("隣接する上層")]
     public List<MapGrid> upperLayer;
 
-    [Header("経路線のPrefab")]
-    [SerializeField]
+    [field:SerializeField, Header("隣接する下層")]
+    public List<MapGrid> lowerLayer;
+
+    [field:SerializeField, Header("経路線のPrefab")]
     private GameObject pathLinePrefab;
 
-    public MapGridJson.MapGridPos pos;
+    /// <summary>
+    /// ダンジョンマップ上の本マップグリッドの座標
+    /// </summary>
+    public MapGridJsonEntity.MapGridPos pos;
 
-    // 経路線インスタンス(上層のみ)
     private struct DashedUILineRendererWithCol {
         public int col;
         public DashedUILineRenderer instance;
     }
+    /// <summary>
+    /// 経路線インスタンス(上層のみ)
+    /// </summary>
     private List<DashedUILineRendererWithCol> upperLineInstances;
     
-    // デフォルトの経路線のスタイル
+    /// <summary>
+    /// デフォルトの経路線のスタイル
+    /// </summary>
     private float defaultDashedLineDisplayLength;
     private float defaultDashedLineSpaceLength;
     private Color defaultDashedLineColor;
@@ -79,7 +84,7 @@ public class MapGrid : MonoBehaviour
             // Flickerコンポーネントが存在しない場合はアタッチする
             flicker = gridImage.gameObject.AddComponent<MapGirdFlicker>();
         }
-        flicker.isEnabled = enable;
+        flicker.isBlinkEnabled = enable;
         flicker.fastBlinkMode = fastBlinkMode;
     }
 
@@ -118,7 +123,7 @@ public class MapGrid : MonoBehaviour
     /// 経路線を指定したパスとフロアに基づいて色分けする
     /// </summary>
     /// <param name="movePath">移動経路となるグリッドの座標リスト</param>
-    public void ColoringRouteLine(in List<MapGridJson.MapGridPos> movePath)
+    public void ColoringRouteLine(in List<MapGridJsonEntity.MapGridPos> movePath)
     {
         // 進行先の列数を確認する為、0(スタートマス)ではなく1(1階層目)をcurrentCheckFloorに渡す
         ColoringRouteLine(movePath, 1); 
@@ -129,7 +134,7 @@ public class MapGrid : MonoBehaviour
     /// </summary>
     /// <param name="movePath">移動経路となるグリッドの座標リスト</param>
     /// <param name="currentCheckFloor">現在確認しているフロアのインデックス（デフォルトは0）</param>
-    private void ColoringRouteLine(in List<MapGridJson.MapGridPos> movePath , int currentCheckFloor)
+    private void ColoringRouteLine(in List<MapGridJsonEntity.MapGridPos> movePath , int currentCheckFloor)
     {
         // 次に進むマスへの道を列数から検索する
         var nextRouteCol = movePath[currentCheckFloor].col;
@@ -187,7 +192,7 @@ public class MapGrid : MonoBehaviour
     /// <param name="grid">フロアグリッド</param>
     public void SetUnderLayer(MapGrid grid)
     {
-        underLayer.Add(grid);
+        lowerLayer.Add(grid);
     }
 
     /// <summary>
@@ -199,11 +204,14 @@ public class MapGrid : MonoBehaviour
         upperLayer.Add(grid);
     }
 #if UNITY_EDITOR
-    public void SetDebugView_GridPosition(int col, int row)
+    /// <summary>
+    /// ダンジョンマップ上の座標をマップグリッドアイコンの前に表示（デバッグ用）
+    /// </summary>
+    public void SetDebugView_GridPosition()
     {
         if(gridPosViewDisplay != null)
         {
-            gridPosViewDisplay.text = $"Col:{col}\nRow:{row}";
+            gridPosViewDisplay.text = $"Col:{pos.col}\nRow:{pos.row}";
         }
     }
 #endif

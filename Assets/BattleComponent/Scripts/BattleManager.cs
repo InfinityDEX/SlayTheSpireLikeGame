@@ -353,7 +353,7 @@ public class BattleManager : MonoBehaviour
         else if (clearFlag == 1)
         {
             // ゲームオーバーシーンに移動
-            string mapSaveFilePath = System.IO.Path.Combine(Application.dataPath, MapManager.saveDataFilePath);
+            string mapSaveFilePath = System.IO.Path.Combine(Application.dataPath, DungeonMapManager.saveDataFilePath);
             if (System.IO.File.Exists(mapSaveFilePath))
             {
                 // マップ進行データを破棄して、次回プレイ時に初めからゲームが開始される状態にする
