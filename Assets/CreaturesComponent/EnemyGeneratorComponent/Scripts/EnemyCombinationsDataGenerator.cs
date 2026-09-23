@@ -1,7 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
+/// <summary>
+/// エネミーの組み合わせデータジェネレータクラス
+/// 
+/// 指定したエネミー種別に応じて、
+/// 対応するエネミー組み合わせデータからランダムにピックアップし、
+/// 上記の組み合わせデータを管理するEnemyCombinationDataManagerの実体を生成する。
+/// （バトルシーン移行後にこのマネージャの持つデータを基にエネミーを生成する）
+/// </summary>
 public class EnemyCombinationsDataGenerator : MonoBehaviour
 {
     public enum EnemyType
@@ -11,7 +18,11 @@ public class EnemyCombinationsDataGenerator : MonoBehaviour
         Boss
     }
 
-
+    /// <summary>
+    /// エネミー組み合わせデータマネージャの生成
+    /// </summary>
+    /// <param name="enemyType">エネミーの種別</param>
+    /// <param name="stageData">ステージデータ</param>
     public void GenerateData(EnemyType enemyType, StageData stageData)
     {
         var go = new GameObject();
