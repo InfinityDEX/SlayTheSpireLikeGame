@@ -337,9 +337,9 @@ public class BattleManager : MonoBehaviour
         // TODO：バトル終了アニメ・遷移など
 
         // ゲームデータの保存
-        SaveData saveData = new();
-        saveData.MaxHelth = Player.maxHealth;
-        saveData.CurrentHelth = Player.Hp;
+        SaveDataEntity saveData = new();
+        saveData.MaxHealth = Player.maxHealth;
+        saveData.CurrentHealth = Player.Hp;
         string json = JsonUtility.ToJson(saveData, true);
         string saveFilePath = System.IO.Path.Combine(Application.dataPath, "SaveData/SaveData.json");
         System.IO.File.WriteAllText(saveFilePath, json);
