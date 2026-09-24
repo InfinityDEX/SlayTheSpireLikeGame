@@ -1,13 +1,25 @@
 using UnityEngine;
 
+/// <summary>
+/// パーティクルシステムの粒子のサイズを移動距離に応じて変更するクラス
+/// </summary>
 [RequireComponent(typeof(ParticleSystem))]
 public class ParticleSizeByDistance : MonoBehaviour
 {
+    /// <summary>
+    /// パーティクルシステム
+    /// </summary>
     private ParticleSystem particleSystem;
+
+    /// <summary>
+    /// パーティクルシステムで生成している粒子
+    /// </summary>
     private ParticleSystem.Particle[] particles;
 
-    // インスペクターから調整用：最大サイズと最小サイズ
+    [field:SerializeField, Header("粒子の最小サイズ")]
     public float minSize = 0.1f;
+
+    [field:SerializeField, Header("粒子の最大サイズ")]
     public float maxSize = 1.0f;
 
     void Start()
@@ -48,8 +60,12 @@ public class ParticleSizeByDistance : MonoBehaviour
         particleSystem.SetParticles(particles, numParticlesAlive);
     }
 
+    /// <summary>
+    /// particlesの初期化
+    /// </summary>
     private void InitializeParticlesArray()
     {
+        // パーティクルシステムの最大パーティクル数だけのサイズのParticleSystem.Particle配列を用意する
         if (particles == null || particles.Length < particleSystem.main.maxParticles)
         {
             particles = new ParticleSystem.Particle[particleSystem.main.maxParticles];

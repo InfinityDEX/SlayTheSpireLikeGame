@@ -192,7 +192,7 @@ public class Creature : MonoBehaviour
         UpdateHealthText();
         if(diff > 0 && damageBatchGeneratePoint != null)
         {
-            BattleManager.Instance.DamageBatchGenerator.GenerateDamageBatch(damageBatchGeneratePoint.position, diff);
+            BattleManager.Instance.DamagePopupGenerator.GenerateDamagePopup(damageBatchGeneratePoint.position, diff);
         }
         TakeDamageEvents?.Invoke(damage, Hp);
     }

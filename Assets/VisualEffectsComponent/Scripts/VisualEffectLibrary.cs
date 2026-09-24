@@ -3,9 +3,16 @@ using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+
+/// <summary>
+/// 視覚エフェクトの一覧クラス
+/// 
+/// IDを指定して渡すことで、そのIDに紐づけられたエフェクトの
+/// インスタンスを生成してくれる
+/// </summary>
 public class VisualEffectLibrary : MonoBehaviour
 {
-    // カードとIDを組み合わせた構造体
+    // エフェクトプレハブとIDを組み合わせた構造体
     [System.Serializable]
     public struct EffectWithID
     {
@@ -13,6 +20,9 @@ public class VisualEffectLibrary : MonoBehaviour
         public GameObject effectPrefab;
     }
 
+    /// <summary>
+    /// エフェクトリスト
+    /// </summary>
     public List<EffectWithID> effects;
 
     /// <summary>
@@ -30,9 +40,10 @@ public class VisualEffectLibrary : MonoBehaviour
         return null;
     }
 
+// 以下EffectLibraryのエディタ拡張
 #if UNITY_EDITOR
     [CustomEditor(typeof(VisualEffectLibrary))]
-    public class EffectLibraryEditor : Editor
+    public class VisualEffectLibraryEditor : Editor
     {
         private SerializedProperty effectsProp;
 

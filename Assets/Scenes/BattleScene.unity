@@ -203,7 +203,7 @@ MonoBehaviour:
   <Player>k__BackingField: {fileID: 1160299480}
   <EnergyManager>k__BackingField: {fileID: 893586649}
   <VisualEffectLibrary>k__BackingField: {fileID: 371559359}
-  <DamageBatchGenerator>k__BackingField: {fileID: 674680379}
+  <DamagePopupGenerator>k__BackingField: {fileID: 674680379}
   currentPhase: 0
 --- !u!1 &195718300
 GameObject:
@@ -1110,7 +1110,7 @@ GameObject:
   - component: {fileID: 674680378}
   - component: {fileID: 674680379}
   m_Layer: 5
-  m_Name: DamageBatchs
+  m_Name: DamagePopupGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1148,7 +1148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomizeRange: {x: 0.5, y: 0.5}
-  damageBatchPrefab: {fileID: 7465125302182054735, guid: 831433595d6c986499a9adeae0c18b2c, type: 3}
+  damagePopupPrefab: {fileID: 7465125302182054735, guid: 831433595d6c986499a9adeae0c18b2c, type: 3}
 --- !u!1 &732946620
 GameObject:
   m_ObjectHideFlags: 0
@@ -1268,7 +1268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54938a1d89500484d923bab044669380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemiesInspector: []
+  <Enemies>k__BackingField: []
 --- !u!1 &796198656
 GameObject:
   m_ObjectHideFlags: 0

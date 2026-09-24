@@ -33,8 +33,8 @@ public class BattleManager : MonoBehaviour
     [field:SerializeField, Header("ビジュアルエフェクト一覧")]
     public VisualEffectLibrary VisualEffectLibrary { get; private set;}
 
-    [field:SerializeField, Header("ダメージバッチジェネレータ")]
-    public DamageBatchGenerator DamageBatchGenerator { get; private set;}
+    [field:SerializeField, Header("ダメージポップアップジェネレータ")]
+    public DamagePopupGenerator DamagePopupGenerator { get; private set;}
 
     [SerializeField, Header("現在のフェーズ")]
     private BattlePhase currentPhase = BattlePhase.Idle;
