@@ -1,21 +1,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ステージデータクラス
+/// 
+/// ステージ（ダンジョン）の名前や再生するBGMのリスト、
+/// 登場するエネミー等を記載する
+/// </summary>
 [CreateAssetMenu(fileName = "StageData", menuName = "Stage Data")]
 public class StageData : ScriptableObject
 {
-    [Header("ステージ名")]
+    [field:SerializeField, Header("ステージ名")]
     public string stageName;
 
-    [Header("このステージのバトルBGM候補")]
+    [field:SerializeField, Header("このステージのバトルBGM候補")]
     public AudioClip[] battleBgmCandidates;
 
-    [Header("ノーマルエネミーの組み合わせリスト")]
+    [field:SerializeField, Header("ノーマルエネミーの組み合わせリスト")]
     public List<EnemyCombinationData> normalEnemies;
 
-    [Header("エリートエネミーの組み合わせリスト")]
+    [field:SerializeField, Header("エリートエネミーの組み合わせリスト")]
     public List<EnemyCombinationData> eliteEnemies;
 
-    [Header("ボスエネミー（1種のみ）")]
+    [field:SerializeField, Header("ボスエネミー（1種のみ）")]
     public EnemyCombinationData bossEnemy;
 }
