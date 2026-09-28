@@ -66,11 +66,19 @@ public class BattleManager : MonoBehaviour
 
         // バトルフェーズを初期化フェーズにする
         currentPhase = BattlePhase.InitializePhase;
+
+        // プレイヤーの体力値をセーブデータから取得
+        if (SaveDataHolder.Instance != null)
+            Player.SetHealth(SaveDataHolder.Instance.SaveData.currentHealth);
     }
 
     private void Update()
     {
-        Player = Player;
+        // セーブデータエンティティの更新
+        SaveDataHolder.Instance?.SetMaxHealth(Player.MaxHealth);
+        SaveDataHolder.Instance?.SetCurrentHealth(Player.Hp);
+
+        // バトルループ 
         if (isBattleActive)
         {
             BattleLoop();
@@ -335,23 +343,20 @@ public class BattleManager : MonoBehaviour
     private void EndBattle(int clearFlag)
     {
         // TODO：バトル終了アニメ・遷移など
-
-        // ゲームデータの保存
-        SaveDataEntity saveData = new();
-        saveData.MaxHealth = Player.maxHealth;
-        saveData.CurrentHealth = Player.Hp;
-        string json = JsonUtility.ToJson(saveData, true);
-        string saveFilePath = System.IO.Path.Combine(Application.dataPath, "SaveData/SaveData.json");
-        System.IO.File.WriteAllText(saveFilePath, json);
-
         // シーン遷移分岐
         if (clearFlag == 0)
         {
+            // ゲームデータの保存
+            SaveDataHolder.Instance?.WriteSaveData();
+
             // マップシーンに移動
             SceneManager.LoadScene("MapScene", LoadSceneMode.Single);
         }
         else if (clearFlag == 1)
         {
+            // ゲームデータの破棄（はじめから）
+            SaveDataHolder.Instance?.DeleteSaveDataFile();
+
             // ゲームオーバーシーンに移動
             string mapSaveFilePath = System.IO.Path.Combine(Application.dataPath, DungeonMapManager.saveDataFilePath);
             if (System.IO.File.Exists(mapSaveFilePath))

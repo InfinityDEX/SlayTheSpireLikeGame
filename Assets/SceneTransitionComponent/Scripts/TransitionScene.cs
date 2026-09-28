@@ -13,6 +13,9 @@ public class TransitionScene : MonoBehaviour
     /// </summary>
     public void GoToTitleScene()
     {
+        // タイトルシーンに移行する際に、セーブデータインスタンスを破棄する
+        if (SaveDataHolder.Instance != null) Destroy(SaveDataHolder.Instance);
+
         UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScene", UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 

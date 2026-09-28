@@ -26,7 +26,7 @@ public class Creature : MonoBehaviour
     /// <summary>
     /// 最大体力
     /// </summary>
-    public int maxHealth { get {return creatureData.maxHealth;} }
+    public int MaxHealth { get {return creatureData.maxHealth;} }
     
     [field:SerializeField, Header("ブロック数")]
     public int Block { get; private set; } = 0;
@@ -166,6 +166,15 @@ public class Creature : MonoBehaviour
     public void UnregisterTakeDamageEvent(TakeDamageEventHandler e)
     {
         TakeDamageEvents -= e;
+    }
+
+    /// <summary>
+    /// 現在の体力値を指定した値にする
+    /// </summary>
+    /// <param name="currentHealth">設定したい現在の体直値</param>
+    public void SetHealth(int currentHealth)
+    {
+        Hp = Mathf.Max(Mathf.Min(currentHealth, MaxHealth), 0);
     }
 
     /// <summary>

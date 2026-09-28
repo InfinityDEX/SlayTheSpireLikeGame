@@ -1,4 +1,4 @@
 {
-    "MaxHelth": 100,
-    "CurrentHelth": 50
+    "maxHealth": 100,
+    "currentHealth": 58
 }
