@@ -44,6 +44,11 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private bool isBattleActive = true;
 
+    /// <summary>
+    /// 最初のアップデート処理か？
+    /// </summary>
+    private bool isFirstUpdate = true;
+
     private void Awake()
     {
         // シングルトン違反判定
@@ -66,14 +71,20 @@ public class BattleManager : MonoBehaviour
 
         // バトルフェーズを初期化フェーズにする
         currentPhase = BattlePhase.InitializePhase;
-
-        // プレイヤーの体力値をセーブデータから取得
-        if (SaveDataHolder.Instance != null)
-            Player.SetHealth(SaveDataHolder.Instance.SaveData.currentHealth);
     }
 
     private void Update()
     {
+        // プレイヤーの体力値をセーブデータの値で更新する際、
+        // PlayerインスタンスのStart処理の完了を待たないといけない為、
+        // ここで一回だけＨＰの書き換え処理を行う。
+        if (isFirstUpdate)
+        {
+            // プレイヤーの体力値をセーブデータから取得
+            if (SaveDataHolder.Instance != null)
+                Player.SetHealth(SaveDataHolder.Instance.SaveData.currentHealth);
+            isFirstUpdate = false;
+        }
         // セーブデータエンティティの更新
         SaveDataHolder.Instance?.SetMaxHealth(Player.MaxHealth);
         SaveDataHolder.Instance?.SetCurrentHealth(Player.Hp);

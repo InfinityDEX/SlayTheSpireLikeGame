@@ -22,7 +22,7 @@ public class Creature : MonoBehaviour
     private TextMeshProUGUI healthText;
 
     [field:SerializeField, Header("体力値")]
-    public int Hp { get; private set;}
+    public int Hp { get; private set;} = 0;
     /// <summary>
     /// 最大体力
     /// </summary>
@@ -171,10 +171,12 @@ public class Creature : MonoBehaviour
     /// <summary>
     /// 現在の体力値を指定した値にする
     /// </summary>
-    /// <param name="currentHealth">設定したい現在の体直値</param>
+    /// <param name="currentHealth">設定したい現在の体力値</param>
     public void SetHealth(int currentHealth)
     {
         Hp = Mathf.Max(Mathf.Min(currentHealth, MaxHealth), 0);
+        healthSlider.value = Hp;
+        UpdateHealthText();
     }
 
     /// <summary>
