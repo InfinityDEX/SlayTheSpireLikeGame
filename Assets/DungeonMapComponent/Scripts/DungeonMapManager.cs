@@ -187,7 +187,7 @@ public class DungeonMapManager : MonoBehaviour
     private void Update()
     {
         var nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridUpperLayerIndex];
-
+    
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             // カーソルを左に移動
@@ -236,6 +236,9 @@ public class DungeonMapManager : MonoBehaviour
                 StartCoroutine(LoadBattleSceneAfterDelay(2f));
             }
         }
+
+        // 現在の階層情報をセーブデータホルダー経由でセーブデータクラスに反映(Jsonファイルへの保存はしない)
+        SaveDataHolder.Instance.SetCurrentFloor(currentGridPos.row);
     }
 
     /// <summary>
@@ -294,6 +297,11 @@ public class DungeonMapManager : MonoBehaviour
 
         // マップ保存
         SaveDungeonMapData();
+
+        // セーブデータの書き換え・保存
+        var saveDataHolder = SaveDataHolder.Instance;
+        saveDataHolder.SetCurrentFloor(currentGridPos.row);
+        saveDataHolder.WriteSaveData();
 
         // バトルシーンへ遷移
         SceneManager.LoadScene("BattleScene", LoadSceneMode.Single);

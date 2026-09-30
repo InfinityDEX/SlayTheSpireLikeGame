@@ -75,6 +75,15 @@ public class SaveDataHolder : MonoBehaviour
     }
 
     /// <summary>
+    /// 現在の階層数情報を更新
+    /// </summary>
+    /// <param name="floorNum">現在の階層</param>
+    public void SetCurrentFloor(int floorNum)
+    {
+        SaveData.currentFloor = floorNum;
+    }
+
+    /// <summary>
     /// セーブデータを保存する
     /// </summary>
     public void WriteSaveData()
