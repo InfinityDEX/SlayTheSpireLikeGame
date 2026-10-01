@@ -18,6 +18,11 @@ public class SaveDataEntity
     public int currentHealth = 100;
 
     /// <summary>
+    /// 所持金
+    /// </summary>
+    public int money = 100;
+
+    /// <summary>
     /// 現在の階層
     /// </summary>
     public int currentFloor = 0;

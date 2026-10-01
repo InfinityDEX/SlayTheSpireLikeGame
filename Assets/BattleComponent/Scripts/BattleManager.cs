@@ -85,6 +85,7 @@ public class BattleManager : MonoBehaviour
                 Player.SetHealth(SaveDataHolder.Instance.SaveData.currentHealth);
             isFirstUpdate = false;
         }
+        
         // セーブデータエンティティの更新
         SaveDataHolder.Instance?.SetMaxHealth(Player.MaxHealth);
         SaveDataHolder.Instance?.SetCurrentHealth(Player.Hp);
