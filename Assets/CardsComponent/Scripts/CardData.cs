@@ -21,8 +21,10 @@ public class CardData : ScriptableObject
     /// </summary>
     public enum Target
     {
-        Enemy, // 敵
-        Player, // プレイヤー
+        OneEnemy, // 単一エネミー
+        AllEnemy, // 全エネミー
+        OnePlayer, // 単一プレイヤー
+        AllPlayer, // 全プレイヤー
     }
 
     [Header("カード効果ID")]

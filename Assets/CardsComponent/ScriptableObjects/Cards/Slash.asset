@@ -20,5 +20,5 @@ MonoBehaviour:
   cost: 2
   type: 0
   cardDescription: "\u76F8\u624B\u306B10\u70B9\u306E\u30C0\u30E1\u30FC\u30B8\u3092\u4E0E\u3048\u308B"
-  target: 0
+  target: 2
   upgradedCard: {fileID: 11400000, guid: f95a129d13209ea43b61baef6ddea250, type: 2}

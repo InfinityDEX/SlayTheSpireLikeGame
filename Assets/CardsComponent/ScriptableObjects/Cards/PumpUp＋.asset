@@ -20,5 +20,5 @@ MonoBehaviour:
   cost: 1
   type: 1
   cardDescription: "\u7B4B\u529B6\u3092\u5F97\u308B"
-  target: 1
+  target: 2
   upgradedCard: {fileID: 0}

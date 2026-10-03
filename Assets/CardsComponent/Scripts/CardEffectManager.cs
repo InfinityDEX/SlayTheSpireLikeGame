@@ -26,7 +26,7 @@ public class CardEffectManager : MonoBehaviour
     /// カードデータにはIDの方が登録されていて
     /// そのIDをもとに効果処理を呼び出す。
     /// </summary>
-    public Dictionary<int, CardEffect> cardEffects;
+    public Dictionary<int, CardActionModule> cardEffects;
 
     public void Awake()
     {
@@ -40,16 +40,16 @@ public class CardEffectManager : MonoBehaviour
             instance = this;
         }
    
-        cardEffects = new Dictionary<int, CardEffect>
+        cardEffects = new Dictionary<int, CardActionModule>
         {
-            { 0, new STAttack(5) }, // パンチ
-            { 1, new STAttack(7) }, // パンチ＋
-            { 2, new STAttack(10) }, // スラッシュ
-            { 3, new STAttack(12) }, // スラッシュ＋
-            { 4, new STBlock(5) }, // 盾
-            { 5, new STBlock(8) }, // 盾＋
-            { 6, new STMuscle(3) }, // バンプアップ
-            { 7, new STMuscle(6) }, // バンプアップ＋
+            { 0, new Attack(new Number(5)) }, // パンチ
+            { 1, new Attack(new Number(7)) }, // パンチ＋
+            { 2, new Attack(new Number(10)) }, // スラッシュ
+            { 3, new Attack(new Number(12)) }, // スラッシュ＋
+            { 4, new AddBlock(new Number(5)) }, // 盾
+            { 5, new AddBlock(new Number(8)) }, // 盾＋
+            { 6, new AddMuscle(new Number(3)) }, // バンプアップ
+            { 7, new AddMuscle(new Number(6)) }, // バンプアップ＋
         };
     }
 
@@ -60,6 +60,6 @@ public class CardEffectManager : MonoBehaviour
     /// <param name="target">効果対象</param>
     public void Play(int id, Creature target)
     {
-        cardEffects[id].Play(target);
+        cardEffects[id].Execute(target);
     }
 }

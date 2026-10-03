@@ -55,7 +55,7 @@ public class CardDragHandler : MonoBehaviour
 
                 switch(holdCard.data.target)
                 {
-                    case CardData.Target.Enemy:
+                    case CardData.Target.OneEnemy:
                         Collider2D hit = Physics2D.OverlapPoint(point, targetLayers);
                         var selectCreature = hit?.GetComponent<Creature>();
                         if (selectCreature != null && selectCreature.gameObject.tag == "Enemy")
@@ -87,7 +87,7 @@ public class CardDragHandler : MonoBehaviour
                             BattleManager.Instance.EnergyManager.RecoveryEnergy(holdCard.data.cost);
                         }
                         break;
-                    case CardData.Target.Player:
+                    case CardData.Target.OnePlayer:
                         if(Vector3.Distance(holdPos, point) >= cardPlayDragDistance)
                         {
                             Debug.Log($"クリックしてからマウスを離すまでのマウスの移動距離：{Vector3.Distance(holdPos, point)}");
