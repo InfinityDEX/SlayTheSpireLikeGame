@@ -12,7 +12,6 @@ public class DamagePopupGenerator : MonoBehaviour
     
     [field:SerializeField, Header("ダメージポップアップ(Prefab)")]
     private DamagePopup damagePopupPrefab;
-    
 
     public void GenerateDamagePopup(Vector2 pos, int damage)
     {

@@ -34,6 +34,9 @@ public class Creature : MonoBehaviour
     [field:SerializeField, Header("筋力値")]
     public int Muscle { get; private set; } = 0;
 
+    [field:SerializeField, Header("脆弱値")]
+    public int Weakened { get; private set; } = 0;
+
     [field:SerializeField, Header("ダメージバッチ生成位置")]
     private Transform damageBatchGeneratePoint;
 
@@ -140,6 +143,15 @@ public class Creature : MonoBehaviour
     public void AddMuscle(int muscle)
     {
         Muscle += muscle;
+    }
+
+    /// <summary>
+    /// 脆弱を追加
+    /// </summary>
+    /// <param name="weakened">追加する脆弱値</param>
+    public void AddWeakened(int weakened)
+    {
+        Weakened += weakened;
     }
 
     /// <summary>

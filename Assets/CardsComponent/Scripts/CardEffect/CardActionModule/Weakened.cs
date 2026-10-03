@@ -3,24 +3,24 @@ using CardEffect.Expressions;
 namespace CardEffect.CardActionModules
 {
     /// <summary>
-    /// ブロック追加クラス
+    /// 脆弱追加クラス
     /// 
-    /// 一つのターゲットを対象としたブロック追加効果を定義する
+    /// 一つのターゲットを対象とした脆弱追加効果を定義する
     /// </summary>
-    public class AddBlock : CardActionModule
+    public class Weakened : CardActionModule
     {    
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="blockVal">ブロック値</param>
-        public AddBlock(Number blockVal)
+        /// <param name="weakenedVal">脆弱値</param>
+        public Weakened(Number weakenedVal)
         {
             // 設定する引数は1つ
             for (int i = 0; i < 1; i++)
             {
                 args.Add(null);
             }
-            args[0] = blockVal;
+            args[0] = weakenedVal;
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace CardEffect.CardActionModules
         /// <param name="target">バフ対象</param>
         public override void Execute(Creature target)
         {
-            target.AddBlock((int)args[0].Evaluate());
+            target.AddWeakened((int)args[0].Evaluate());
         }
     }
 }

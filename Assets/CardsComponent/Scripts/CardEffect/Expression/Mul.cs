@@ -1,31 +1,36 @@
 namespace CardEffect.Expressions
 {
     /// <summary>
-    /// カードの数値情報を管理するモジュール
+    /// 数値乗算モジュール
     /// </summary>
-    public class Number : IValueExpression<int>
-    {    
+    public class Mul : IValueExpression<int>
+    {
         /// <summary>
-        /// 数値
+        /// 左項
         /// </summary>
-        private int value;
+        private IValueExpression<int> left;
+        
+        /// <summary>
+        /// 右項
+        /// </summary>
+        private IValueExpression<int> right;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="_value">このモジュールに登録する数値情報</param>
-        public Number(int _value)
+        public Mul(int _left, int _right)
         {
-            value = _value;
+            left = new Number(_left);
+            right = new Number(_right);
         }
 
         /// <summary>
-        /// このモジュールが持っている値を渡す
+        /// 左項と右項の値をかけ合わせた値を渡す
         /// </summary>
-        /// <returns>valueの値</returns>
+        /// <returns>左項＊右項の結果</returns>
         public int Evaluate()
         {
-            return value;
+            return left.Evaluate() * right.Evaluate();
         }
 
         /// <summary>

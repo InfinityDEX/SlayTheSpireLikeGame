@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using CardEffect;
+using CardEffect.CardActionModules;
+using CardEffect.Expressions;
 using UnityEngine;
 
 /// <summary>
