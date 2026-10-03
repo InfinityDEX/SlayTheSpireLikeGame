@@ -388,20 +388,7 @@
                         "col": 0
                     },
                     "upperMapGridPos": [],
-                    "lowerMapGridPos": [
-                        {
-                            "row": 5,
-                            "col": 0
-                        },
-                        {
-                            "row": 5,
-                            "col": 1
-                        },
-                        {
-                            "row": 5,
-                            "col": 2
-                        }
-                    ]
+                    "lowerMapGridPos": []
                 }
             ]
         }
@@ -410,10 +397,14 @@
         {
             "row": 0,
             "col": 0
+        },
+        {
+            "row": 1,
+            "col": 0
         }
     ],
     "currentGridPos": {
-        "row": 0,
+        "row": 1,
         "col": 0
     }
 }
