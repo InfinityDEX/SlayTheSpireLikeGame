@@ -4,32 +4,28 @@ namespace CardEffect.CardActionModules
 {
     /// <summary>
     /// 筋力追加クラス
-    /// 
+    ///
     /// 一つのターゲットを対象とした筋力追加効果を定義する
     /// </summary>
-    public class AddMuscle : CardActionModule
-    {    
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        /// <param name="muscleVal">筋力値</param>
-        public AddMuscle(Number muscleVal)
-        {
-            // 設定する引数は1つ
-            for (int i = 0; i < 1; i++)
-            {
-                args.Add(null);
-            }
-            args[0] = muscleVal;
-        }
-
+    public class AddMuscle : CardActionComponent
+    {
         /// <summary>
         /// カードの実行
         /// </summary>
         /// <param name="target">バフ対象</param>
-        public override void Execute(Creature target)
+        /// <returns>null</returns>
+        public override ValueExpressionComponent Execute(Creature target)
         {
-            target.AddMuscle((int)args[0].Evaluate());
+            // 型チェック
+            if (!(Args.Count == 1 && Args[0].IsT1 == true && Args[0].AsT1 is Number))
+            {
+                throw new System.InvalidCastException("Args[0] is not of type Number.");
+            }
+
+            // 対象に筋力追加
+            target.AddMuscle((int)((Number)Args[0].AsT1).Evaluate().AsT0);
+
+            return null;
         }
     }
 }

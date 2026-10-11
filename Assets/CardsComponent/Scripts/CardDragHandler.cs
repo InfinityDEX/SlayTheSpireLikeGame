@@ -48,12 +48,12 @@ public class CardDragHandler : MonoBehaviour
         if (Input.GetMouseButtonUp(0) && holdCard != null)
         {
             // コストが支払えるか確認して、払えたらカードの効果を適用する。
-            if(BattleManager.Instance.EnergyManager.UseEnergy(holdCard.data.cost))
+            if(BattleManager.Instance.EnergyManager.UseEnergy(holdCard.ThisCardData.Cost))
             {
                 Vector3 world = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector2 point = new Vector2(world.x, world.y);
 
-                switch(holdCard.data.target)
+                switch(holdCard.ThisCardData.TargetType)
                 {
                     case CardData.Target.OneEnemy:
                         Collider2D hit = Physics2D.OverlapPoint(point, targetLayers);
@@ -61,8 +61,8 @@ public class CardDragHandler : MonoBehaviour
                         if (selectCreature != null && selectCreature.gameObject.tag == "Enemy")
                         {
                             holdCard.Play(selectCreature);
-                            AudioController.Instance?.PlaySE(holdCard.data.castCardSE);
-                            GameObject visualEffectPrefab = BattleManager.Instance?.VisualEffectLibrary.GetEffectById(holdCard.data.visualEffectID);
+                            AudioController.Instance?.PlaySE(holdCard.ThisCardData.CastCardSE);
+                            GameObject visualEffectPrefab = BattleManager.Instance?.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
                             // ビジュアルエフェクトを生成
                             if (visualEffectPrefab != null)
                             {
@@ -84,7 +84,7 @@ public class CardDragHandler : MonoBehaviour
                         else
                         {
                             // 敵をターゲットに取らなかった場合は使用したコストをもとに戻す
-                            BattleManager.Instance.EnergyManager.RecoveryEnergy(holdCard.data.cost);
+                            BattleManager.Instance.EnergyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
                         }
                         break;
                     case CardData.Target.OnePlayer:
@@ -92,7 +92,7 @@ public class CardDragHandler : MonoBehaviour
                         {
                             Debug.Log($"クリックしてからマウスを離すまでのマウスの移動距離：{Vector3.Distance(holdPos, point)}");
                             holdCard.Play(BattleManager.Instance.Player);
-                            AudioController.Instance?.PlaySE(holdCard.data.castCardSE);
+                            AudioController.Instance?.PlaySE(holdCard.ThisCardData.CastCardSE);
                             DeckManager deckManager = FindObjectOfType<DeckManager>();
                             if (deckManager != null)
                             {
@@ -108,7 +108,7 @@ public class CardDragHandler : MonoBehaviour
                         {
                             // カードを選択した状態で、指定した長さだけマウスホバーしなかった場合は、カードを使用しなかったものとして
                             // 消費したコストをもとに戻す
-                            BattleManager.Instance.EnergyManager.RecoveryEnergy(holdCard.data.cost);
+                            BattleManager.Instance.EnergyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
                         }
                         break;
                 }

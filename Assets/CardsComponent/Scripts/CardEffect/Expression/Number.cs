@@ -1,43 +1,28 @@
+using System.Collections.Generic;
+using OneOf;
+
 namespace CardEffect.Expressions
 {
     /// <summary>
-    /// カードの数値情報を管理するモジュール
+    /// 数値モジュール
     /// </summary>
-    public class Number : IValueExpression<int>
-    {    
+    public class Number : PrimitiveValueExpressionComponent // プリミティブ型
+    {
         /// <summary>
-        /// 数値
+        /// 式の実行。
         /// </summary>
-        private int value;
-
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        /// <param name="_value">このモジュールに登録する数値情報</param>
-        public Number(int _value)
+        /// <returns>このモジュール</returns>
+        public override OneOf<float, string, CardActionComponent, ValueExpressionComponent> Evaluate()
         {
-            value = _value;
-        }
+            var val = Args[0];
 
-        /// <summary>
-        /// このモジュールが持っている値を渡す
-        /// </summary>
-        /// <returns>valueの値</returns>
-        public int Evaluate()
-        {
-            return value;
-        }
+            if (!val.IsT0)
+            {
+                throw new System.InvalidOperationException("Number型に数値以外が登録されてます");
+            }
 
-        /// <summary>
-        /// IValueExpressionの非ジェネリックなEvaluate実装。
-        /// int型で返される値をobject型で返すためBox化する。
-        /// 基本的に使用しない
-        /// </summary>
-        /// <returns>valueの値（object型）</returns>
-        object IValueExpression.Evaluate()
-        {
-            // 上の本命メソッド（intを返す）を呼び出し、自動でobjectにボックス化する
-            return this.Evaluate();
+            // 数値情報を返す
+            return Args[0].AsT0;
         }
     }
 }

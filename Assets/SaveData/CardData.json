@@ -1,0 +1,45 @@
+{
+  "CardDatas": [
+    {
+      "CardId": 0,
+      "CardCost": 3,
+      "CardName": "DrawAndPunch(仮)",
+      "CardType": "Attack",
+      "CardDescription": "",
+      "CardTarget": "OneEnemy",
+      "VisualEffectId": 0,
+      "UpgradedCardId": 0,
+      "CardImagePath": "",
+      "CardCastSoundPath": "",
+      "CardEffect": [
+        {
+          "CardActionId": 99,
+          "Args": [
+            {
+              "ExpressionId": 0,
+              "Args": [2]
+            }
+          ]
+        },
+        {
+          "CardActionId": 0,
+          "Args": [
+            {
+              "ExpressionId": 4,
+              "Args": [
+                {
+                  "ExpressionId": 6,
+                  "Args": []
+                },
+                {
+                  "ExpressionId": 0,
+                  "Args": [2]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

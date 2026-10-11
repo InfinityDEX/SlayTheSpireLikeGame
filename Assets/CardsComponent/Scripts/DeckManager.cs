@@ -3,7 +3,7 @@ using UnityEngine;
 
 /// <summary>
 /// デッキマネージャクラス
-/// 
+///
 /// 山札、捨て札、手札を管理する。
 /// </summary>
 public class DeckManager : MonoBehaviour
@@ -12,19 +12,19 @@ public class DeckManager : MonoBehaviour
     /// 山札
     /// </summary>
     public List<CardData> drawPile = new();
-    
+
     /// <summary>
     /// 手札
     /// </summary>
     public List<CardInHand> hand = new List<CardInHand>();
-    
+
     /// <summary>
     /// 捨て札
     /// </summary>
     public List<CardData> discardPile = new();
 
-    [Header("カードライブラリ（全カードデータ）")]
-    public CardLibrary cardLibrary;
+    // [Header("カードライブラリ（全カードデータ）")]
+    // public CardDataLibrary CardDataLibrary;
 
     private void Awake()
     {
@@ -56,13 +56,13 @@ public class DeckManager : MonoBehaviour
             if (!int.TryParse(cardEntry.cardId, out int cardId))
                 continue;
 
-            var cardWithID = cardLibrary.cardDatas.Find(c => c.cardId == cardId);
-            if (cardWithID.cardData == null)
+            var cardData = CardDataLibrary.Instance.SearchCardData(cardId);
+            if (cardData == null)
                 continue;
 
             for (int i = 0; i < cardEntry.count; i++)
             {
-                drawPile.Add(cardWithID.cardData);
+                drawPile.Add(cardData);
             }
         }
 
@@ -150,7 +150,7 @@ public class DeckManager : MonoBehaviour
         }
         hand.Clear();
     }
-    
+
     /// <summary>
     /// カードをドローする処理（カードのidをCardクラス用に付与）
     /// </summary>

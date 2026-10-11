@@ -19,7 +19,7 @@ public class DungeonMapManager : MonoBehaviour
     /// メインカメラのデフォルトY座標
     /// </summary>
     private float mainCameraDefault_YPos;
-    
+
     [field:SerializeField, Header("ステージデータ")]
     private StageData stageData;
 
@@ -52,10 +52,10 @@ public class DungeonMapManager : MonoBehaviour
 
     // マップのマス配置情報
     private List<List<MapGridInfo>> mapGridInfos;
-    
+
     // マップのマスオブジェクトリスト
     private List<List<MapGrid>> mapGrids;
-    
+
     // スタートマスとボスマス（終端）のMapGridInfo(1列しかないので別枠で管理)
     [field:SerializeField, Header("スタートマス情報")]
     private MapGridInfo startGridInfo;
@@ -72,7 +72,7 @@ public class DungeonMapManager : MonoBehaviour
     /// 移動経路
     /// </summary>
     private List<MapGridJsonEntity.MapGridPos> movePath;
-    
+
     /// <summary>
     /// 現在の位置
     /// </summary>
@@ -92,7 +92,7 @@ public class DungeonMapManager : MonoBehaviour
     private void Start()
     {
         movePath = new();
-        
+
         var dungeonFactory = new DungeonMapFactory();
         // 全てのマップグリッド情報をファクトリーに登録
         foreach (var item in availableMapGridInfoList.mapGridInfos)
@@ -108,8 +108,8 @@ public class DungeonMapManager : MonoBehaviour
         {
             // セーブデータからマップを読み込み
             mapGridInfos = dungeonFactory.GenerateDungeonMap(loadedDungeonMapSaveData);
-            movePath = loadedDungeonMapSaveData.movePath;
-            currentGridPos = loadedDungeonMapSaveData.currentGridPos;
+            movePath = loadedDungeonMapSaveData.MovePath;
+            currentGridPos = loadedDungeonMapSaveData.CurrentGridPos;
 
             // ダンジョンマップの実体を生成
             mapGrids = dungeonFactory.SpawnDungeonMap(
@@ -145,17 +145,17 @@ public class DungeonMapManager : MonoBehaviour
 
             // マップグリッド(マス)間をランダムに接続させる
             dungeonFactory.ConnectRandomGridCells(ref mapGrids, routeLineCanvas);
-            
+
             // 現在位置をスタートマス（row : 0, col : 0）に設定する
-            currentGridPos.row = 0;
-            currentGridPos.col = 0;
+            currentGridPos.Row = 0;
+            currentGridPos.Col = 0;
             movePath.Add(currentGridPos);
 
             // データセーブ
             SaveDungeonMapData();
         }
-    
-        var currentGrid = mapGrids[currentGridPos.row][currentGridPos.col];
+
+        var currentGrid = mapGrids[currentGridPos.Row][currentGridPos.Col];
         // 最初に選択状態になるグリッドは、現在いるグリッドから進行可能なグリッド（UpperLayer）の中で
         // 一番最初（左端）に登録されているグリッドを登録する
         if (currentGrid.upperLayer != null &&
@@ -173,7 +173,7 @@ public class DungeonMapManager : MonoBehaviour
         var startGrid = mapGrids[0][0]; // 最初のマスから辿っていく
         // 進行予定の経路も含めいて線に色を付ける
         var nextMovePath = new List<MapGridJsonEntity.MapGridPos>(movePath);
-        nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridUpperLayerIndex];
+        nextGrid = mapGrids[currentGridPos.Row][currentGridPos.Col].upperLayer[nextGridUpperLayerIndex];
         nextMovePath.Add(nextGrid.pos);
         startGrid.ColoringRouteLine(nextMovePath);
 
@@ -186,8 +186,8 @@ public class DungeonMapManager : MonoBehaviour
 
     private void Update()
     {
-        var nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridUpperLayerIndex];
-    
+        var nextGrid = mapGrids[currentGridPos.Row][currentGridPos.Col].upperLayer[nextGridUpperLayerIndex];
+
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             // カーソルを左に移動
@@ -203,7 +203,7 @@ public class DungeonMapManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             EnemyCombinationsDataGenerator.EnemyType enemyType = EnemyCombinationsDataGenerator.EnemyType.Enemy; // 未割当でエラーになってしまう為、一旦Enemyを登録
-            
+
             bool shouldNotTransition = false;
             switch (nextGrid.gridInfo.type)
             {
@@ -227,7 +227,7 @@ public class DungeonMapManager : MonoBehaviour
             if (!shouldNotTransition)
             {
                 // 高速点滅
-                nextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridUpperLayerIndex];
+                nextGrid = mapGrids[currentGridPos.Row][currentGridPos.Col].upperLayer[nextGridUpperLayerIndex];
                 nextGrid.FlickerGrid(true, true);
 
                 // 選択したグリッドに合わせて画面遷移する
@@ -238,7 +238,7 @@ public class DungeonMapManager : MonoBehaviour
         }
 
         // 現在の階層情報をセーブデータホルダー経由でセーブデータクラスに反映(Jsonファイルへの保存はしない)
-        SaveDataHolder.Instance.SetCurrentFloor(currentGridPos.row);
+        SaveDataHolder.Instance.SetCurrentFloor(currentGridPos.Row);
     }
 
     /// <summary>
@@ -249,7 +249,7 @@ public class DungeonMapManager : MonoBehaviour
     private void MoveSelectCursor(MapGrid currentNextGrid, int dir)
     {
         if (dir != 1 && dir != -1) throw new System.ArgumentException("dirは1または-1でなければなりません。", nameof(dir));
-        
+
         // 経路線のマテリアルを一旦リセットする
         mapGrids[0][0].ResetAllLinkLineMaterial();
 
@@ -257,13 +257,13 @@ public class DungeonMapManager : MonoBehaviour
         currentNextGrid.FlickerGrid(false);
 
         // dir方向にカーソル移動した際に範囲外になるなら、ループしてdir方向の反対側の端を選択する
-        var upperLayerCount = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer.Count;
+        var upperLayerCount = mapGrids[currentGridPos.Row][currentGridPos.Col].upperLayer.Count;
         nextGridUpperLayerIndex = (nextGridUpperLayerIndex + dir + upperLayerCount) % upperLayerCount;
-        
+
         AudioController.Instance.PlaySE(selectSE);
 
-        currentNextGrid = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridUpperLayerIndex];
-        
+        currentNextGrid = mapGrids[currentGridPos.Row][currentGridPos.Col].upperLayer[nextGridUpperLayerIndex];
+
         currentNextGrid.FlickerGrid(true);
 
         // 進行予定の経路も含めいて線に色を付ける
@@ -291,8 +291,8 @@ public class DungeonMapManager : MonoBehaviour
         }
 
         // 移動経路（movePath）と現在のフロア（currentGridPos）を更新
-        currentGridPos = mapGrids[currentGridPos.row][currentGridPos.col].upperLayer[nextGridUpperLayerIndex].pos;
-        
+        currentGridPos = mapGrids[currentGridPos.Row][currentGridPos.Col].upperLayer[nextGridUpperLayerIndex].pos;
+
         movePath.Add(currentGridPos); // 現在位置を移動経路に追加
 
         // マップ保存
@@ -300,7 +300,7 @@ public class DungeonMapManager : MonoBehaviour
 
         // セーブデータの書き換え・保存
         var saveDataHolder = SaveDataHolder.Instance;
-        saveDataHolder.SetCurrentFloor(currentGridPos.row);
+        saveDataHolder.SetCurrentFloor(currentGridPos.Row);
         saveDataHolder.WriteSaveData();
 
         // バトルシーンへ遷移
@@ -316,7 +316,7 @@ public class DungeonMapManager : MonoBehaviour
         var saveFilePath = System.IO.Path.Combine(Application.dataPath, saveDataFilePath);
         if (!System.IO.File.Exists(saveFilePath)) return null;
         var jsonText = System.IO.File.ReadAllText(saveFilePath, Encoding.UTF8);
-   
+
         DungeonMapJson dungeonMapJson;
         dungeonMapJson = JsonUtility.FromJson<DungeonMapJson>(jsonText);
         return dungeonMapJson;
@@ -337,25 +337,25 @@ public class DungeonMapManager : MonoBehaviour
                 MapGridJsonEntity mapGridJson = new()
                 {
                     mapGridInfoID = mapGrids[row][column].gridInfoId,
-                    pos = mapGrids[row][column].pos
+                    Pos = mapGrids[row][column].pos
                 };
                 foreach (var item in mapGrids[row][column].upperLayer)
                 {
-                    mapGridJson.upperMapGridPos.Add(item.pos);
+                    mapGridJson.UpperMapGridPos.Add(item.pos);
                 }
                 foreach (var item in mapGrids[row][column].lowerLayer)
                 {
-                    mapGridJson.lowerMapGridPos.Add(item.pos);
+                    mapGridJson.LowerMapGridPos.Add(item.pos);
                 }
 
-                floor.floorGrids.Add(mapGridJson);
+                floor.FloorGrids.Add(mapGridJson);
             }
-            dungeonMapJson.dungeonMapGrid.Add(floor);
+            dungeonMapJson.DungeonMapGrid.Add(floor);
         }
 
-        dungeonMapJson.movePath = movePath;
-        
-        dungeonMapJson.currentGridPos = currentGridPos;
+        dungeonMapJson.MovePath = movePath;
+
+        dungeonMapJson.CurrentGridPos = currentGridPos;
 
         var jsonText = JsonUtility.ToJson(dungeonMapJson, true);
         string saveFilePath = System.IO.Path.Combine(Application.dataPath, saveDataFilePath);

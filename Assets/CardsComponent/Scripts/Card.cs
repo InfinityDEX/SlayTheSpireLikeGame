@@ -3,7 +3,7 @@ using TMPro;
 
 /// <summary>
 /// カード実体クラス
-/// 
+///
 /// カードの効果や見た目の定義を管理する
 /// </summary>
 public class Card : MonoBehaviour
@@ -11,7 +11,7 @@ public class Card : MonoBehaviour
     /// <summary>
     /// カードデータ
     /// </summary>
-    public CardData data;
+    public CardData ThisCardData { get; private set;}
 
     /// <summary>
     /// カードID
@@ -20,13 +20,13 @@ public class Card : MonoBehaviour
 
     [SerializeField, Header("カード名表示GUI")]
     private TextMeshProUGUI cardNameText;
-    
+
     [SerializeField, Header("カード効果テキスト表示GUI")]
     private TextMeshProUGUI cardDescriptionText;
-    
+
     [SerializeField, Header("カード効果表示GUI")]
     private TextMeshProUGUI cardCostText;
-    
+
     [SerializeField, Header("カード種別表示GUI")]
     private TextMeshProUGUI cardTypeText;
 
@@ -44,8 +44,8 @@ public class Card : MonoBehaviour
     /// <param name="creature">ターゲット生物</param>
     public void Play(Creature creature)
     {
-        CardEffectManager.instance.Play(data.cardEffectId, creature);
-        Debug.Log(data.cardName + "を使用");
+        ThisCardData.Play(creature);
+        Debug.Log(ThisCardData.CardName + "を使用");
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public class Card : MonoBehaviour
     /// <param name="cardId">カードID</param>
     public void Setup(CardData cardData, int cardId)
     {
-        data = cardData;
+        ThisCardData = cardData;
         id = cardId;
         InitializeCardUI();
     }
@@ -65,11 +65,11 @@ public class Card : MonoBehaviour
     /// </summary>
     public void InitializeCardUI()
     {
-        cardNameText.text = data.cardName;
-        cardDescriptionText.text = data.cardDescription;
-        cardCostText.text = data.cost.ToString();
-        cardTypeText.text = data.type.ToString();
-        cardImage.sprite = data.cardImage;
+        cardNameText.text = ThisCardData.CardName;
+        cardDescriptionText.text = ThisCardData.CardDescription;
+        cardCostText.text = ThisCardData.Cost.ToString();
+        cardTypeText.text = ThisCardData.Type.ToString();
+        cardImage.sprite = ThisCardData.CardImage;
         cardImage.color = new UnityEngine.Color(1, 1, 1, 1);
     }
 }

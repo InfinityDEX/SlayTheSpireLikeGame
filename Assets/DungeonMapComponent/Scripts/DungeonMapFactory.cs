@@ -6,7 +6,7 @@ using UnityEngine;
 /// ダンジョンマップ生成クラス
 /// </summary>
 public class DungeonMapFactory
-{    
+{
     /// <summary>
     /// マップグリッド情報のリスト
     /// </summary>
@@ -75,8 +75,8 @@ public class DungeonMapFactory
         }
 
         return mapGrids;
-    }    
-    
+    }
+
     /// <summary>
     /// 指定された列数に基づいてダンジョンマップのグリッド情報リストを生成
     /// </summary>
@@ -85,13 +85,13 @@ public class DungeonMapFactory
     public List<List<MapGridInfo>> GenerateDungeonMap(DungeonMapJson jsonData)
     {
         var mapGrids = new List<List<MapGridInfo>>();
-        var dungeonMapGrid = jsonData.dungeonMapGrid;
+        var dungeonMapGrid = jsonData.DungeonMapGrid;
 
         // ダンジョンマップインスタンス化
         for (int i = 0; i < dungeonMapGrid.Count; i++)
         {
             var floor = new List<MapGridInfo>();
-            for (int j = 0; j < dungeonMapGrid[i].floorGrids.Count; j++)
+            for (int j = 0; j < dungeonMapGrid[i].FloorGrids.Count; j++)
             {
                 // Idでマップのグリッドを検索する。
                 var infoWithId = mapGridInfoList.FirstOrDefault(infoWithId => infoWithId.id == dungeonMapGrid[i][j].mapGridInfoID);
@@ -102,14 +102,14 @@ public class DungeonMapFactory
                 {
                     throw new System.Exception($"指定されたID ({dungeonMapGrid[i][j].mapGridInfoID}) のマップグリッド情報が見つかりません。");
                 }
-           
+
                 floor.Add(gridInfo);
             }
             mapGrids.Add(floor);
         }
 
         return mapGrids;
-    }    
+    }
 
     /// <summary>
     /// ダンジョンマップ(マップグリッド)を画面上に配置・生成する処理
@@ -142,7 +142,7 @@ public class DungeonMapFactory
             Debug.LogWarning("mapGrids or mapGridPrefab is null.");
             return null;
         }
-   
+
 
         for (int row = 0; row < mapGridInfos.Count; row++)
         {
@@ -163,7 +163,7 @@ public class DungeonMapFactory
                 Vector3 position = new (x, y, 0);
                 // MapGridのインスタンスを生成
                 MapGrid gridInstance = Object.Instantiate(mapGridPrefab, mapGridCanvas.transform);
-                
+
                 // デバッグしやすいように名前にMapGridの座標を付ける
                 gridInstance.name = $"MapGrid_{row}_{col}";
 
@@ -190,7 +190,7 @@ public class DungeonMapFactory
 
         // もしもセーブデータからダンジョンマップを生成した場合、新規生成の場合後で登録するスタートマスとボスマスの情報を
         // 含めてMapGridInfoリストインスタンスを生成する為、一旦削除する。
-        // 
+        //
         // TODO：もしも今後スタートマスとボスマスの種類を増やす場合は、MapGridInfoリストのスタートマスとボスマスの情報を
         // 無視する処理にしてしまっている為、このあたりの処理を書き直す必要がある。
         if (!isNewDungeon)
@@ -249,14 +249,14 @@ public class DungeonMapFactory
                         // マス間の接続を行う（セーブデータから復元した場合、upperLayer・underLayerの情報を使って再接続する）
                         var currentGridInfo = currentRow[col];
                         // 上階層への接続
-                        foreach (var upperPos in jsonData.dungeonMapGrid[row][col].upperMapGridPos)
+                        foreach (var upperPos in jsonData.DungeonMapGrid[row][col].UpperMapGridPos)
                         {
-                            mapGrids[row][col].SetUpperLayer(mapGrids[upperPos.row][upperPos.col]);
+                            mapGrids[row][col].SetUpperLayer(mapGrids[upperPos.Row][upperPos.Col]);
                         }
                         // 下階層への接続
-                        foreach (var underPos in jsonData.dungeonMapGrid[row][col].lowerMapGridPos)
+                        foreach (var underPos in jsonData.DungeonMapGrid[row][col].LowerMapGridPos)
                         {
-                            mapGrids[row][col].SetUnderLayer(mapGrids[underPos.row][underPos.col]);
+                            mapGrids[row][col].SetUnderLayer(mapGrids[underPos.Row][underPos.Col]);
                         }
                     }
                 }
@@ -265,7 +265,7 @@ public class DungeonMapFactory
             // マップグリッドの座標情報初期化
             OrganizeMapGridPos(ref mapGrids);
 
-            // すべてのマップグリッドで線分を描画 
+            // すべてのマップグリッドで線分を描画
             foreach (var row in mapGrids)
             {
                 foreach (var grid in row)
@@ -305,7 +305,7 @@ public class DungeonMapFactory
             firstGrid.SetUnderLayer(startGrid);
         }
 
-        
+
         // ボスマスとボス一歩前のマスを全て接続
         MapGrid bossGrid = mapGrids[^1][0];
         for (int col = 0; col < mapGrids[^2].Count; col++)
@@ -333,7 +333,7 @@ public class DungeonMapFactory
                         candidateCols.Add(toCol);
                     }
                 }
-        
+
 
                 List<int> connectedCols = new List<int>();
                 // ランダム接続を行う
@@ -350,11 +350,11 @@ public class DungeonMapFactory
                 }
             }
         }
-        
+
         // マップグリッドの座標情報初期化
         OrganizeMapGridPos(ref mapGrids);
-        
-        // すべてのマップグリッドで線分を描画 
+
+        // すべてのマップグリッドで線分を描画
         foreach (var row in mapGrids)
         {
             foreach (var grid in row)
@@ -379,8 +379,8 @@ public class DungeonMapFactory
             {
                 if (mapGrids[i][j] != null)
                 {
-                    mapGrids[i][j].pos.row = i;
-                    mapGrids[i][j].pos.col = j;
+                    mapGrids[i][j].pos.Row = i;
+                    mapGrids[i][j].pos.Col = j;
                 }
             }
         }

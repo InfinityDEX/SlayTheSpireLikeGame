@@ -45,7 +45,7 @@ public class MapGrid : MonoBehaviour
     /// 経路線インスタンス(上層のみ)
     /// </summary>
     private List<DashedUILineRendererWithCol> upperLineInstances;
-    
+
     /// <summary>
     /// デフォルトの経路線のスタイル
     /// </summary>
@@ -109,10 +109,10 @@ public class MapGrid : MonoBehaviour
             UILineConnector ulc = lineIns.GetComponent<UILineConnector>();
             DashedUILineRenderer dulr = lineIns.GetComponent<DashedUILineRenderer>();
             dulr.EnsureRuntimeMaterial();
-            
+
             // 上層の経路線インスタンスを登録しておく。（進行経路の経路線のMaterialを変更をする時などに使用）
             if (upperLineInstances == null ) upperLineInstances = new();
-            upperLineInstances.Add(new DashedUILineRendererWithCol { col = upper.pos.col, instance = dulr });    
+            upperLineInstances.Add(new DashedUILineRendererWithCol { col = upper.pos.Col, instance = dulr });
 
             // 自身のgridImageとupperのgridImageのrectTransformを設定
             ulc.transforms = new RectTransform[] { this.gridImage.rectTransform, upper.gridImage.rectTransform };
@@ -126,7 +126,7 @@ public class MapGrid : MonoBehaviour
     public void ColoringRouteLine(in List<MapGridJsonEntity.MapGridPos> movePath)
     {
         // 進行先の列数を確認する為、0(スタートマス)ではなく1(1階層目)をcurrentCheckFloorに渡す
-        ColoringRouteLine(movePath, 1); 
+        ColoringRouteLine(movePath, 1);
     }
 
     /// <summary>
@@ -137,15 +137,15 @@ public class MapGrid : MonoBehaviour
     private void ColoringRouteLine(in List<MapGridJsonEntity.MapGridPos> movePath , int currentCheckFloor)
     {
         // 次に進むマスへの道を列数から検索する
-        var nextRouteCol = movePath[currentCheckFloor].col;
+        var nextRouteCol = movePath[currentCheckFloor].Col;
         var coloringLine = upperLineInstances.Find( upperLineInfo => {return upperLineInfo.col == nextRouteCol;}).instance;
-        
+
         coloringLine.SetDashStyle(1, 0, Color.black);
 
         // 移動経路を全て着色するまで進行先のMapGridのColoringRouteLineを呼び出し再帰処理を行う。
         if (currentCheckFloor + 1 < movePath.Count)
         {
-            upperLayer.Find( currentMapGrid => currentMapGrid.pos.col == nextRouteCol).ColoringRouteLine(movePath, currentCheckFloor + 1);
+            upperLayer.Find( currentMapGrid => currentMapGrid.pos.Col == nextRouteCol).ColoringRouteLine(movePath, currentCheckFloor + 1);
         }
     }
 
@@ -166,7 +166,7 @@ public class MapGrid : MonoBehaviour
                 defaultDashedLineColor
             );
         }
-        
+
         // 移動経路インスタンスのマテリアルを全てデフォルトにするまで再帰処理を行う。
         foreach (var mapGridIns in upperLayer)
         {
@@ -179,7 +179,7 @@ public class MapGrid : MonoBehaviour
     /// </summary>
     /// <param name="info">グリッド情報</param>
     public void SetInfo(MapGridInfo info)
-    { 
+    {
         gridInfoId = info.id;
         gridInfo = info;
         // グリッド情報の登録と同時にImageに画像データを登録する
@@ -211,7 +211,7 @@ public class MapGrid : MonoBehaviour
     {
         if(gridPosViewDisplay != null)
         {
-            gridPosViewDisplay.text = $"Col:{pos.col}\nRow:{pos.row}";
+            gridPosViewDisplay.text = $"Col:{pos.Col}\nRow:{pos.Row}";
         }
     }
 #endif
