@@ -3,6 +3,7 @@ using CardEffect;
 using CardEffect.CardActionModules;
 using CardEffect.CardDataJson;
 using CardEffect.Expressions;
+using Newtonsoft.Json.Linq;
 using OneOf;
 using UnityEngine;
 
@@ -59,7 +60,7 @@ class CardDataFactory
         string json = System.IO.File.ReadAllText(filePath);
 
         // Jsonテキストをエンティティクラスに変更して、変換する
-        CardDataListEntity cardDataList = JsonUtility.FromJson<CardDataListEntity>(json);
+        CardDataListEntity cardDataList = GenerateCardDataListEntity(json);
         List<CardData> cardDatas = new();
         foreach (var cardDataEntity in cardDataList.CardDatas)
         {
@@ -81,6 +82,7 @@ class CardDataFactory
                 var action = GenerateCardAction(cardActionData);
                 cardData.CardActions.Add(action);
             }
+            cardDatas.Add(cardData);
         }
 
         return cardDatas;
@@ -153,7 +155,10 @@ class CardDataFactory
         int actionId = cardActionEntity.CardActionId;
         var action = GetCardAction(actionId);
         var args = GenerateArgs(cardActionEntity.Args);
-        action.SetArgs(args);
+        if (args != null)
+        {
+            action.SetArgs(args);
+        }
         return action;
     }
 
@@ -176,8 +181,24 @@ class CardDataFactory
             {
                 var valueExpression = GetValueExpression(arg.AsT1.ExpressionId);
                 var generatedArgs = GenerateArgs(arg.AsT1.args);
-                valueExpression.SetArgs(generatedArgs);
 
+                // valueExpressionArgs (generatedArgs) を List<OneOf<float, string, CardActionComponent, ValueExpressionComponent>> 型に変換する
+                List<OneOf<float, string, CardActionComponent, ValueExpressionComponent>> valueExpressionArgs = new();
+                foreach (var genArg in generatedArgs)
+                {
+                    if (genArg.IsT0)
+                    {
+                        // CardActionComponent
+                        valueExpressionArgs.Add(genArg.AsT0);
+                    }
+                    else if (genArg.IsT1)
+                    {
+                        // ValueExpressionComponent
+                        valueExpressionArgs.Add(genArg.AsT1);
+                    }
+                }
+                valueExpression.SetArgs(valueExpressionArgs);
+                ret.Add(valueExpression);
             }
         }
         return ret;
@@ -215,9 +236,143 @@ class CardDataFactory
             {
                 // カード式コンポーネントの生成と登録
                 var valueExpression = GetValueExpression(arg.AsT3.ExpressionId);
-                valueExpression.SetArgs(GenerateArgs(arg.AsT3.args));
+
+                var generatedArgs = GenerateArgs(arg.AsT3.args);
+                List<OneOf<float, string, CardActionComponent, ValueExpressionComponent>> valueExpressionArgs = new();
+                foreach (var genArg in generatedArgs)
+                {
+                    if (genArg.IsT0)
+                    {
+                        // CardActionComponent
+                        valueExpressionArgs.Add(genArg.AsT0);
+                    }
+                    else if (genArg.IsT1)
+                    {
+                        // ValueExpressionComponent
+                        valueExpressionArgs.Add(genArg.AsT1);
+                    }
+                }
+                valueExpression.SetArgs(valueExpressionArgs);
             }
         }
         return ret;
+    }
+
+    private CardDataListEntity GenerateCardDataListEntity(string jsonText)
+    {
+        var ret = JsonUtility.FromJson<CardDataListEntity>(jsonText);
+        var jObject = JObject.Parse(jsonText);
+        var cardDataEntities = (JArray)jObject["CardDatas"];
+        foreach (var cardDataJToken in cardDataEntities)
+        {
+            // INSERT_YOUR_CODE
+            // JsonUtility.FromJsonではOneOfで設定したパラメータをCardDataListEntityにコンバートできない為、ここで初期化する。
+            // 各CardDataについて、JObjectからCardActionsDataやCardEffect(Args)を明示的にパースし、OneOf型に変換して格納し直す
+
+            var cardDataEntityIndex = cardDataEntities.IndexOf(cardDataJToken);
+
+            // CardDataListEntity内の対象となるCardDataを取得
+            var cardDataEntity = ret.CardDatas[cardDataEntityIndex];
+
+            // CardEffect(カードの効果群)を再構築
+            var cardEffectsJArray = (JArray)cardDataJToken["CardEffect"]; // JArrayで抽出
+            cardDataEntity.CardActionsData = new List<CardActionEntity>();
+            foreach (var cardEffectJToken in cardEffectsJArray)
+            {
+                var cardActionEntity = new CardActionEntity();
+                cardActionEntity.CardActionId = (int)cardEffectJToken["CardActionId"];
+                cardActionEntity.Args = new List<OneOf<CardActionEntity, CardExpressionEntity>>();
+
+                var argsJArray = (JArray)cardEffectJToken["Args"];
+                foreach (var argJToken in argsJArray)
+                {
+                    var type = (string)argJToken["Type"];
+                    if (type == "Action")
+                    {
+                        // 再帰的にCardActionEntityとしてパースし、Argsも再帰的に確認
+                        var actionValue = argJToken["Value"];
+                        var nestedAction = ParseActionEntity(actionValue);
+                        cardActionEntity.Args.Add(nestedAction);
+
+                    }
+                    else if (type == "Expression")
+                    {
+                        // ExpressionIdとArgsを持つCardExpressionEntityとして生成
+                        var exprValue = argJToken["Value"];
+                        var exprEntity = ParseExpressionEntity(exprValue);
+                        cardActionEntity.Args.Add(exprEntity);
+
+                    }
+                }
+                cardDataEntity.CardActionsData.Add(cardActionEntity);
+            }
+        }
+        return ret;
+    }
+
+    private CardActionEntity ParseActionEntity(JToken actionValue)
+    {
+        var cardActionEntity = new CardActionEntity();
+        cardActionEntity.CardActionId = (int)actionValue["CardActionId"];
+        cardActionEntity.Args = new List<OneOf<CardActionEntity, CardExpressionEntity>>();
+
+        if (actionValue["Args"] is JArray argsJArray)
+        {
+            foreach (var argJToken in argsJArray)
+            {
+                var type = (string)argJToken["Type"];
+                if (type == "Action")
+                {
+                    // CardActionEntityとして再帰的にパース
+                    var nestedActionValue = argJToken["Value"];
+                    var nestedActionEntity = ParseActionEntity(nestedActionValue);
+                    cardActionEntity.Args.Add(nestedActionEntity);
+                }
+                else if (type == "Expression")
+                {
+                    // CardExpressionEntityとして再帰的にパース
+                    var exprValue = argJToken["Value"];
+                    var exprEntity = ParseExpressionEntity(exprValue);
+                    cardActionEntity.Args.Add(exprEntity);
+                }
+            }
+        }
+
+        return cardActionEntity;
+    }
+
+    private CardExpressionEntity ParseExpressionEntity(JToken exprValue)
+    {
+        var exprEntity = new CardExpressionEntity();
+        exprEntity.ExpressionId = (int)exprValue["ExpressionId"];
+        exprEntity.args = new List<OneOf<float, string, CardActionEntity, CardExpressionEntity>>();
+        if (exprValue["Args"] is JArray nestedArgs)
+        {
+            foreach (var nestedArgJToken in nestedArgs)
+            {
+                var nestedType = (string)nestedArgJToken["Type"];
+                if (nestedType == "float")
+                {
+                    exprEntity.args.Add((float)nestedArgJToken["Value"]);
+                }
+                else if (nestedType == "string")
+                {
+                    exprEntity.args.Add((string)nestedArgJToken["Value"]);
+                }
+                else if (nestedType == "Action")
+                {
+                    var nestedActionValue = nestedArgJToken["Value"];
+                    var nestedActionEntity = nestedActionValue.ToObject<CardActionEntity>();
+                    exprEntity.args.Add(nestedActionEntity);
+                }
+                else if (nestedType == "Expression")
+                {
+                    var deeplyNestedExprValue = nestedArgJToken["Value"];
+                    var deeplyNestedExprEntity = ParseExpressionEntity(deeplyNestedExprValue);
+                    exprEntity.args.Add(deeplyNestedExprEntity);
+                }
+            }
+        }
+        return exprEntity;
     }
 }

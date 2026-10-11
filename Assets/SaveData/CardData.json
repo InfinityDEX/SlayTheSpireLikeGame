@@ -13,11 +13,19 @@
       "CardCastSoundPath": "",
       "CardEffect": [
         {
-          "CardActionId": 99,
+          "CardActionId": 0,
           "Args": [
             {
-              "ExpressionId": 0,
-              "Args": [2]
+              "Type": "Expression",
+              "Value": {
+                "ExpressionId": 0,
+                "Args": [
+                  {
+                    "Type": "float",
+                    "Value": 2
+                  }
+                ]
+              }
             }
           ]
         },
@@ -25,17 +33,16 @@
           "CardActionId": 0,
           "Args": [
             {
-              "ExpressionId": 4,
-              "Args": [
-                {
-                  "ExpressionId": 6,
-                  "Args": []
-                },
-                {
-                  "ExpressionId": 0,
-                  "Args": [2]
-                }
-              ]
+              "Type": "Expression",
+              "Value": {
+                "ExpressionId": 0,
+                "Args": [
+                  {
+                    "Type": "float",
+                    "Value": 2
+                  }
+                ]
+              }
             }
           ]
         }

@@ -104,11 +104,6 @@ namespace CardEffect
             // ここは通らないはずだが、構文エラーを抑えるために記載
             throw new System.InvalidOperationException("Evaluate did not return a float or string value.");
         }
-
-        internal void SetArgs(List<OneOf<CardActionComponent, ValueExpressionComponent>> generatedArgs)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     /// <summary>
