@@ -10,6 +10,15 @@ namespace CardEffect.CardActionModules
     public class AddWeakened : CardActionComponent
     {
         /// <summary>
+        /// 自己複製コンポーネント
+        /// </summary>
+        /// <returns>複製したコンポーネント</returns>
+        public override CardActionComponent Spawn()
+        {
+            return new AddWeakened();
+        }
+
+        /// <summary>
         /// カードの実行
         /// </summary>
         /// <param name="target">バフ対象</param>

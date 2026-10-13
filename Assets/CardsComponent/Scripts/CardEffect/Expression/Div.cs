@@ -9,6 +9,15 @@ namespace CardEffect.Expressions
     public class Div : ValueExpressionComponent
     {
         /// <summary>
+        /// 自己複製コンポーネント
+        /// </summary>
+        /// <returns>複製したコンポーネント</returns>
+        public override ValueExpressionComponent Spawn()
+        {
+            return new Div();
+        }
+
+        /// <summary>
         /// 左項から右項の値を割った値を渡す
         /// </summary>
         /// <returns>左項＋右項の結果</returns>

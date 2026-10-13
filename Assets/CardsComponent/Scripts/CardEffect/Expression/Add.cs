@@ -9,6 +9,15 @@ namespace CardEffect.Expressions
     public class Add : ValueExpressionComponent
     {
         /// <summary>
+        /// 自己複製メソッド
+        /// </summary>
+        /// <returns>複製したコンポーネント</returns>
+        public override ValueExpressionComponent Spawn()
+        {
+            return new Add();
+        }
+
+        /// <summary>
         /// 左項と右項の値を足し合わせた値を渡す
         /// </summary>
         /// <returns>左項＋右項の結果</returns>

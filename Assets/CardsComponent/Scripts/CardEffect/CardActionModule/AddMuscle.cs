@@ -10,6 +10,14 @@ namespace CardEffect.CardActionModules
     public class AddMuscle : CardActionComponent
     {
         /// <summary>
+        /// 自己複製コンポーネント
+        /// </summary>
+        /// <returns>複製したコンポーネント</returns>
+        public override CardActionComponent Spawn()
+        {
+            return new AddMuscle();
+        }
+        /// <summary>
         /// カードの実行
         /// </summary>
         /// <param name="target">バフ対象</param>

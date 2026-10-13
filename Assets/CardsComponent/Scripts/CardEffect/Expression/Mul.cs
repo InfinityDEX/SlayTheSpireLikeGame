@@ -9,6 +9,15 @@ namespace CardEffect.Expressions
     public class Mul : ValueExpressionComponent
     {
         /// <summary>
+        /// 自己複製コンポーネント
+        /// </summary>
+        /// <returns>複製したコンポーネント</returns>
+        public override ValueExpressionComponent Spawn()
+        {
+            return new Mul();
+        }
+
+        /// <summary>
         /// 左項と右項の値をかけ合わせた値を渡す
         /// </summary>
         /// <returns>左項＊右項の結果</returns>
@@ -53,7 +62,7 @@ namespace CardEffect.Expressions
 
                 leftVal = tmp.AsT0;
             }
-            if (right.IsT2)
+            if (right.IsT3)
             {
                 var tmp = right.AsT3.EvaluateToValue();
                 if (tmp.IsT1)

@@ -23,9 +23,6 @@ public class DeckManager : MonoBehaviour
     /// </summary>
     public List<CardData> discardPile = new();
 
-    // [Header("カードライブラリ（全カードデータ）")]
-    // public CardDataLibrary CardDataLibrary;
-
     private void Awake()
     {
         LoadDeckFromJson();
@@ -56,7 +53,7 @@ public class DeckManager : MonoBehaviour
             if (!int.TryParse(cardEntry.cardId, out int cardId))
                 continue;
 
-            var cardData = CardDataLibrary.Instance.SearchCardData(cardId);
+            var cardData = CardDataLibrary.Instance?.SearchCardData(cardId);
             if (cardData == null)
                 continue;
 
@@ -161,6 +158,8 @@ public class DeckManager : MonoBehaviour
         {
             drawPile.AddRange(discardPile);
             discardPile.Clear();
+
+            if (drawPile.Count == 0) return; // 墓地をデッキの戻しても山札枚数が0 → すべてのデッキのカードが手札にある
         }
 
         // 山札からカードを引く

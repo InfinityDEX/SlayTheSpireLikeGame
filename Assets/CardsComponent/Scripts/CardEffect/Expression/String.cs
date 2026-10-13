@@ -9,6 +9,15 @@ namespace CardEffect.Expressions
     public class String : PrimitiveValueExpressionComponent // プリミティブ型
     {
         /// <summary>
+        /// 自己複製コンポーネント
+        /// </summary>
+        /// <returns>複製したコンポーネント</returns>
+        public override ValueExpressionComponent Spawn()
+        {
+            return new String();
+        }
+
+        /// <summary>
         /// 式の実行。
         /// </summary>
         /// <returns>このモジュール</returns>

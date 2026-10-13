@@ -29,7 +29,7 @@
         {
             "FloorGrids": [
                 {
-                    "mapGridInfoID": 1,
+                    "mapGridInfoID": 2,
                     "Pos": {
                         "Row": 1,
                         "Col": 0
@@ -61,6 +61,10 @@
                         {
                             "Row": 2,
                             "Col": 1
+                        },
+                        {
+                            "Row": 2,
+                            "Col": 2
                         }
                     ],
                     "LowerMapGridPos": [
@@ -71,7 +75,7 @@
                     ]
                 },
                 {
-                    "mapGridInfoID": 0,
+                    "mapGridInfoID": 1,
                     "Pos": {
                         "Row": 1,
                         "Col": 2
@@ -90,6 +94,176 @@
                         {
                             "Row": 0,
                             "Col": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "FloorGrids": [
+                {
+                    "mapGridInfoID": 1,
+                    "Pos": {
+                        "Row": 2,
+                        "Col": 0
+                    },
+                    "UpperMapGridPos": [
+                        {
+                            "Row": 3,
+                            "Col": 0
+                        },
+                        {
+                            "Row": 3,
+                            "Col": 1
+                        }
+                    ],
+                    "LowerMapGridPos": [
+                        {
+                            "Row": 1,
+                            "Col": 0
+                        }
+                    ]
+                },
+                {
+                    "mapGridInfoID": 0,
+                    "Pos": {
+                        "Row": 2,
+                        "Col": 1
+                    },
+                    "UpperMapGridPos": [
+                        {
+                            "Row": 3,
+                            "Col": 0
+                        },
+                        {
+                            "Row": 3,
+                            "Col": 1
+                        },
+                        {
+                            "Row": 3,
+                            "Col": 2
+                        }
+                    ],
+                    "LowerMapGridPos": [
+                        {
+                            "Row": 1,
+                            "Col": 0
+                        },
+                        {
+                            "Row": 1,
+                            "Col": 1
+                        },
+                        {
+                            "Row": 1,
+                            "Col": 2
+                        }
+                    ]
+                },
+                {
+                    "mapGridInfoID": 0,
+                    "Pos": {
+                        "Row": 2,
+                        "Col": 2
+                    },
+                    "UpperMapGridPos": [
+                        {
+                            "Row": 3,
+                            "Col": 1
+                        },
+                        {
+                            "Row": 3,
+                            "Col": 2
+                        }
+                    ],
+                    "LowerMapGridPos": [
+                        {
+                            "Row": 1,
+                            "Col": 1
+                        },
+                        {
+                            "Row": 1,
+                            "Col": 2
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "FloorGrids": [
+                {
+                    "mapGridInfoID": 0,
+                    "Pos": {
+                        "Row": 3,
+                        "Col": 0
+                    },
+                    "UpperMapGridPos": [
+                        {
+                            "Row": 4,
+                            "Col": 0
+                        },
+                        {
+                            "Row": 4,
+                            "Col": 1
+                        }
+                    ],
+                    "LowerMapGridPos": [
+                        {
+                            "Row": 2,
+                            "Col": 0
+                        },
+                        {
+                            "Row": 2,
+                            "Col": 1
+                        }
+                    ]
+                },
+                {
+                    "mapGridInfoID": 1,
+                    "Pos": {
+                        "Row": 3,
+                        "Col": 1
+                    },
+                    "UpperMapGridPos": [
+                        {
+                            "Row": 4,
+                            "Col": 1
+                        }
+                    ],
+                    "LowerMapGridPos": [
+                        {
+                            "Row": 2,
+                            "Col": 0
+                        },
+                        {
+                            "Row": 2,
+                            "Col": 1
+                        },
+                        {
+                            "Row": 2,
+                            "Col": 2
+                        }
+                    ]
+                },
+                {
+                    "mapGridInfoID": 2,
+                    "Pos": {
+                        "Row": 3,
+                        "Col": 2
+                    },
+                    "UpperMapGridPos": [
+                        {
+                            "Row": 4,
+                            "Col": 2
+                        }
+                    ],
+                    "LowerMapGridPos": [
+                        {
+                            "Row": 2,
+                            "Col": 1
+                        },
+                        {
+                            "Row": 2,
+                            "Col": 2
                         }
                     ]
                 }
@@ -100,152 +274,6 @@
                 {
                     "mapGridInfoID": 2,
                     "Pos": {
-                        "Row": 2,
-                        "Col": 0
-                    },
-                    "UpperMapGridPos": [
-                        {
-                            "Row": 3,
-                            "Col": 0
-                        }
-                    ],
-                    "LowerMapGridPos": [
-                        {
-                            "Row": 1,
-                            "Col": 0
-                        }
-                    ]
-                },
-                {
-                    "mapGridInfoID": 0,
-                    "Pos": {
-                        "Row": 2,
-                        "Col": 1
-                    },
-                    "UpperMapGridPos": [
-                        {
-                            "Row": 3,
-                            "Col": 1
-                        },
-                        {
-                            "Row": 3,
-                            "Col": 2
-                        }
-                    ],
-                    "LowerMapGridPos": [
-                        {
-                            "Row": 1,
-                            "Col": 0
-                        },
-                        {
-                            "Row": 1,
-                            "Col": 1
-                        },
-                        {
-                            "Row": 1,
-                            "Col": 2
-                        }
-                    ]
-                },
-                {
-                    "mapGridInfoID": 1,
-                    "Pos": {
-                        "Row": 2,
-                        "Col": 2
-                    },
-                    "UpperMapGridPos": [
-                        {
-                            "Row": 3,
-                            "Col": 2
-                        }
-                    ],
-                    "LowerMapGridPos": [
-                        {
-                            "Row": 1,
-                            "Col": 2
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "FloorGrids": [
-                {
-                    "mapGridInfoID": 1,
-                    "Pos": {
-                        "Row": 3,
-                        "Col": 0
-                    },
-                    "UpperMapGridPos": [
-                        {
-                            "Row": 4,
-                            "Col": 0
-                        },
-                        {
-                            "Row": 4,
-                            "Col": 1
-                        }
-                    ],
-                    "LowerMapGridPos": [
-                        {
-                            "Row": 2,
-                            "Col": 0
-                        }
-                    ]
-                },
-                {
-                    "mapGridInfoID": 1,
-                    "Pos": {
-                        "Row": 3,
-                        "Col": 1
-                    },
-                    "UpperMapGridPos": [
-                        {
-                            "Row": 4,
-                            "Col": 0
-                        },
-                        {
-                            "Row": 4,
-                            "Col": 1
-                        }
-                    ],
-                    "LowerMapGridPos": [
-                        {
-                            "Row": 2,
-                            "Col": 1
-                        }
-                    ]
-                },
-                {
-                    "mapGridInfoID": 0,
-                    "Pos": {
-                        "Row": 3,
-                        "Col": 2
-                    },
-                    "UpperMapGridPos": [
-                        {
-                            "Row": 4,
-                            "Col": 2
-                        }
-                    ],
-                    "LowerMapGridPos": [
-                        {
-                            "Row": 2,
-                            "Col": 1
-                        },
-                        {
-                            "Row": 2,
-                            "Col": 2
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "FloorGrids": [
-                {
-                    "mapGridInfoID": 1,
-                    "Pos": {
                         "Row": 4,
                         "Col": 0
                     },
@@ -259,20 +287,20 @@
                         {
                             "Row": 3,
                             "Col": 0
-                        },
-                        {
-                            "Row": 3,
-                            "Col": 1
                         }
                     ]
                 },
                 {
-                    "mapGridInfoID": 0,
+                    "mapGridInfoID": 2,
                     "Pos": {
                         "Row": 4,
                         "Col": 1
                     },
                     "UpperMapGridPos": [
+                        {
+                            "Row": 5,
+                            "Col": 0
+                        },
                         {
                             "Row": 5,
                             "Col": 1
@@ -317,7 +345,7 @@
         {
             "FloorGrids": [
                 {
-                    "mapGridInfoID": 1,
+                    "mapGridInfoID": 2,
                     "Pos": {
                         "Row": 5,
                         "Col": 0
@@ -332,11 +360,15 @@
                         {
                             "Row": 4,
                             "Col": 0
+                        },
+                        {
+                            "Row": 4,
+                            "Col": 1
                         }
                     ]
                 },
                 {
-                    "mapGridInfoID": 0,
+                    "mapGridInfoID": 1,
                     "Pos": {
                         "Row": 5,
                         "Col": 1
@@ -359,7 +391,7 @@
                     ]
                 },
                 {
-                    "mapGridInfoID": 0,
+                    "mapGridInfoID": 1,
                     "Pos": {
                         "Row": 5,
                         "Col": 2
@@ -410,10 +442,14 @@
         {
             "Row": 0,
             "Col": 0
+        },
+        {
+            "Row": 1,
+            "Col": 1
         }
     ],
     "CurrentGridPos": {
-        "Row": 0,
-        "Col": 0
+        "Row": 1,
+        "Col": 1
     }
 }

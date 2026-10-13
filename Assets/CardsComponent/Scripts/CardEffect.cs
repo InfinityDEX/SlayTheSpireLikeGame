@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using OneOf;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 
 namespace CardEffect
 {
@@ -14,6 +15,12 @@ namespace CardEffect
     /// </summary>
     public abstract class CardActionComponent
     {
+        /// <summary>
+        /// 自己複製メソッド
+        /// </summary>
+        /// <returns>複製したコンポーネント</returns>
+        public abstract CardActionComponent Spawn();
+
         /// <summary>
         /// カード処理で使用する引数のリスト。
         /// 扱う値は処理によって異なるので、ValueExpressionかCardActionModuleの共用型(OneOfを使用)を入れられるようにしている。
@@ -42,6 +49,12 @@ namespace CardEffect
     /// </summary>
     public abstract class ValueExpressionComponent
     {
+        /// <summary>
+        /// 自己複製メソッド
+        /// </summary>
+        /// <returns>複製したコンポーネント</returns>
+        public abstract ValueExpressionComponent Spawn();
+
         /// <summary>
         /// このコンポーネントは末端ノードか？(末端ノード：Evaluateを実行しても自分自身の複製を出す(何も計算しない)ノード。NumberとかString等、
         /// それ自身が何かの情報として扱える))

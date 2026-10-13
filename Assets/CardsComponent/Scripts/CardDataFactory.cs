@@ -137,12 +137,12 @@ class CardDataFactory
 
     private CardActionComponent GetCardAction(int id)
     {
-        return actionWithIDs.Find( actionWithID => { return actionWithID.ID == id; }).cardAction;
+        return actionWithIDs.Find( actionWithID => { return actionWithID.ID == id; }).cardAction.Spawn();
     }
 
     private ValueExpressionComponent GetValueExpression(int id)
     {
-        return valueExpressionWithIDs.Find( valueExpressionWithID => { return valueExpressionWithID.ID == id;}).valueExpression;
+        return valueExpressionWithIDs.Find( valueExpressionWithID => { return valueExpressionWithID.ID == id;}).valueExpression.Spawn();
     }
 
     /// <summary>
@@ -180,51 +180,28 @@ class CardDataFactory
             else if (arg.IsT1)
             {
                 var valueExpression = GetValueExpression(arg.AsT1.ExpressionId);
-                var generatedArgs = GenerateArgs(arg.AsT1.args);
-
-                // valueExpressionArgs (generatedArgs) を List<OneOf<float, string, CardActionComponent, ValueExpressionComponent>> 型に変換する
-                List<OneOf<float, string, CardActionComponent, ValueExpressionComponent>> valueExpressionArgs = new();
-                foreach (var genArg in generatedArgs)
-                {
-                    if (genArg.IsT0)
-                    {
-                        // CardActionComponent
-                        valueExpressionArgs.Add(genArg.AsT0);
-                    }
-                    else if (genArg.IsT1)
-                    {
-                        // ValueExpressionComponent
-                        valueExpressionArgs.Add(genArg.AsT1);
-                    }
-                }
-                valueExpression.SetArgs(valueExpressionArgs);
+                var generatedArgs = GenerateValueExpressionArgs(arg.AsT1.args);
+                valueExpression.SetArgs(generatedArgs);
                 ret.Add(valueExpression);
             }
         }
         return ret;
     }
-    private List<OneOf<CardActionComponent, ValueExpressionComponent>> GenerateArgs(List<OneOf<float, string, CardActionEntity, CardExpressionEntity>> argsEntity)
+
+    private List<OneOf<float, string, CardActionComponent, ValueExpressionComponent>> GenerateValueExpressionArgs(List<OneOf<float, string, CardActionEntity, CardExpressionEntity>> argsEntity)
     {
-        List<OneOf<CardActionComponent, ValueExpressionComponent>> ret = new();
+        List<OneOf<float, string, CardActionComponent, ValueExpressionComponent>> ret = new();
         foreach (var arg in argsEntity)
         {
             if (arg.IsT0)
             {
                 // 数値情報の登録
-                var numComp = new Number();
-                numComp.SetArgs(new List<OneOf<float, string, CardActionComponent, ValueExpressionComponent>>{
-                    arg.AsT0
-                });
-                ret.Add(numComp);
+                ret.Add(arg.AsT0);
             }
             else if (arg.IsT1)
             {
                 // 文字列情報情報の登録
-                var strComp = new String();
-                strComp.SetArgs(new List<OneOf<float, string, CardActionComponent, ValueExpressionComponent>>{
-                    arg.AsT1
-                });
-                ret.Add(strComp);
+                ret.Add(arg.AsT1);
             }
             else if (arg.IsT2)
             {
@@ -236,23 +213,9 @@ class CardDataFactory
             {
                 // カード式コンポーネントの生成と登録
                 var valueExpression = GetValueExpression(arg.AsT3.ExpressionId);
-
-                var generatedArgs = GenerateArgs(arg.AsT3.args);
-                List<OneOf<float, string, CardActionComponent, ValueExpressionComponent>> valueExpressionArgs = new();
-                foreach (var genArg in generatedArgs)
-                {
-                    if (genArg.IsT0)
-                    {
-                        // CardActionComponent
-                        valueExpressionArgs.Add(genArg.AsT0);
-                    }
-                    else if (genArg.IsT1)
-                    {
-                        // ValueExpressionComponent
-                        valueExpressionArgs.Add(genArg.AsT1);
-                    }
-                }
-                valueExpression.SetArgs(valueExpressionArgs);
+                var generatedArgs = GenerateValueExpressionArgs(arg.AsT3.args);
+                valueExpression.SetArgs(generatedArgs);
+                ret.Add(valueExpression);
             }
         }
         return ret;
@@ -265,10 +228,8 @@ class CardDataFactory
         var cardDataEntities = (JArray)jObject["CardDatas"];
         foreach (var cardDataJToken in cardDataEntities)
         {
-            // INSERT_YOUR_CODE
             // JsonUtility.FromJsonではOneOfで設定したパラメータをCardDataListEntityにコンバートできない為、ここで初期化する。
             // 各CardDataについて、JObjectからCardActionsDataやCardEffect(Args)を明示的にパースし、OneOf型に変換して格納し直す
-
             var cardDataEntityIndex = cardDataEntities.IndexOf(cardDataJToken);
 
             // CardDataListEntity内の対象となるCardDataを取得
