@@ -9,7 +9,7 @@
       "CardTarget": 1,
       "VisualEffectId": 0,
       "UpgradedCardId": 0,
-      "CardImagePath": "",
+      "CardImagePath": "CardsComponent/Images/body_punch_hand_red",
       "CardCastSoundPath": "",
       "CardEffect": [
         {

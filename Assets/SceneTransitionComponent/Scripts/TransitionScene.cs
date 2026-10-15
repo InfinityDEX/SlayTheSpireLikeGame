@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// シーン移動クラス
-/// 
+///
 /// UnityのUI（Button）で画面遷移したい場合にGameObjectに本コンポーネントを
 /// アタッチしてシーン移動のメソッドを呼び出す。
 /// </summary>
@@ -14,9 +15,13 @@ public class TransitionScene : MonoBehaviour
     public void GoToTitleScene()
     {
         // タイトルシーンに移行する際に、セーブデータインスタンスを破棄する
-        if (SaveDataHolder.Instance != null) Destroy(SaveDataHolder.Instance);
+        if (SaveDataHolder.Instance != null)
+        {
+            SceneManager.MoveGameObjectToScene(SaveDataHolder.Instance.gameObject, SceneManager.GetActiveScene());
+            Destroy(SaveDataHolder.Instance);
+        }
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScene", UnityEngine.SceneManagement.LoadSceneMode.Single);
+        SceneManager.LoadScene("TitleScene", LoadSceneMode.Single);
     }
 
     /// <summary>
@@ -24,6 +29,6 @@ public class TransitionScene : MonoBehaviour
     /// </summary>
     public void GoToMapScene()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MapScene", UnityEngine.SceneManagement.LoadSceneMode.Single);
+        SceneManager.LoadScene("MapScene", LoadSceneMode.Single);
     }
 }
