@@ -91,8 +91,17 @@ public class CardDragHandler : MonoBehaviour
                         if(Vector3.Distance(holdPos, point) >= cardPlayDragDistance)
                         {
                             Debug.Log($"クリックしてからマウスを離すまでのマウスの移動距離：{Vector3.Distance(holdPos, point)}");
-                            holdCard.Play(BattleManager.Instance.Player);
+                            Creature player = BattleManager.Instance.Player;
+                            holdCard.Play(player);
                             AudioController.Instance?.PlaySE(holdCard.ThisCardData.CastCardSE);
+
+                            GameObject visualEffectPrefab = BattleManager.Instance?.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
+                            // ビジュアルエフェクトを生成
+                            if (visualEffectPrefab != null)
+                            {
+                                GameObject ve = Instantiate(visualEffectPrefab);
+                                ve.transform.position = player.transform.position;
+                            }
                             DeckManager deckManager = FindObjectOfType<DeckManager>();
                             if (deckManager != null)
                             {

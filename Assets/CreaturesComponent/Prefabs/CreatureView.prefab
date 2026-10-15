@@ -134,6 +134,8 @@ MonoBehaviour:
     iconSprite: {fileID: 21300000, guid: 0802def46d35cf2468594bb024f427f5, type: 3}
   - iconId: 5
     iconSprite: {fileID: 21300000, guid: 9c7f0e62bd9b42b478cf074a8898b5e2, type: 3}
+  - iconId: 6
+    iconSprite: {fileID: -7249893620561862383, guid: 44b30b86d71c0224480e90cbe0ba2753, type: 3}
 --- !u!1 &841597073168917747
 GameObject:
   m_ObjectHideFlags: 0

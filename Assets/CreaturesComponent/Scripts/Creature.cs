@@ -1,20 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 /// <summary>
 /// クリーチャクラス
-/// 
+///
 /// 全ての生物（プレイヤーキャラ・エネミー含む）のベースとなるクラス
 /// </summary>
 public class Creature : MonoBehaviour
 {
     [SerializeField, Header("クリーチャデータ")]
     private CreatureData creatureData;
-    
+
     [field:SerializeField, Header("クリーチャ画像表示オブジェクト")]
     public Image CreatureSprite { get; private set;}
-    
+
     [SerializeField, Header("HPバー スライダー")]
     private Slider healthSlider;
 
@@ -27,7 +28,7 @@ public class Creature : MonoBehaviour
     /// 最大体力
     /// </summary>
     public int MaxHealth { get {return creatureData.maxHealth;} }
-    
+
     [field:SerializeField, Header("ブロック数")]
     public int Block { get; private set; } = 0;
 
@@ -52,12 +53,17 @@ public class Creature : MonoBehaviour
     /// 筋力値バッチ（エフェクト）
     /// </summary>
     private IconBatch muscleBatch;
-    
+
+    /// <summary>
+    /// 脆弱値バッチ（エフェクト）
+    /// </summary>
+    private IconBatch weakenedBatch;
+
     /// <summary>
     /// Startメソッドが終了したかどうか
     /// </summary>
     private bool endStartFunc = false;
-    
+
     /// <summary>
     /// 被ダメージ処理ハンドラ（デリゲート）
     /// </summary>
@@ -116,6 +122,24 @@ public class Creature : MonoBehaviour
             muscleBatch.gameObject.SetActive(true);
             muscleBatch.effectCount = Muscle;
         }
+
+        // 脆弱値の更新
+        if(Weakened == 0)
+        {
+            if(weakenedBatch != null)
+            {
+                weakenedBatch.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            if(weakenedBatch == null)
+            {
+                weakenedBatch = BatchManager.GenerateEffectBatch(6);
+            }
+            weakenedBatch.gameObject.SetActive(true);
+            weakenedBatch.effectCount = Weakened;
+        }
     }
 
     /// <summary>
@@ -133,7 +157,7 @@ public class Creature : MonoBehaviour
     /// <param name="block">追加するブロック値</param>
     public void AddBlock(int block)
     {
-        Block += block;
+        Block += Math.Max(block - Weakened, 0);
     }
 
     /// <summary>
