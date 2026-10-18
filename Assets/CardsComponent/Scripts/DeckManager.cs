@@ -8,26 +8,31 @@ using UnityEngine;
 /// </summary>
 public class DeckManager : MonoBehaviour
 {
+    // デッキマネージャーインスタンス
+    private static DeckManager instance;
+    public static DeckManager Instance { get {return instance;} }
+
     [field: Header("カードビュワー"), SerializeField]
     private CardViewer cardViewer;
 
     /// <summary>
     /// 山札
     /// </summary>
-    public List<CardData> drawPile = new();
+    public List<CardData> DrawPile { get ; private set;} = new();
 
     /// <summary>
     /// 手札
     /// </summary>
-    public List<CardInHand> hand = new List<CardInHand>();
+    public List<CardInHand> Hand { get ; private set;} = new();
 
     /// <summary>
     /// 捨て札
     /// </summary>
-    public List<CardData> discardPile = new();
+    public List<CardData> DiscardPile { get ; private set;} = new();
 
     private void Start()
     {
+        instance = this;
         LoadDeckFromJson();
     }
 
@@ -48,7 +53,7 @@ public class DeckManager : MonoBehaviour
 
         DeckDataJson deckData = JsonUtility.FromJson<DeckDataJson>(json);
 
-        drawPile.Clear();
+        DrawPile.Clear();
 
         foreach (var cardEntry in deckData.CurrentDeck)
         {
@@ -62,12 +67,12 @@ public class DeckManager : MonoBehaviour
 
             for (int i = 0; i < cardEntry.count; i++)
             {
-                drawPile.Add(cardData);
+                DrawPile.Add(cardData);
             }
         }
 
         // 山札をシャッフル
-        Shuffle(drawPile);
+        Shuffle(DrawPile);
     }
 
     /// <summary>
@@ -134,11 +139,11 @@ public class DeckManager : MonoBehaviour
     /// <param name="idx">捨てるカード(Card)のidx</param>
     public void DiscardCardById(int idx)
     {
-        var cardInHand = hand.Find(c => c.cardIdx == idx);
+        var cardInHand = Hand.Find(c => c.cardIdx == idx);
         if (cardInHand != null)
         {
-            hand.Remove(cardInHand);
-            discardPile.Add(cardInHand.cardData);
+            Hand.Remove(cardInHand);
+            DiscardPile.Add(cardInHand.cardData);
         }
     }
 
@@ -148,11 +153,11 @@ public class DeckManager : MonoBehaviour
     public void DiscardCardAll()
     {
         // 手札の全カードを捨て札に移動する
-        foreach (var cardInHand in hand)
+        foreach (var cardInHand in Hand)
         {
-            discardPile.Add(cardInHand.cardData);
+            DiscardPile.Add(cardInHand.cardData);
         }
-        hand.Clear();
+        Hand.Clear();
     }
 
     /// <summary>
@@ -161,20 +166,20 @@ public class DeckManager : MonoBehaviour
     public void DrawCard()
     {
         // 山札が空の場合は捨て札を山札に加える
-        if (drawPile.Count == 0)
+        if (DrawPile.Count == 0)
         {
-            drawPile.AddRange(discardPile);
-            discardPile.Clear();
+            DrawPile.AddRange(DiscardPile);
+            DiscardPile.Clear();
 
-            if (drawPile.Count == 0) return; // 墓地をデッキの戻しても山札枚数が0 → すべてのデッキのカードが手札にある
+            if (DrawPile.Count == 0) return; // 墓地をデッキの戻しても山札枚数が0 → すべてのデッキのカードが手札にある
         }
 
         // 山札からカードを引く
-        var cardData = drawPile[0];
-        drawPile.RemoveAt(0);
+        var cardData = DrawPile[0];
+        DrawPile.RemoveAt(0);
 
         int assignedIdx = HandCardIndexGenerator.GetNextIdx();
-        hand.Add(new CardInHand(cardData, assignedIdx));
+        Hand.Add(new CardInHand(cardData, assignedIdx));
     }
 
     /// <summary>
@@ -194,7 +199,7 @@ public class DeckManager : MonoBehaviour
     /// </summary>
     public void OpenDrawPailView()
     {
-        cardViewer?.EnableViewer(ref drawPile);
+        cardViewer?.EnableViewer(DrawPile);
     }
 
     /// <summary>
@@ -202,6 +207,6 @@ public class DeckManager : MonoBehaviour
     /// </summary>
     public void OpenDiscardPileView()
     {
-        cardViewer?.EnableViewer(ref discardPile);
+        cardViewer?.EnableViewer(DiscardPile);
     }
 }

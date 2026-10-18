@@ -98,6 +98,7 @@ class CardDataFactory
         SetAction(1, new AddBlock());
         SetAction(2, new AddMuscle());
         SetAction(3, new AddWeakened());
+        SetAction(100, new DrawCard());
 
         // カード式リスト初期化
         SetValueExpression(0, new Number());
@@ -105,6 +106,7 @@ class CardDataFactory
         SetValueExpression(3, new Sub());
         SetValueExpression(4, new Mul());
         SetValueExpression(5, new Div());
+        SetValueExpression(30, new HandCount());
     }
 
     private void SetAction(int _id, CardActionComponent _cardAction)

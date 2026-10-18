@@ -3,9 +3,9 @@
     {
       "CardId": 0,
       "CardCost": 1,
-      "CardName": "Punch",
+      "CardName": "パンチ",
       "CardType": 0,
-      "CardDescription": "10ダメージを与える",
+      "CardDescription": "エネミーに10ダメージ",
       "CardTarget": 1,
       "VisualEffectId": 1,
       "UpgradedCardId": 0,
@@ -34,9 +34,228 @@
     {
       "CardId": 1,
       "CardCost": 1,
-      "CardName": "Defense",
+      "CardName": "パンチ＋",
+      "CardType": 0,
+      "CardDescription": "エネミーに15ダメージ",
+      "CardTarget": 1,
+      "VisualEffectId": 1,
+      "UpgradedCardId": 0,
+      "CardImagePath": "CardsComponent/Images/body_punch_hand_red",
+      "CardCastSoundPath": "CardsComponent/Sounds/Hit-Punch09-4(High)",
+      "CardEffect": [
+        {
+          "CardActionId": 0,
+          "Args": [
+            {
+              "Type": "Expression",
+              "Value": {
+                "ExpressionId": 0,
+                "Args": [
+                  {
+                    "Type": "float",
+                    "Value": 15
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "CardId": 2,
+      "CardCost": 2,
+      "CardName": "スラッシュ",
+      "CardType": 0,
+      "CardDescription": "エネミーに20ダメージ",
+      "CardTarget": 1,
+      "VisualEffectId": 1,
+      "UpgradedCardId": 0,
+      "CardImagePath": "CardsComponent/Images/body_punch_hand_red",
+      "CardCastSoundPath": "CardsComponent/Sounds/Hit-Punch09-4(High)",
+      "CardEffect": [
+        {
+          "CardActionId": 0,
+          "Args": [
+            {
+              "Type": "Expression",
+              "Value": {
+                "ExpressionId": 0,
+                "Args": [
+                  {
+                    "Type": "float",
+                    "Value": 20
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "CardId": 3,
+      "CardCost": 2,
+      "CardName": "スラッシュ+",
+      "CardType": 0,
+      "CardDescription": "全てのエネミーに20ダメージ",
+      "CardTarget": 2,
+      "VisualEffectId": 1,
+      "UpgradedCardId": 0,
+      "CardImagePath": "CardsComponent/Images/body_punch_hand_red",
+      "CardCastSoundPath": "CardsComponent/Sounds/Hit-Punch09-4(High)",
+      "CardEffect": [
+        {
+          "CardActionId": 0,
+          "Args": [
+            {
+              "Type": "Expression",
+              "Value": {
+                "ExpressionId": 0,
+                "Args": [
+                  {
+                    "Type": "float",
+                    "Value": 20
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "CardId": 4,
+      "CardCost": 2,
+      "CardName": "ブレインバースト",
+      "CardType": 0,
+      "CardDescription": "カードを2枚引く。エネミーに手札の枚数×5ダメージ",
+      "CardTarget": 1,
+      "VisualEffectId": 1,
+      "UpgradedCardId": 0,
+      "CardImagePath": "CardsComponent/Images/body_punch_hand_red",
+      "CardCastSoundPath": "CardsComponent/Sounds/Hit-Punch09-4(High)",
+      "CardEffect": [
+        {
+          "CardActionId": 100,
+          "Args": [
+            {
+              "Type": "Expression",
+              "Value": {
+                "ExpressionId": 0,
+                "Args": [
+                  {
+                    "Type": "float",
+                    "Value": 2
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "CardActionId": 0,
+          "Args": [
+            {
+              "Type": "Expression",
+              "Value": {
+                "ExpressionId": 4,
+                "Args": [
+                  {
+                    "Type": "Expression",
+                    "Value": {
+                      "ExpressionId": 30,
+                      "Args": []
+                    }
+                  },
+                  {
+                    "Type": "Expression",
+                    "Value": {
+                      "ExpressionId": 0,
+                      "Args": [
+                        {
+                          "Type": "float",
+                          "Value": 5
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "CardId": 4,
+      "CardCost": 2,
+      "CardName": "ブレインバースト+",
+      "CardType": 0,
+      "CardDescription": "カードを4枚引く。エネミーに手札の枚数×5ダメージ",
+      "CardTarget": 1,
+      "VisualEffectId": 1,
+      "UpgradedCardId": 0,
+      "CardImagePath": "CardsComponent/Images/body_punch_hand_red",
+      "CardCastSoundPath": "CardsComponent/Sounds/Hit-Punch09-4(High)",
+      "CardEffect": [
+        {
+          "CardActionId": 100,
+          "Args": [
+            {
+              "Type": "Expression",
+              "Value": {
+                "ExpressionId": 0,
+                "Args": [
+                  {
+                    "Type": "float",
+                    "Value": 4
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "CardActionId": 0,
+          "Args": [
+            {
+              "Type": "Expression",
+              "Value": {
+                "ExpressionId": 4,
+                "Args": [
+                  {
+                    "Type": "Expression",
+                    "Value": {
+                      "ExpressionId": 30,
+                      "Args": []
+                    }
+                  },
+                  {
+                    "Type": "Expression",
+                    "Value": {
+                      "ExpressionId": 0,
+                      "Args": [
+                        {
+                          "Type": "float",
+                          "Value": 5
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "CardId": 50,
+      "CardCost": 1,
+      "CardName": "ディフェンス",
       "CardType": 1,
-      "CardDescription": "ブロックを6与える",
+      "CardDescription": "ブロックを6得る",
       "CardTarget": 3,
       "VisualEffectId": 3,
       "UpgradedCardId": 0,
@@ -63,9 +282,9 @@
       ]
     },
     {
-      "CardId": 2,
+      "CardId": 52,
       "CardCost": 1,
-      "CardName": "PowerCharge",
+      "CardName": "パワーチャージ",
       "CardType": 1,
       "CardDescription": "筋力を5与える",
       "CardTarget": 3,
@@ -94,9 +313,9 @@
       ]
     },
     {
-      "CardId": 3,
+      "CardId": 54,
       "CardCost": 1,
-      "CardName": "Weaken",
+      "CardName": "アシッドボム",
       "CardType": 1,
       "CardDescription": "脆弱を5与える",
       "CardTarget": 1,

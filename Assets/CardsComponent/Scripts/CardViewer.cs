@@ -18,7 +18,7 @@ public class CardViewer : MonoBehaviour
     /// <summary>
     ///　ビュアーを表示する
     /// </summary>
-    public void EnableViewer(ref List<CardData> cardDatas)
+    public void EnableViewer(List<CardData> cardDatas)
     {
         // 山札等を順番が通り表示すると順番どおり表示されてしまいゲーム性が損なわれる為、
         // まず渡されたカードデータをID順でソートする
@@ -47,7 +47,6 @@ public class CardViewer : MonoBehaviour
                 // インスタンスの再利用及びセットアップ
                 var cardObject = cardInstancePool[instancedCardIdx];
                 cardObject.gameObject.SetActive(true);
-                cardInstancePool.Add(cardObject);
                 cardObject.Setup(cardData);
             }
             else
