@@ -71,7 +71,7 @@
       "CardTarget": 1,
       "VisualEffectId": 1,
       "UpgradedCardId": 0,
-      "CardImagePath": "CardsComponent/Images/body_punch_hand_red",
+      "CardImagePath": "CardsComponent/Images/game_ken",
       "CardCastSoundPath": "CardsComponent/Sounds/Hit-Punch09-4(High)",
       "CardEffect": [
         {
@@ -102,7 +102,7 @@
       "CardTarget": 2,
       "VisualEffectId": 1,
       "UpgradedCardId": 0,
-      "CardImagePath": "CardsComponent/Images/body_punch_hand_red",
+      "CardImagePath": "CardsComponent/Images/game_ken",
       "CardCastSoundPath": "CardsComponent/Sounds/Hit-Punch09-4(High)",
       "CardEffect": [
         {
@@ -133,7 +133,7 @@
       "CardTarget": 1,
       "VisualEffectId": 1,
       "UpgradedCardId": 0,
-      "CardImagePath": "CardsComponent/Images/body_punch_hand_red",
+      "CardImagePath": "CardsComponent/Images/mahoutsukai_man",
       "CardCastSoundPath": "CardsComponent/Sounds/Hit-Punch09-4(High)",
       "CardEffect": [
         {
@@ -188,7 +188,7 @@
       ]
     },
     {
-      "CardId": 4,
+      "CardId": 5,
       "CardCost": 2,
       "CardName": "ブレインバースト+",
       "CardType": 0,
@@ -196,7 +196,7 @@
       "CardTarget": 1,
       "VisualEffectId": 1,
       "UpgradedCardId": 0,
-      "CardImagePath": "CardsComponent/Images/body_punch_hand_red",
+      "CardImagePath": "CardsComponent/Images/mahoutsukai_man",
       "CardCastSoundPath": "CardsComponent/Sounds/Hit-Punch09-4(High)",
       "CardEffect": [
         {
