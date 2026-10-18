@@ -16,7 +16,7 @@ public class Card : MonoBehaviour
     /// <summary>
     /// カードID
     /// </summary>
-    public int id;
+    public int ID { get {return ThisCardData.CardID;} }
 
     [SerializeField, Header("カード名表示GUI")]
     private TextMeshProUGUI cardNameText;
@@ -24,7 +24,7 @@ public class Card : MonoBehaviour
     [SerializeField, Header("カード効果テキスト表示GUI")]
     private TextMeshProUGUI cardDescriptionText;
 
-    [SerializeField, Header("カード効果表示GUI")]
+    [SerializeField, Header("カードコスト表示GUI")]
     private TextMeshProUGUI cardCostText;
 
     [SerializeField, Header("カード種別表示GUI")]
@@ -52,11 +52,9 @@ public class Card : MonoBehaviour
     /// カードデータ初期化処理
     /// </summary>
     /// <param name="cardData">カードデータ</param>
-    /// <param name="cardId">カードID</param>
-    public void Setup(CardData cardData, int cardId)
+    public void Setup(CardData cardData)
     {
         ThisCardData = cardData;
-        id = cardId;
         InitializeCardUI();
     }
 

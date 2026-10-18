@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 /// <summary>
 /// バトルマネージャクラス
-/// 
+///
 /// バトルの進行や、プレイヤーおよびエネミーの死亡判定を行う。
 /// シングルトン。
 /// </summary>
@@ -38,7 +38,7 @@ public class BattleManager : MonoBehaviour
 
     [SerializeField, Header("現在のフェーズ")]
     private BattlePhase currentPhase = BattlePhase.Idle;
-    
+
     /// <summary>
     /// バトル中かどうか
     /// </summary>
@@ -60,7 +60,7 @@ public class BattleManager : MonoBehaviour
         }
         Instance = this;
     }
-    
+
     private void Start()
     {
         // エナジーの初期化（回復）
@@ -85,12 +85,12 @@ public class BattleManager : MonoBehaviour
                 Player.SetHealth(SaveDataHolder.Instance.SaveData.currentHealth);
             isFirstUpdate = false;
         }
-        
+
         // セーブデータエンティティの更新
         SaveDataHolder.Instance?.SetMaxHealth(Player.MaxHealth);
         SaveDataHolder.Instance?.SetCurrentHealth(Player.Hp);
 
-        // バトルループ 
+        // バトルループ
         if (isBattleActive)
         {
             BattleLoop();
@@ -153,7 +153,7 @@ public class BattleManager : MonoBehaviour
                 // 敵の行動フェーズへ
                 currentPhase = BattlePhase.EnemyBuffRefreshPhase;
                 break;
-                
+
             case BattlePhase.EnemyBuffRefreshPhase:
                 RefreshEnemiesBuffs();
                 // 敵の行動フェーズへ
@@ -161,7 +161,7 @@ public class BattleManager : MonoBehaviour
                 break;
 
             case BattlePhase.EnemyActionPhase:
-                
+
                 // プレイヤーor敵の死亡チェック
                 if (IsPlayerDead() || AreEnemiesDefeated())
                 {
@@ -275,7 +275,7 @@ public class BattleManager : MonoBehaviour
                 // カード情報を渡す
                 if (cardScript != null)
                 {
-                    cardScript.Setup(handCard.cardData, handCard.cardId);
+                    cardScript.Setup(handCard.cardData);
                 }
             }
         }
@@ -294,7 +294,7 @@ public class BattleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// バトル終了判定／敵全滅判定など 
+    /// バトル終了判定／敵全滅判定など
     /// </summary>
     /// <returns></returns>
     private bool IsPlayerDead()
@@ -327,9 +327,9 @@ public class BattleManager : MonoBehaviour
     {
         EnemyManager.Enemies.ForEach(e => e.ResetBlock());
     }
-    
+
     private int currentActionEnemy = 0;
-    
+
     /// <summary>
     /// エネミーの行動処理
     /// </summary>
@@ -378,7 +378,7 @@ public class BattleManager : MonoBehaviour
             }
             SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);
         }
-        else 
+        else
         {
             Debug.LogError("想定外の理由によるゲームオーバーが発生しました。clearFlag: " + clearFlag);
             SceneManager.LoadScene("GameOverScene", LoadSceneMode.Single);

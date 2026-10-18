@@ -73,7 +73,7 @@ public class CardDragHandler : MonoBehaviour
                             DeckManager deckManager = FindObjectOfType<DeckManager>();
                             if (deckManager != null)
                             {
-                                deckManager.DiscardCardById(holdCard.id);
+                                deckManager.DiscardCardById(holdCard.ID);
                             }
                             else
                             {
@@ -105,7 +105,7 @@ public class CardDragHandler : MonoBehaviour
                             DeckManager deckManager = FindObjectOfType<DeckManager>();
                             if (deckManager != null)
                             {
-                                deckManager.DiscardCardById(holdCard.id);
+                                deckManager.DiscardCardById(holdCard.ID);
                             }
                             else
                             {

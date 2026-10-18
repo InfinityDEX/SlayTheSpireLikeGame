@@ -8,6 +8,9 @@ using UnityEngine;
 /// </summary>
 public class DeckManager : MonoBehaviour
 {
+    // シングルトンインスタンス
+    public static DeckManager Instance { get; private set; }
+
     /// <summary>
     /// 山札
     /// </summary>
@@ -23,8 +26,20 @@ public class DeckManager : MonoBehaviour
     /// </summary>
     public List<CardData> discardPile = new();
 
-    private void Awake()
+    private void Start()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        // シーンを跨ぐ際に破壊されない
+        DontDestroyOnLoad(gameObject);
+
         LoadDeckFromJson();
     }
 
@@ -112,22 +127,26 @@ public class DeckManager : MonoBehaviour
         /// </summary>
         public CardData cardData;
 
-        public int cardId; // Cardクラスのidを利用
+        /// <summary>
+        /// 手札の何番目かを表すインデックス
+        /// 右にあるカードから順に連番
+        /// </summary>
+        public int cardIdx;
 
-        public CardInHand(CardData data, int id)
+        public CardInHand(CardData data, int idx)
         {
             cardData = data;
-            cardId = id;
+            cardIdx = idx;
         }
     }
 
     /// <summary>
     /// 指定IDのカード(Cardクラスのid)を手札から捨て札へ
     /// </summary>
-    /// <param name="id">捨てるカード(Card)のid</param>
-    public void DiscardCardById(int id)
+    /// <param name="idx">捨てるカード(Card)のidx</param>
+    public void DiscardCardById(int idx)
     {
-        var cardInHand = hand.Find(c => c.cardId == id);
+        var cardInHand = hand.Find(c => c.cardIdx == idx);
         if (cardInHand != null)
         {
             hand.Remove(cardInHand);
@@ -166,20 +185,19 @@ public class DeckManager : MonoBehaviour
         var cardData = drawPile[0];
         drawPile.RemoveAt(0);
 
-        // Card.csのidに対応する形で採番して付与
-        int assignedId = CardIdGenerator.GetNextId();
-        hand.Add(new CardInHand(cardData, assignedId));
+        int assignedIdx = HandCardIndexGenerator.GetNextIdx();
+        hand.Add(new CardInHand(cardData, assignedIdx));
     }
-}
 
-/// <summary>
-/// Cardクラスに設定するIDを生成する静的クラス。
-/// </summary>
-public static class CardIdGenerator
-{
-    private static int nextId = 1;
-    public static int GetNextId()
+    /// <summary>
+    /// 手札に設定するIDを生成する静的クラス。
+    /// </summary>
+    public static class HandCardIndexGenerator
     {
-        return nextId++;
+        private static int nextId = 1;
+        public static int GetNextIdx()
+        {
+            return nextId++;
+        }
     }
 }
