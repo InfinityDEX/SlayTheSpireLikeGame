@@ -8,8 +8,8 @@ using UnityEngine;
 /// </summary>
 public class DeckManager : MonoBehaviour
 {
-    // シングルトンインスタンス
-    public static DeckManager Instance { get; private set; }
+    [field: Header("カードビュワー"), SerializeField]
+    private CardViewer cardViewer;
 
     /// <summary>
     /// 山札
@@ -28,18 +28,6 @@ public class DeckManager : MonoBehaviour
 
     private void Start()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
-        // シーンを跨ぐ際に破壊されない
-        DontDestroyOnLoad(gameObject);
-
         LoadDeckFromJson();
     }
 
@@ -199,5 +187,21 @@ public class DeckManager : MonoBehaviour
         {
             return nextId++;
         }
+    }
+
+    /// <summary>
+    /// デッキにあるカードをカードビュワーで表示
+    /// </summary>
+    public void OpenDrawPailView()
+    {
+        cardViewer?.EnableViewer(ref drawPile);
+    }
+
+    /// <summary>
+    /// 捨て札にあるカードをカードビュワーで表示
+    /// </summary>
+    public void OpenDiscardPileView()
+    {
+        cardViewer?.EnableViewer(ref discardPile);
     }
 }

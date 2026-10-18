@@ -10,8 +10,8 @@ public class CardViewer : MonoBehaviour
     [field: Header("カードのプレハブ"), SerializeField]
     private Card cardPrefab;
 
-    [field: Header("カードを配置するRectTransform")]
-    private RectTransform cardParentTransform;
+    [field: Header("カードを配置するRectTransform"), SerializeField]
+    private Transform cardParentTransform;
 
     private List<Card> cardInstancePool;
 
@@ -60,6 +60,7 @@ public class CardViewer : MonoBehaviour
 
             instancedCardIdx++;
         }
+        gameObject.SetActive(true);
     }
 
     /// <summary>

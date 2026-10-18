@@ -223,10 +223,7 @@ public class BattleManager : MonoBehaviour
         // プレイヤーターン開始時の処理: カードを5枚引く
         if (deckManager != null)
         {
-            deckManager.DrawCard();
-            deckManager.DrawCard();
-            deckManager.DrawCard();
-            deckManager.DrawCard();
+            for (int i = 0; i < 5; i++)
             deckManager.DrawCard();
         }
 

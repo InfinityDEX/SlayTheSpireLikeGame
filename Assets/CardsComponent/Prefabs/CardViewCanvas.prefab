@@ -420,6 +420,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardViewer
   cardPrefab: {fileID: 3669843612252539668, guid: de6e718827c713944b3f056d585380d5, type: 3}
+  cardParentTransform: {fileID: 1315141969413383636}
 --- !u!1 &932309011855781481
 GameObject:
   m_ObjectHideFlags: 0
@@ -606,7 +607,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -132.94775, y: -47.95569}
+  m_AnchoredPosition: {x: -132.94775, y: -197}
   m_SizeDelta: {x: 225.8956, y: 85.9114}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4781545336432282735
@@ -1140,8 +1141,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1500, y: 1000}
+  m_AnchoredPosition: {x: 0, y: -63.29358}
+  m_SizeDelta: {x: 1500, y: 873.4128}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &624008015746936127
 CanvasRenderer:
