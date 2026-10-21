@@ -11,7 +11,7 @@ using System;
 public class Creature : MonoBehaviour
 {
     [SerializeField, Header("クリーチャデータ")]
-    private CreatureData creatureData;
+    public CreatureData CreatureData;
 
     [field:SerializeField, Header("クリーチャ画像表示オブジェクト")]
     public Image CreatureSprite { get; private set;}
@@ -27,7 +27,7 @@ public class Creature : MonoBehaviour
     /// <summary>
     /// 最大体力
     /// </summary>
-    public int MaxHealth { get {return creatureData.maxHealth;} }
+    public int MaxHealth { get {return CreatureData.maxHealth;} }
 
     [field:SerializeField, Header("ブロック数")]
     public int Block { get; private set; } = 0;
@@ -77,10 +77,10 @@ public class Creature : MonoBehaviour
 
     private void Start()
     {
-        Hp = creatureData.maxHealth;
-        healthSlider.value = healthSlider.maxValue = creatureData.maxHealth;
+        Hp = CreatureData.maxHealth;
+        healthSlider.value = healthSlider.maxValue = CreatureData.maxHealth;
         UpdateHealthText();
-        CreatureSprite.sprite = creatureData.creatureSprite;
+        CreatureSprite.sprite = CreatureData.creatureSprite;
         CreatureSprite.color = new Color(1, 1, 1, 1);
         endStartFunc = true;
     }

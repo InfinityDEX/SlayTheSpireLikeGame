@@ -2,7 +2,7 @@ using UnityEngine;
 
 /// <summary>
 /// セーブデータホルダー
-/// 
+///
 /// ゲームプレイ中常に破壊されず保持され、SaveDataEntityの値を保持する。
 /// 現在のセーブデータの共有と、セーブデータの更新、Jsonファイルへの出力する機能を持つ。
 /// セーブデータの設定値は常にゲーム内の最新の情報と同期されていること。（プレイヤーの現在の体力値等）
@@ -53,7 +53,7 @@ public class SaveDataHolder : MonoBehaviour
     public void SetMaxHealth(int maxHealth)
     {
         // maxHealthが0以上であれば更新
-        if (maxHealth >= 0) 
+        if (maxHealth >= 0)
         {
             SaveData.maxHealth = maxHealth;
 
@@ -72,6 +72,15 @@ public class SaveDataHolder : MonoBehaviour
         // currentHealthが0以上で、かつMaxHealthを超えていなければ更新
         if (currentHealth >= 0 && currentHealth <= SaveData.maxHealth)
             SaveData.currentHealth = currentHealth;
+    }
+
+    /// <summary>
+    /// 所持金の追加
+    /// </summary>
+    /// <param name="money">追加する金額</param>
+    public void AddMoney(int money)
+    {
+        SaveData.money += money;
     }
 
     /// <summary>

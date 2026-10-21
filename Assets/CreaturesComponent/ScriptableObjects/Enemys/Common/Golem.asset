@@ -16,5 +16,4 @@ MonoBehaviour:
   maxHealth: 40
   creatureSprite: {fileID: 21300000, guid: dd9923ef76eef824d9d41ba0cfc9939c, type: 3}
   attackPower: 0
-  experience: 0
-  gold: 0
+  gold: 50

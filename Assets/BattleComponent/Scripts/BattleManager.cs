@@ -320,7 +320,22 @@ public class BattleManager : MonoBehaviour
     /// <returns>全てのエネミーが死んでいるか？</returns>
     private bool AreEnemiesDefeated()
     {
-        return EnemyManager.Enemies.All(e => e.Hp <= 0);
+        // 体力が0ならクリーチャを破壊する
+        foreach (var enemy in EnemyManager.Enemies)
+        {
+            if (enemy.Hp <= 0)
+            {
+                EnemyManager.Enemies.Remove(enemy);
+                // 所持金追加
+                var enemyData = enemy.CreatureData;
+                if (enemyData is EnemyData)
+                {
+                    SaveDataHolder.Instance.AddMoney(((EnemyData)enemyData).gold);
+                }
+                Destroy(enemy.gameObject);
+            }
+        }
+        return EnemyManager.Enemies.Count == 0;
     }
 
     /// <summary>

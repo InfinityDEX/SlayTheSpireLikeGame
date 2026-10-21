@@ -165,13 +165,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ed12c84747230d46b124bf921283b7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureData: {fileID: 11400000, guid: 490cbc21b0333eb418250b5dc6edf6b4, type: 2}
+  CreatureData: {fileID: 11400000, guid: 490cbc21b0333eb418250b5dc6edf6b4, type: 2}
   <CreatureSprite>k__BackingField: {fileID: 4393662286423047246}
   healthSlider: {fileID: 5119423566219283521}
   healthText: {fileID: 4644832147849640933}
   <Hp>k__BackingField: 0
   <Block>k__BackingField: 0
   <Muscle>k__BackingField: 0
+  <Weakened>k__BackingField: 0
   damageBatchGeneratePoint: {fileID: 3927348250761909785}
   <BatchManager>k__BackingField: {fileID: 781556576310375559}
   actionPattern: 0
