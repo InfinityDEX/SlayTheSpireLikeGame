@@ -75,6 +75,7 @@ class CardDataFactory
             cardData.CardDescription = cardDataEntity.CardDescription;
             cardData.TargetType = (CardData.Target)cardDataEntity.CardTarget;
             cardData.UpgradedCardId = cardDataEntity.UpgradedCardId;
+            cardData.IsUpgraded = cardDataEntity.IsUpgraded;
 
             // 登録されている順番にカード効果を適用する
             foreach (var cardActionData in cardDataEntity.CardActionsData)

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -35,6 +36,9 @@ public class BattleManager : MonoBehaviour
 
     [field:SerializeField, Header("ダメージポップアップジェネレータ")]
     public DamagePopupGenerator DamagePopupGenerator { get; private set;}
+
+    [field:SerializeField, Header("リワード画面マネージャ")]
+    public BattleRewardManager battleRewardManager { get; private set;}
 
     [SerializeField, Header("現在のフェーズ")]
     private BattlePhase currentPhase = BattlePhase.Idle;
@@ -229,55 +233,7 @@ public class BattleManager : MonoBehaviour
 
         // 手札の見た目を修整
         ResetHandCardView();
-        // // 手札のカードをすべて表示（現状全消し→再生成方式）
-        // if (handArea != null && cardTemplatePrefab != null)
-        // {
-        //     // 既存の子オブジェクトを全削除
-        //     foreach (Transform child in handArea)
-        //     {
-        //         Destroy(child.gameObject);
-        //     }
 
-        //     // 手札の配置（アーチ状）のパラメータ
-        //     int cardCount = deckManager.Hand.Count;
-        //     float archRadius = 10f; // 弧の大きさ（調整可。単位はローカル座標）
-        //     float archAngle = 50f; // 全体で使う角度の最大値(度)。180より小
-        //     float angleStep = cardCount > 1 ? archAngle / (cardCount - 1) : 0;
-        //     float startAngle = -archAngle / 2f;
-
-        //     // 右から順に配置（handの先頭が右端に来る）
-        //     for (int i = 0; i < cardCount; i++)
-        //     {
-        //         int reverseIndex = cardCount - 1 - i; // handの先頭が右端
-        //         var handCard = deckManager.Hand[reverseIndex];
-
-        //         // プレハブの複製
-        //         GameObject cardObj = Instantiate(cardTemplatePrefab, handArea);
-
-        //         // アーチ上の位置決定
-        //         float angle = startAngle + angleStep * i;
-        //         float radians = angle * Mathf.Deg2Rad;
-        //         Vector3 localPos = new Vector3(
-        //             Mathf.Sin(radians) * archRadius,
-        //             Mathf.Cos(radians) * archRadius - archRadius, // 0を中心とするため
-        //             0f
-        //         );
-
-        //         // カード配置
-        //         cardObj.transform.localScale = new Vector3(1.5f, 1.5f, 1);
-        //         cardObj.transform.localPosition = localPos;
-        //         cardObj.transform.localRotation = Quaternion.Euler(0f, 0f, angle * -0.5f); // カードをアーチの接線方向に少し傾け、自然なファンに
-
-        //         // Cardスクリプトの取得
-        //         Card cardScript = cardObj.GetComponent<Card>();
-
-        //         // カード情報を渡す
-        //         if (cardScript != null)
-        //         {
-        //             cardScript.Setup(handCard.cardData);
-        //         }
-        //     }
-        // }
         // TODO：今後、他のプレイヤーターン開始処理をここに追加予定
     }
 
@@ -286,7 +242,7 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void ResetHandCardView()
     {
-                // 手札のカードをすべて表示（現状全消し→再生成方式）
+        // 手札のカードをすべて表示（現状全消し→再生成方式）
         if (handArea != null && cardTemplatePrefab != null)
         {
             // 既存の子オブジェクトを全削除
@@ -331,7 +287,7 @@ public class BattleManager : MonoBehaviour
                 // カード情報を渡す
                 if (cardScript != null)
                 {
-                    cardScript.Setup(handCard.cardData);
+                    cardScript.Setup(handCard.cardData, handCard.cardIdx);
                 }
             }
         }
@@ -416,8 +372,12 @@ public class BattleManager : MonoBehaviour
             // ゲームデータの保存
             SaveDataHolder.Instance?.WriteSaveData();
 
-            // マップシーンに移動
-            SceneManager.LoadScene("MapScene", LoadSceneMode.Single);
+            List<CardData> cardDatas = new();
+            for (int i = 0; i < 3; i++)
+            {
+                cardDatas.Add(CardDataLibrary.Instance.GetRandomCard());
+            }
+            battleRewardManager?.EnableRewardView(cardDatas);
         }
         else if (clearFlag == 1)
         {

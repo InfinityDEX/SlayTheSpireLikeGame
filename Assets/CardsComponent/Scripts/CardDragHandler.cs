@@ -74,13 +74,15 @@ public class CardDragHandler : MonoBehaviour
                             DeckManager deckManager = FindObjectOfType<DeckManager>();
                             if (deckManager != null)
                             {
-                                deckManager.DiscardCardById(holdCard.ID);
+                                deckManager.DiscardCardById(holdCard.HandIdx);
                             }
                             else
                             {
                                 Debug.LogError("DeckManager が見つかりません。カードを捨て札にできませんでした。");
                             }
                             Destroy(holdCard.gameObject); // カードをゲーム空間から削除
+
+                            BattleManager.Instance.ResetHandCardView(); // 手札の配置リセット
                         }
                         else
                         {
@@ -112,13 +114,14 @@ public class CardDragHandler : MonoBehaviour
                             DeckManager deckManager = FindObjectOfType<DeckManager>();
                             if (deckManager != null)
                             {
-                                deckManager.DiscardCardById(holdCard.ID);
+                                deckManager.DiscardCardById(holdCard.HandIdx);
                             }
                             else
                             {
                                 Debug.LogError("DeckManager が見つかりません。カードを捨て札にできませんでした。");
                             }
                             Destroy(holdCard.gameObject); // カードをゲーム空間から削除
+                            BattleManager.Instance.ResetHandCardView(); // 手札の配置リセット
                         }
                         else
                         {
@@ -145,13 +148,14 @@ public class CardDragHandler : MonoBehaviour
                             DeckManager deckManager = FindObjectOfType<DeckManager>();
                             if (deckManager != null)
                             {
-                                deckManager.DiscardCardById(holdCard.ID);
+                                deckManager.DiscardCardById(holdCard.HandIdx);
                             }
                             else
                             {
                                 Debug.LogError("DeckManager が見つかりません。カードを捨て札にできませんでした。");
                             }
                             Destroy(holdCard.gameObject); // カードをゲーム空間から削除
+                            BattleManager.Instance.ResetHandCardView(); // 手札の配置リセット
                         }
                         else
                         {

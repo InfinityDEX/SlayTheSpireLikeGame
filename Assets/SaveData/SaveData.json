@@ -1,6 +1,6 @@
 {
     "maxHealth": 100,
-    "currentHealth": 100,
+    "currentHealth": 30,
     "money": 100,
     "currentFloor": 1
 }

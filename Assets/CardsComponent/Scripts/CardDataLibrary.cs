@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -43,5 +44,18 @@ public class CardDataLibrary : MonoBehaviour
     public CardData SearchCardData(int id)
     {
         return cardList.Find( cardData => cardData.CardID == id );
+    }
+
+    /// <summary>
+    /// ライブラリ内にある未強化のカードデータをランダムに取得
+    /// </summary>
+    /// <returns>カードデータ</returns>
+    public CardData GetRandomCard()
+    {
+        // 未強化のカードデータだけピックアップ
+        var unUpgradeCardList = cardList.Where(card => !card.IsUpgraded).ToList();
+
+        // 未強化カードデータのプールからランダムにカード取得
+        return unUpgradeCardList[Random.Range(0, unUpgradeCardList.Count - 1)];
     }
 }

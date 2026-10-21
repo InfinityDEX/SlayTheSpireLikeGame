@@ -2,7 +2,7 @@
     "CurrentDeck": [
         {
             "cardId": "0",
-            "count": 4
+            "count": 5
         },
         {
             "cardId": "1",
@@ -14,24 +14,23 @@
         },
         {
             "cardId": "3",
-            "count": 2
+            "count": 3
         },
         {
             "cardId": "4",
-            "count": 4
+            "count": 7
         },
         {
             "cardId": "5",
             "count": 2
         },
         {
-            "cardId": "6",
-            "count": 4
+            "cardId": "50",
+            "count": 1
         },
         {
-            "cardId": "7",
-            "count": 2
+            "cardId": "52",
+            "count": 1
         }
-
     ]
 }

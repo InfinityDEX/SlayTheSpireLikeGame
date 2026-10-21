@@ -70,6 +70,11 @@ namespace CardEffect.CardDataJson
         public int UpgradedCardId;
 
         /// <summary>
+        /// 強化済みのカードか？
+        /// </summary>
+        public bool IsUpgraded;
+
+        /// <summary>
         /// カードの効果リスト(処理順で格納)
         /// </summary>
         public List<CardActionEntity> CardActionsData;

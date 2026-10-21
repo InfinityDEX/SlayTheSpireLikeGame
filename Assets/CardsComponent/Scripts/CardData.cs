@@ -81,6 +81,11 @@ public class CardData
     public int UpgradedCardId { get; set; }
 
     /// <summary>
+    /// 強化済みカードか？
+    /// </summary>
+    public bool IsUpgraded { get; set; }
+
+    /// <summary>
     /// カード効果のリスト（カードの効果は先頭に登録されている物から再生）
     /// </summary>
     public List<CardActionComponent> CardActions { get; set; } = new();

@@ -47,14 +47,14 @@ public class CardViewer : MonoBehaviour
                 // インスタンスの再利用及びセットアップ
                 var cardObject = cardInstancePool[instancedCardIdx];
                 cardObject.gameObject.SetActive(true);
-                cardObject.Setup(cardData);
+                cardObject.Setup(cardData, -1);
             }
             else
             {
                 // インスタンス生成及びセットアップ
                 var cardObject = Instantiate(cardPrefab, cardParentTransform);
                 cardInstancePool.Add(cardObject);
-                cardObject.Setup(cardData);
+                cardObject.Setup(cardData, -1);
             }
 
             instancedCardIdx++;

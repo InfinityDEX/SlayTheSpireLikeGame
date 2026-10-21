@@ -11,6 +11,7 @@
       "UpgradedCardId": 0,
       "CardImagePath": "CardsComponent/Images/body_punch_hand_red",
       "CardCastSoundPath": "CardsComponent/Sounds/Hit-Punch09-4(High)",
+      "IsUpgraded": false,
       "CardEffect": [
         {
           "CardActionId": 0,
@@ -42,6 +43,7 @@
       "UpgradedCardId": 0,
       "CardImagePath": "CardsComponent/Images/body_punch_hand_red",
       "CardCastSoundPath": "CardsComponent/Sounds/Hit-Punch09-4(High)",
+      "IsUpgraded": true,
       "CardEffect": [
         {
           "CardActionId": 0,
@@ -73,6 +75,7 @@
       "UpgradedCardId": 0,
       "CardImagePath": "CardsComponent/Images/game_ken",
       "CardCastSoundPath": "CardsComponent/Sounds/Hit-Punch09-4(High)",
+      "IsUpgraded": false,
       "CardEffect": [
         {
           "CardActionId": 0,
@@ -104,6 +107,7 @@
       "UpgradedCardId": 0,
       "CardImagePath": "CardsComponent/Images/game_ken",
       "CardCastSoundPath": "CardsComponent/Sounds/Hit-Punch09-4(High)",
+      "IsUpgraded": true,
       "CardEffect": [
         {
           "CardActionId": 0,
@@ -135,6 +139,7 @@
       "UpgradedCardId": 0,
       "CardImagePath": "CardsComponent/Images/mahoutsukai_man",
       "CardCastSoundPath": "CardsComponent/Sounds/Hit-Punch09-4(High)",
+      "IsUpgraded": false,
       "CardEffect": [
         {
           "CardActionId": 100,
@@ -198,6 +203,7 @@
       "UpgradedCardId": 0,
       "CardImagePath": "CardsComponent/Images/mahoutsukai_man",
       "CardCastSoundPath": "CardsComponent/Sounds/Hit-Punch09-4(High)",
+      "IsUpgraded": true,
       "CardEffect": [
         {
           "CardActionId": 100,
@@ -261,6 +267,7 @@
       "UpgradedCardId": 0,
       "CardImagePath": "CardsComponent/Images/game_tate",
       "CardCastSoundPath": "CardsComponent/Sounds/Single_Accent13-1(Dry)",
+      "IsUpgraded": false,
       "CardEffect": [
         {
           "CardActionId": 1,
@@ -292,6 +299,7 @@
       "UpgradedCardId": 0,
       "CardImagePath": "CardsComponent/Images/chikarakobu",
       "CardCastSoundPath": "CardsComponent/Sounds/Single_Accent13-1(Dry)",
+      "IsUpgraded": false,
       "CardEffect": [
         {
           "CardActionId": 2,
@@ -323,6 +331,7 @@
       "UpgradedCardId": 0,
       "CardImagePath": "CardsComponent/Images/hone_kossetsu",
       "CardCastSoundPath": "CardsComponent/Sounds/Single_Accent13-1(Dry)",
+      "IsUpgraded": false,
       "CardEffect": [
         {
           "CardActionId": 3,

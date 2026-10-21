@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Experimental.AI;
 
 /// <summary>
 /// デッキマネージャクラス
@@ -30,10 +32,44 @@ public class DeckManager : MonoBehaviour
     /// </summary>
     public List<CardData> DiscardPile { get ; private set;} = new();
 
+    /// <summary>
+    /// デッキ中全てのカードのリスト
+    /// Getアクセサのみ
+    ///
+    /// 山札手札捨て札全てのカードを集約して返す。
+    /// これでバトル中でも所持している全てのカードのリストが取得できる
+    /// </summary>
+    public List<CardData> DeckCardList { get {
+        return DrawPile // 山札に
+            .Concat(Hand.Select(cardInHand => cardInHand.cardData).ToList()) // 手札と
+            .Concat(DiscardPile).ToList() // 捨て札を連結して
+            .OrderBy(cardData => cardData.CardID ) // IDで昇順ソートして
+            .ToList(); // リストにして返す
+        }
+    }
+
+    // デッキデータファイルのパス
+    private const string DeckDataFilePath = "SaveData/DeckData.json";
+
     private void Start()
     {
-        instance = this;
+        // シングルトン
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // DrawPile.Clear();
+
         LoadDeckFromJson();
+
+        // 山札をシャッフル
+        Shuffle(DrawPile);
     }
 
     /// <summary>
@@ -42,7 +78,7 @@ public class DeckManager : MonoBehaviour
     private void LoadDeckFromJson()
     {
         // StreamingAssetsからDeckData.jsonを読み込む
-        string filePath = System.IO.Path.Combine(Application.dataPath, "SaveData/DeckData.json");
+        string filePath = System.IO.Path.Combine(Application.dataPath, DeckDataFilePath);
         if (!System.IO.File.Exists(filePath))
         {
             Debug.LogError("DeckData.jsonが見つかりません: " + filePath);
@@ -52,8 +88,6 @@ public class DeckManager : MonoBehaviour
         string json = System.IO.File.ReadAllText(filePath);
 
         DeckDataJson deckData = JsonUtility.FromJson<DeckDataJson>(json);
-
-        DrawPile.Clear();
 
         foreach (var cardEntry in deckData.CurrentDeck)
         {
@@ -70,9 +104,42 @@ public class DeckManager : MonoBehaviour
                 DrawPile.Add(cardData);
             }
         }
+    }
 
-        // 山札をシャッフル
-        Shuffle(DrawPile);
+    /// <summary>
+    /// 現在のデッキデータをDeckData.jsonに保存する
+    /// </summary>
+    public void SaveDeck()
+    {
+        DeckDataJson deckDataJson = new();
+        deckDataJson.CurrentDeck = new();
+        foreach (var cardData in DeckCardList)
+        {
+            // 既に登録したかどうか確認
+            if (deckDataJson.CurrentDeck.Exists(cardEntry => cardEntry.cardId == cardData.CardID.ToString()))
+            {
+                // 既に登録済みなら登録したCardEntryのCountを+1する
+                deckDataJson.CurrentDeck.Find(cardEntry => cardEntry.cardId == cardData.CardID.ToString()).count++;
+            }
+            else
+            {
+                // 初めて追加する場合はCardEntryを新規作成して登録
+                CardEntry entry = new CardEntry{
+                    cardId = cardData.CardID.ToString(),
+                    count = 1
+                };
+                deckDataJson.CurrentDeck.Add(entry);
+            }
+        }
+
+        deckDataJson.CurrentDeck.Sort((cardEntryA, cardEntryB) =>
+            int.Parse(cardEntryA.cardId).CompareTo(int.Parse(cardEntryB.cardId))
+        );
+
+        string json = JsonUtility.ToJson(deckDataJson, true);
+
+        string filePath = System.IO.Path.Combine(Application.dataPath, DeckDataFilePath);
+        System.IO.File.WriteAllText(filePath, json);
     }
 
     /// <summary>
@@ -88,6 +155,15 @@ public class DeckManager : MonoBehaviour
             list[i] = list[randomIndex];
             list[randomIndex] = temp;
         }
+    }
+
+    /// <summary>
+    /// カードの追加
+    /// </summary>
+    /// <param name="cardData">追加したいカード</param>
+    public void AddCard(CardData cardData)
+    {
+        DrawPile.Add(cardData);
     }
 
     /// <summary>
