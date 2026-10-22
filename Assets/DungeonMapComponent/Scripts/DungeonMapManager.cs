@@ -78,6 +78,9 @@ public class DungeonMapManager : MonoBehaviour
     /// </summary>
     private MapGridJsonEntity.MapGridPos currentGridPos;
 
+    [field:SerializeField, Header("BGM")]
+    private AudioClip bgm;
+
     [field:SerializeField, Header("セレクト音")]
     private AudioClip selectSE;
 
@@ -182,6 +185,9 @@ public class DungeonMapManager : MonoBehaviour
         Vector3 cameraPos = mainCamera.transform.position;
         cameraPos.y = mainCameraDefault_YPos;
         mainCamera.transform.position = cameraPos;
+
+        // BGMの再生
+        AudioController.Instance.PlayBGM(bgm);
     }
 
     private void Update()
