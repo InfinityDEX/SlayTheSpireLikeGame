@@ -96,6 +96,26 @@ public class CardData
     public List<CardActionComponent> CardActions { get; set; } = new();
 
     /// <summary>
+    /// CardDataEntityをカードデータに登録(CardDataクラスに合わせてコンバート)する
+    /// </summary>
+    /// <param name="cardDataEntity">渡すCardDataEntityインスタンス</param>
+    public void SetCardDataJsonEntity(CardDataEntity cardDataEntity)
+    {
+        CardID = cardDataEntity.CardId;
+        Cost = cardDataEntity.CardCost;
+        CardName = cardDataEntity.CardName;
+        Type = (CardData.CardType)cardDataEntity.CardType;
+        CardImage = Resources.Load<Sprite>(cardDataEntity.CardImagePath);
+        VisualEffectID = cardDataEntity.VisualEffectId;
+        CastCardSE = Resources.Load<AudioClip>(cardDataEntity.CardCastSoundPath);
+        CardDescription = cardDataEntity.CardDescription;
+        SalesPrice = cardDataEntity.SalesPrice;
+        TargetType = (CardData.Target)cardDataEntity.CardTarget;
+        UpgradedCardId = cardDataEntity.UpgradedCardId;
+        IsUpgraded = cardDataEntity.IsUpgraded;
+    }
+
+    /// <summary>
     /// カード効果の実行
     /// </summary>
     /// <param name="target">効果のターゲット</param>

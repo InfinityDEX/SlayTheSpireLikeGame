@@ -49,13 +49,19 @@ public class CardDataLibrary : MonoBehaviour
     /// <summary>
     /// ライブラリ内にある未強化のカードデータをランダムに取得
     /// </summary>
+    /// <param name="getCardCount">取得したいカードデータの数</param>
     /// <returns>カードデータ</returns>
-    public CardData GetRandomCard()
+    public List<CardData> GetRandomCards(int getCardCount)
     {
         // 未強化のカードデータだけピックアップ
         var unUpgradeCardList = cardList.Where(card => !card.IsUpgraded).ToList();
-
-        // 未強化カードデータのプールからランダムにカード取得
-        return unUpgradeCardList[Random.Range(0, unUpgradeCardList.Count - 1)];
+        // 取得したいカード数分、重複しないカードをランダムに選択してリストで返す
+        if (getCardCount >= unUpgradeCardList.Count)
+        {
+            // 取得枚数が未強化カード数以上なら、全カードをシャッフルして返す
+            return unUpgradeCardList.OrderBy(_ => Random.value).ToList();
+        }
+        var shuffled = unUpgradeCardList.OrderBy(_ => Random.value).ToList();
+        return shuffled.Take(getCardCount).ToList();
     }
 }

@@ -387,10 +387,10 @@ public class BattleManager : MonoBehaviour
             // ゲームデータの保存
             SaveDataHolder.Instance?.WriteSaveData();
 
-            List<CardData> cardDatas = new();
-            for (int i = 0; i < 3; i++)
+            List<CardData> cardDatas = CardDataLibrary.Instance.GetRandomCards(3);
+            foreach (var cardData in cardDatas)
             {
-                cardDatas.Add(CardDataLibrary.Instance.GetRandomCard());
+                cardDatas.Add(cardData);
             }
             battleRewardManager?.EnableRewardView(cardDatas);
         }

@@ -65,17 +65,8 @@ class CardDataFactory
         foreach (var cardDataEntity in cardDataList.CardDatas)
         {
             CardData cardData = new();
-            cardData.CardID = cardDataEntity.CardId;
-            cardData.Cost = cardDataEntity.CardCost;
-            cardData.CardName = cardDataEntity.CardName;
-            cardData.Type = (CardData.CardType)cardDataEntity.CardType;
-            cardData.CardImage = Resources.Load<Sprite>(cardDataEntity.CardImagePath);
-            cardData.VisualEffectID = cardDataEntity.VisualEffectId;
-            cardData.CastCardSE = Resources.Load<AudioClip>(cardDataEntity.CardCastSoundPath);
-            cardData.CardDescription = cardDataEntity.CardDescription;
-            cardData.TargetType = (CardData.Target)cardDataEntity.CardTarget;
-            cardData.UpgradedCardId = cardDataEntity.UpgradedCardId;
-            cardData.IsUpgraded = cardDataEntity.IsUpgraded;
+
+            cardData.SetCardDataJsonEntity(cardDataEntity);
 
             // 登録されている順番にカード効果を適用する
             foreach (var cardActionData in cardDataEntity.CardActionsData)
