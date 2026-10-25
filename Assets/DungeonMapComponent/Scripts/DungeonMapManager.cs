@@ -211,23 +211,30 @@ public class DungeonMapManager : MonoBehaviour
             EnemyCombinationsDataGenerator.EnemyType enemyType = EnemyCombinationsDataGenerator.EnemyType.Enemy; // 未割当でエラーになってしまう為、一旦Enemyを登録
 
             bool shouldNotTransition = false;
+            string transSceneName = "";
             switch (nextGrid.gridInfo.type)
             {
                 case MapGridInfo.FloorInfo.StartFloor:
                     shouldNotTransition = true;
                     break; // 何もしない。
                 case MapGridInfo.FloorInfo.EnemyFloor:
-                    enemyType = EnemyCombinationsDataGenerator.EnemyType.Enemy;
+                    // enemyType = EnemyCombinationsDataGenerator.EnemyType.Enemy;
+                    enemyCombinationsDataGenerator.GenerateData(EnemyCombinationsDataGenerator.EnemyType.Enemy, stageData);
+                    transSceneName = "BattleScene";
                     break;
                 case MapGridInfo.FloorInfo.EliteEnemyFloor:
-                    enemyType = EnemyCombinationsDataGenerator.EnemyType.EliteEnemy;
+                    // enemyType = EnemyCombinationsDataGenerator.EnemyType.EliteEnemy;
+                    enemyCombinationsDataGenerator.GenerateData(EnemyCombinationsDataGenerator.EnemyType.EliteEnemy, stageData);
+                    transSceneName = "BattleScene";
                     break;
                 case MapGridInfo.FloorInfo.BossFloor:
-                    enemyType = EnemyCombinationsDataGenerator.EnemyType.Boss;
+                    // enemyType = EnemyCombinationsDataGenerator.EnemyType.Boss;
+                    enemyCombinationsDataGenerator.GenerateData(EnemyCombinationsDataGenerator.EnemyType.Boss, stageData);
+                    transSceneName = "BattleScene";
                     break;
                 case MapGridInfo.FloorInfo.ShopFloor:
-                    shouldNotTransition = true;
-                    break; // TODO:現状は何もしない。ショップ実装後変更する。
+                    transSceneName = "StoreScene";
+                    break;
             }
 
             if (!shouldNotTransition)
@@ -238,8 +245,8 @@ public class DungeonMapManager : MonoBehaviour
 
                 // 選択したグリッドに合わせて画面遷移する
                 AudioController.Instance.PlaySE(decideSE);
-                enemyCombinationsDataGenerator.GenerateData(enemyType, stageData);
-                StartCoroutine(LoadBattleSceneAfterDelay(2f));
+                // enemyCombinationsDataGenerator.GenerateData(enemyType, stageData);
+                StartCoroutine(LoadBattleSceneAfterDelay(2f, transSceneName));
             }
         }
 
@@ -279,11 +286,12 @@ public class DungeonMapManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 指定した遅延時間後にバトルシーンへ遷移するコルーチン
+    /// 指定した遅延時間後に指定したシーンへ遷移するコルーチン
     /// </summary>
     /// <param name="delaySeconds">遅延時間（秒）</param>
+    /// <param name="sceneName">遷移先のシーン名</param>
     /// <returns>IEnumerator</returns>
-    private IEnumerator LoadBattleSceneAfterDelay(float delaySeconds)
+    private IEnumerator LoadBattleSceneAfterDelay(float delaySeconds, string sceneName)
     {
         // 指定した秒数だけ待機
         yield return new WaitForSeconds(delaySeconds);
@@ -309,8 +317,8 @@ public class DungeonMapManager : MonoBehaviour
         saveDataHolder.SetCurrentFloor(currentGridPos.Row);
         saveDataHolder.WriteSaveData();
 
-        // バトルシーンへ遷移
-        SceneManager.LoadScene("BattleScene", LoadSceneMode.Single);
+        // 指定されたシーンへ遷移
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
     /// <summary>
