@@ -396,16 +396,26 @@ public class BattleManager : MonoBehaviour
         }
         else if (clearFlag == 1)
         {
-            // ゲームデータの破棄（はじめから）
+            /////////////////////////////////////
+            ///
+            /// ゲームデータの破棄（はじめから）
+            ///
+            /////////////////////////////////////
+            // 進行情報削除
             SaveDataHolder.Instance?.DeleteSaveDataFile();
-
-            // ゲームオーバーシーンに移動
             string mapSaveFilePath = System.IO.Path.Combine(Application.dataPath, DungeonMapManager.saveDataFilePath);
+            // マップ情報の削除
             if (System.IO.File.Exists(mapSaveFilePath))
             {
                 // マップ進行データを破棄して、次回プレイ時に初めからゲームが開始される状態にする
                 System.IO.File.Delete(mapSaveFilePath);
             }
+            // デッキ情報の削除
+            DeckManager.Instance.DeleteDeckData();
+            /////////////////////////////////////
+
+
+            // ゲームオーバーシーンに移動
             SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);
         }
         else

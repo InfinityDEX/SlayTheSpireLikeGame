@@ -33,6 +33,11 @@ public class DeckManager : MonoBehaviour
     public List<CardData> DiscardPile { get ; private set;} = new();
 
     /// <summary>
+    /// デフォルトデッキのファイルパス(Resourcesフォルダ内)
+    /// </summary>
+    private const string DefaultDeckDataPath = "MetaData/DefaultDeckData.json";
+
+    /// <summary>
     /// デッキ中全てのカードのリスト
     /// Getアクセサのみ
     ///
@@ -81,8 +86,21 @@ public class DeckManager : MonoBehaviour
         string filePath = System.IO.Path.Combine(Application.dataPath, DeckDataFilePath);
         if (!System.IO.File.Exists(filePath))
         {
-            Debug.LogError("DeckData.jsonが見つかりません: " + filePath);
-            return;
+            Debug.Log($"{filePath}が見つかりません。Resourcesフォルダ内の{DefaultDeckDataPath}を複製して新規作成します: ");
+
+            // デフォルトデッキデータのパス
+            TextAsset defaultDeckTextAsset = Resources.Load<TextAsset>(DefaultDeckDataPath.Replace(".json", ""));
+            if (defaultDeckTextAsset != null)
+            {
+                // DefaultDeckData.jsonの内容をDeckData.jsonに新規作成
+                System.IO.File.WriteAllText(filePath, defaultDeckTextAsset.text);
+                Debug.Log("DefaultDeckData.jsonをDeckData.jsonとしてコピーしました。");
+            }
+            else
+            {
+                Debug.LogError("DefaultDeckData.jsonがResources/MetaData/DefaultDeckDataとして見つかりません。");
+                return;
+            }
         }
 
         string json = System.IO.File.ReadAllText(filePath);
@@ -103,6 +121,23 @@ public class DeckManager : MonoBehaviour
             {
                 DrawPile.Add(cardData);
             }
+        }
+    }
+
+    /// <summary>
+    /// 現在のデッキ状況を削除する
+    /// </summary>
+    public void DeleteDeckData()
+    {
+        string filePath = System.IO.Path.Combine(Application.dataPath, DeckDataFilePath);
+        if (System.IO.File.Exists(filePath))
+        {
+            System.IO.File.Delete(filePath);
+            Debug.Log("Deckデータファイルを削除しました: " + filePath);
+        }
+        else
+        {
+            Debug.LogWarning("Deckデータファイルが存在しません: " + filePath);
         }
     }
 

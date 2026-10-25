@@ -15,7 +15,7 @@ class CardDataFactory
     /// <summary>
     /// カードデータファイルのパス
     /// </summary>
-    private static string cardDataPath = "SaveData/CardData.json";
+    private static string cardDataPath = "MetaData/CardData.json";
 
     /// <summary>
     /// カード処理コンポーネントとIDの組
@@ -50,14 +50,14 @@ class CardDataFactory
         // カード効果とカード式のリスト登録
         CreateCardActionAndValueExpressionList();
 
-        // カードデータファイルを読み込み
-        string filePath = System.IO.Path.Combine(Application.dataPath, cardDataPath);
-        if (!System.IO.File.Exists(filePath))
+        // Resourcesフォルダからカードデータファイルを読み込む形に変更
+        TextAsset cardDataTextAsset = Resources.Load<TextAsset>(cardDataPath.Replace(".json", ""));
+        if (cardDataTextAsset == null)
         {
-            Debug.LogError("CardData.jsonが見つかりません: " + filePath);
+            Debug.LogError($"CardData.jsonがResources/{cardDataPath}として見つかりません。");
             return null;
         }
-        string json = System.IO.File.ReadAllText(filePath);
+        string json = cardDataTextAsset.text;
 
         // Jsonテキストをエンティティクラスに変更して、変換する
         CardDataListEntity cardDataList = GenerateCardDataListEntity(json);
