@@ -70,6 +70,11 @@ namespace CardEffect.CardDataJson
         public int UpgradedCardId;
 
         /// <summary>
+        /// ショップでの販売価格
+        /// </summary>
+        public int SalesPrice;
+
+        /// <summary>
         /// 強化済みのカードか？
         /// </summary>
         public bool IsUpgraded;
