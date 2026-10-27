@@ -84,6 +84,24 @@ public class SaveDataHolder : MonoBehaviour
     }
 
     /// <summary>
+    /// 所持金の使用
+    /// </summary>
+    /// <param name="money">使用したい金額</param>
+    /// <returns>所持金を消費できたか？</returns>
+    public bool UseMoney(int money)
+    {
+        if (money <= SaveData.money)
+        {
+            SaveData.money -= money;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
     /// 現在の階層数情報を更新
     /// </summary>
     /// <param name="floorNum">現在の階層</param>

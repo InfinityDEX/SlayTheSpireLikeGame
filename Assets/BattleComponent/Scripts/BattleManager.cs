@@ -320,12 +320,14 @@ public class BattleManager : MonoBehaviour
     /// <returns>全てのエネミーが死んでいるか？</returns>
     private bool AreEnemiesDefeated()
     {
+        EnemyManager.Enemies.RemoveAll(enemy => enemy == null);
+
         // 体力が0ならクリーチャを破壊する
         foreach (var enemy in EnemyManager.Enemies)
         {
             if (enemy.Hp <= 0)
             {
-                EnemyManager.Enemies.Remove(enemy);
+                // EnemyManager.Enemies.Remove(enemy);
                 // 所持金追加
                 var enemyData = enemy.CreatureData;
                 if (enemyData is EnemyData)
@@ -335,6 +337,8 @@ public class BattleManager : MonoBehaviour
                 Destroy(enemy.gameObject);
             }
         }
+
+
         return EnemyManager.Enemies.Count == 0;
     }
 
@@ -388,10 +392,7 @@ public class BattleManager : MonoBehaviour
             SaveDataHolder.Instance?.WriteSaveData();
 
             List<CardData> cardDatas = CardDataLibrary.Instance.GetRandomCards(3);
-            foreach (var cardData in cardDatas)
-            {
-                cardDatas.Add(cardData);
-            }
+
             battleRewardManager?.EnableRewardView(cardDatas);
         }
         else if (clearFlag == 1)
