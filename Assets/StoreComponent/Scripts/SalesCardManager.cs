@@ -56,7 +56,14 @@ public class SalesCardManager : MonoBehaviour
     {
         // 販売カード一覧にあるカードなら選択中カードにセット
         if (salesCards.Exists(card => card == selectedCard))
+        {
+            // 全てのカードを一旦選択解除状態のUIに更新する。
+            salesCards.ForEach( card => card.Unselect());
+
+            // 選択カード更新
             this.selectedCard = selectedCard;
+            this.selectedCard.Select();
+        }
     }
 
     /// <summary>
