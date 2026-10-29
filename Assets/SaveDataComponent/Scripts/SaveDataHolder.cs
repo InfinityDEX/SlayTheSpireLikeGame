@@ -75,6 +75,14 @@ public class SaveDataHolder : MonoBehaviour
     }
 
     /// <summary>
+    /// 体力全回復
+    /// </summary>
+    public void FullRecovery()
+    {
+        SaveData.currentHealth = SaveData.maxHealth;
+    }
+
+    /// <summary>
     /// 所持金の追加
     /// </summary>
     /// <param name="money">追加する金額</param>

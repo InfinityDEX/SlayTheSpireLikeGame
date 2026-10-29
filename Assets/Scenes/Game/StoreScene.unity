@@ -1986,6 +1986,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1551228562}
   - component: {fileID: 1551228563}
+  - component: {fileID: 1551228564}
   m_Layer: 5
   m_Name: ShopActionGroup
   m_TagString: Untagged
@@ -2042,6 +2043,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1551228564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1551228561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82d534719747f2940a17d59461900e71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StoreManager
+  recoveryPrice: 500
 --- !u!1 &1553556575
 GameObject:
   m_ObjectHideFlags: 0
@@ -2263,6 +2277,7 @@ GameObject:
   - component: {fileID: 1795889423}
   - component: {fileID: 1795889422}
   - component: {fileID: 1795889421}
+  - component: {fileID: 1795889424}
   m_Layer: 5
   m_Name: BreakButton
   m_TagString: Untagged
@@ -2333,7 +2348,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1795889422}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1551228564}
+        m_TargetAssemblyTypeName: StoreManager, Assembly-CSharp
+        m_MethodName: FullRecovery
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1795889424}
+        m_TargetAssemblyTypeName: SoundTrigger, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1795889422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2372,6 +2411,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1795889419}
   m_CullTransparentMesh: 1
+--- !u!114 &1795889424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795889419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cba1eb83d927c684ebeba92da314be9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundTrigger
+  audioClip: {fileID: 8300000, guid: 24abe901fad2dcd448e51b14bb11ec81, type: 3}
 --- !u!1 &1839359872
 GameObject:
   m_ObjectHideFlags: 0
