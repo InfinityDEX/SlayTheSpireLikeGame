@@ -167,7 +167,7 @@ MonoBehaviour:
   mapGridCanvas: {fileID: 1881641005}
   routeLineCanvas: {fileID: 1198360609}
   branchCount: 3
-  floorCount: 5
+  floorCount: 10
   xOffset: 2
   yOffset: 4
   availableMapGridInfoList: {fileID: 11400000, guid: e6b47c39226e30541bdc256fc6d1b4de, type: 2}

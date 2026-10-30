@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using UnityEngine;
 
 /// <summary>
@@ -73,5 +72,15 @@ public class CardViewer : MonoBehaviour
             child.gameObject.SetActive(false);
         }
         gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// アクティブ状態のカードを取得する
+    /// </summary>
+    /// <returns>アクティブ状態のカードリスト</returns>
+    public List<Card> GetActiveCards()
+    {
+        // カードプール内のアクティブ状態の
+        return cardInstancePool.FindAll(card => card.gameObject.activeSelf);
     }
 }
