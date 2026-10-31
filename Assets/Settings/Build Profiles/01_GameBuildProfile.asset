@@ -30,6 +30,8 @@ MonoBehaviour:
     m_path: Assets/Scenes/Game/StoreScene.unity
   - m_enabled: 1
     m_path: Assets/Scenes/Game/GameOverScene.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Game/GameClearScene.unity
   m_HasScriptingDefines: 0
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:

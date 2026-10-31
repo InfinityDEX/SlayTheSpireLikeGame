@@ -145,7 +145,7 @@ public class DeckManager : MonoBehaviour
     /// <summary>
     /// 現在のデッキデータをDeckData.jsonに保存する
     /// </summary>
-    public void SaveDeck()
+    public void WriteDeckData()
     {
         DeckDataJson deckDataJson = new();
         deckDataJson.CurrentDeck = new();

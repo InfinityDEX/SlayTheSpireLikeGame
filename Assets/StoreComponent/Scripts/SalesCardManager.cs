@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using Mono.Cecil.Cil;
 using UnityEngine;
-using VContainer;
+// using VContainer;
 
 public class SalesCardManager : MonoBehaviour
 {
@@ -71,7 +68,7 @@ public class SalesCardManager : MonoBehaviour
             if (SaveDataHolder.Instance?.UseMoney(selectedCard.SalesPrice) == true)
             {
                 DeckManager.Instance?.AddCard(selectedCard.CardData);
-                DeckManager.Instance?.SaveDeck();
+                DeckManager.Instance?.WriteDeckData();
 
                 salesCards.Remove(selectedCard);
                 Destroy(selectedCard.gameObject);

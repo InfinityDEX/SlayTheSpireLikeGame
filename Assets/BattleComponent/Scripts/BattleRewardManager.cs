@@ -88,7 +88,7 @@ public class BattleRewardManager : MonoBehaviour
     {
         var deckManager = DeckManager.Instance;
         deckManager.AddCard(rewardCardList[selectingRewardCardIdx].ThisCardData);
-        deckManager.SaveDeck();
+        deckManager.WriteDeckData();
         StartCoroutine(LoadMapSceneAfterDelay(2.0f));
     }
 

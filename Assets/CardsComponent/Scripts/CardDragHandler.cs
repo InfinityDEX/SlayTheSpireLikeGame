@@ -71,7 +71,7 @@ public class CardDragHandler : MonoBehaviour
                                 ve.transform.position = selectCreature.transform.position;
                             }
                             // カードを捨て札に置く
-                            DeckManager deckManager = FindObjectOfType<DeckManager>();
+                            DeckManager deckManager = DeckManager.Instance;
                             if (deckManager != null)
                             {
                                 deckManager.DiscardCardById(holdCard.HandIdx);
@@ -111,7 +111,7 @@ public class CardDragHandler : MonoBehaviour
                                     ve.transform.position = enemy.transform.position;
                                 }
                             }
-                            DeckManager deckManager = FindObjectOfType<DeckManager>();
+                            DeckManager deckManager = DeckManager.Instance;
                             if (deckManager != null)
                             {
                                 deckManager.DiscardCardById(holdCard.HandIdx);
@@ -145,7 +145,7 @@ public class CardDragHandler : MonoBehaviour
                                 GameObject ve = Instantiate(visualEffectPrefab);
                                 ve.transform.position = player.transform.position;
                             }
-                            DeckManager deckManager = FindObjectOfType<DeckManager>();
+                            DeckManager deckManager = DeckManager.Instance;
                             if (deckManager != null)
                             {
                                 deckManager.DiscardCardById(holdCard.HandIdx);

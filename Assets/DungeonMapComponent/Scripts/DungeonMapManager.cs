@@ -304,13 +304,19 @@ public class DungeonMapManager : MonoBehaviour
 
         movePath.Add(currentGridPos); // 現在位置を移動経路に追加
 
-        // マップ保存
-        SaveDungeonMapData();
+        // // マップ保存
+        // SaveDungeonMapData();
 
-        // セーブデータの書き換え・保存
+        // セーブデータの書き換え
         var saveDataHolder = SaveDataHolder.Instance;
         saveDataHolder.SetCurrentFloor(currentGridPos.Row);
-        saveDataHolder.WriteSaveData();
+
+        // 一時的なダンジョンマップデータを作成し、シーンを跨いで破壊されないオブジェクトにして次のシーンに渡す。
+        GameObject temporaryDungeonMapDataObj = new GameObject();
+        temporaryDungeonMapDataObj.name = "TemporaryDungeonMapData";
+        var temporaryDungeonMapData = temporaryDungeonMapDataObj.AddComponent<TemporaryMapData>();
+        temporaryDungeonMapData.Init(mapGrids, movePath, currentGridPos, saveDataFilePath);
+        DontDestroyOnLoad(temporaryDungeonMapDataObj);
 
         // 指定されたシーンへ遷移
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);

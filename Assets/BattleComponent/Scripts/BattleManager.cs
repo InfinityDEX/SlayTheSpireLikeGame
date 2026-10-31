@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -44,6 +45,11 @@ public class BattleManager : MonoBehaviour
     private BattlePhase currentPhase = BattlePhase.Idle;
 
     /// <summary>
+    /// 一時的なダンジョンデータ
+    /// </summary>
+    private TemporaryMapData temporaryMapData;
+
+    /// <summary>
     /// バトル中かどうか
     /// </summary>
     private bool isBattleActive = true;
@@ -75,6 +81,9 @@ public class BattleManager : MonoBehaviour
 
         // バトルフェーズを初期化フェーズにする
         currentPhase = BattlePhase.InitializePhase;
+
+        // 一時的なダンジョンデータを取得する。
+        temporaryMapData = GameObject.Find("TemporaryDungeonMapData")?.GetComponent<TemporaryMapData>();
     }
 
     private void Update()
@@ -193,20 +202,23 @@ public class BattleManager : MonoBehaviour
             case BattlePhase.EndBattle:
                 // バトル終了処理
                 isBattleActive = false;
-                int result;
+                EndBattleFactor result = EndBattleFactor.ERROR;
                 bool playerDead = IsPlayerDead();
                 bool enemiesDefeated = AreEnemiesDefeated();
                 if (enemiesDefeated && !playerDead)
                 {
-                    result = 0;
+                    if (temporaryMapData.CurrentFloorIsFinal)
+                    {
+                        result = EndBattleFactor.GameClear;
+                    }
+                    else
+                    {
+                        result = EndBattleFactor.PlayerWin;
+                    }
                 }
                 else if (playerDead)
                 {
-                    result = 1;
-                }
-                else
-                {
-                    result = 2;
+                    result = EndBattleFactor.PlayerLoss;
                 }
                 EndBattle(result);
                 currentPhase = BattlePhase.Idle;
@@ -378,51 +390,76 @@ public class BattleManager : MonoBehaviour
         return false;
     }
 
+    // ゲーム終了要因
+    private enum EndBattleFactor
+    {
+        PlayerWin,
+        PlayerLoss,
+        GameClear,
+        ERROR,
+    }
     /// <summary>
     /// バトル終了処理
     /// </summary>
-    /// <param name="clearFlag">バトル終了要因（０：プレイヤーの勝利　1：プレイヤー敗北）</param>
-    private void EndBattle(int clearFlag)
+    /// <param name="clearFlag">バトル終了要因</param>
+    private void EndBattle(EndBattleFactor clearFlag)
     {
-        // TODO：バトル終了アニメ・遷移など
-        // シーン遷移分岐
-        if (clearFlag == 0)
+        string mapSaveFilePath = System.IO.Path.Combine(Application.dataPath, DungeonMapManager.saveDataFilePath);
+        switch (clearFlag)
         {
-            // ゲームデータの保存
-            SaveDataHolder.Instance?.WriteSaveData();
+            case EndBattleFactor.PlayerWin:
+                // ゲームデータの保存
+                SaveDataHolder.Instance?.WriteSaveData();
 
-            List<CardData> cardDatas = CardDataLibrary.Instance.GetRandomCards(3);
+                List<CardData> cardDatas = CardDataLibrary.Instance.GetRandomCards(3);
 
-            battleRewardManager?.EnableRewardView(cardDatas);
+                battleRewardManager?.EnableRewardView(cardDatas);
+
+                // 一時的な情報としていたダンジョンマップデータを保存する
+                temporaryMapData.SaveDungeonMapData();
+
+                break;
+            case EndBattleFactor.PlayerLoss:
+                // ゲームデータの破棄（はじめから）
+
+                // 進行情報削除
+                SaveDataHolder.Instance?.DeleteSaveDataFile();
+                // マップ情報の削除
+                if (System.IO.File.Exists(mapSaveFilePath))
+                {
+                    // マップ進行データを破棄して、次回プレイ時に初めからゲームが開始される状態にする
+                    System.IO.File.Delete(mapSaveFilePath);
+                }
+                // デッキ情報の削除
+                DeckManager.Instance.DeleteDeckData();
+
+                // ゲームオーバーシーンに移動
+                SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);
+                break;
+            case EndBattleFactor.GameClear:
+                // ゲームデータの破棄（はじめから）
+
+                // 進行情報削除
+                SaveDataHolder.Instance?.DeleteSaveDataFile();
+                // マップ情報の削除
+                if (System.IO.File.Exists(mapSaveFilePath))
+                {
+                    // マップ進行データを破棄して、次回プレイ時に初めからゲームが開始される状態にする
+                    System.IO.File.Delete(mapSaveFilePath);
+                }
+                // デッキ情報の削除
+                DeckManager.Instance.DeleteDeckData();
+
+                // ゲームクリアシーンに移動
+                SceneManager.LoadScene("GameClearScene", LoadSceneMode.Additive);
+                break;
+            case EndBattleFactor.ERROR:
+                Debug.LogError("想定外の理由によるゲームオーバーが発生しました。clearFlag: " + clearFlag);
+                SceneManager.LoadScene("GameOverScene", LoadSceneMode.Single);
+                break;
         }
-        else if (clearFlag == 1)
-        {
-            /////////////////////////////////////
-            ///
-            /// ゲームデータの破棄（はじめから）
-            ///
-            /////////////////////////////////////
-            // 進行情報削除
-            SaveDataHolder.Instance?.DeleteSaveDataFile();
-            string mapSaveFilePath = System.IO.Path.Combine(Application.dataPath, DungeonMapManager.saveDataFilePath);
-            // マップ情報の削除
-            if (System.IO.File.Exists(mapSaveFilePath))
-            {
-                // マップ進行データを破棄して、次回プレイ時に初めからゲームが開始される状態にする
-                System.IO.File.Delete(mapSaveFilePath);
-            }
-            // デッキ情報の削除
-            DeckManager.Instance.DeleteDeckData();
-            /////////////////////////////////////
-
-
-            // ゲームオーバーシーンに移動
-            SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);
-        }
-        else
-        {
-            Debug.LogError("想定外の理由によるゲームオーバーが発生しました。clearFlag: " + clearFlag);
-            SceneManager.LoadScene("GameOverScene", LoadSceneMode.Single);
-        }
+        // このままだとシーンを跨いでも残り続けてしまうので破壊する
+        SceneManager.MoveGameObjectToScene(temporaryMapData.gameObject, SceneManager.GetActiveScene());
+        Destroy(temporaryMapData.gameObject);
     }
 }

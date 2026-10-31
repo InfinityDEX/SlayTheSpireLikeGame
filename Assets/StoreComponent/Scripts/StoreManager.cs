@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// ストア内で実行できるアクションを管理するクラス
@@ -23,6 +24,13 @@ public class StoreManager : MonoBehaviour
 
     [field: SerializeField, Header("販売カード入れ替え料金")]
     private int changeCardLineupPrice;
+
+    TemporaryMapData temporaryMapData;
+
+    public void Start()
+    {
+        temporaryMapData = GameObject.Find("TemporaryDungeonMapData")?.GetComponent<TemporaryMapData>();
+    }
 
     /// <summary>
     /// 体力全回復
@@ -164,5 +172,22 @@ public class StoreManager : MonoBehaviour
         {
             salesCardManager.ChangeShowcaseLineup();
         }
+    }
+
+    /// <summary>
+    /// ショップを退店する
+    /// </summary>
+    public void LeavingStore()
+    {
+        // 一時的な情報としていたダンジョンマップデータを保存する
+        temporaryMapData.SaveDungeonMapData();
+
+        // このままだとシーンを跨いでも残り続けてしまうので破壊する
+        SceneManager.MoveGameObjectToScene(temporaryMapData.gameObject, SceneManager.GetActiveScene());
+        Destroy(temporaryMapData.gameObject);
+
+        DeckManager.Instance?.WriteDeckData(); // デッキの保存
+        SaveDataHolder.Instance?.WriteSaveData(); // セーブデータのJson保存
+        SceneManager.LoadScene("MapScene", LoadSceneMode.Single);
     }
 }
