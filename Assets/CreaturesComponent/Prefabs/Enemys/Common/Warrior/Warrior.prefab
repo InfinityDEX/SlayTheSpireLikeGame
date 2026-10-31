@@ -169,11 +169,11 @@ MonoBehaviour:
   <BatchManager>k__BackingField: {fileID: 2688983689895225212}
   actionPattern: 0
   animator: {fileID: 7555199572338204783}
-  slashDamage: 10
-  consecutiveSlashCount: 3
+  slashDamage: 5
+  consecutiveSlashCount: 6
   slashSE: {fileID: 8300000, guid: 1884ac0a49d75e941b11cba85823c509, type: 3}
   pumpUpSE: {fileID: 8300000, guid: ab81c8259baa9104eae146907600efca, type: 3}
-  muscleNum: 5
+  muscleNum: 3
 --- !u!114 &8069421120261711902 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7693061921805974473, guid: 1b5fbfb8340a26143bd37fed13bff2d2, type: 3}

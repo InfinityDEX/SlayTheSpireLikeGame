@@ -2,7 +2,7 @@ using UnityEngine;
 
 /// <summary>
 /// 戦士クラス
-/// 
+///
 /// ノーマルエネミー
 /// </summary>
 public class Warrior : Enemy
@@ -11,12 +11,12 @@ public class Warrior : Enemy
     /// アニメーション経過時間
     /// </summary>
     private float animationCurrentTime = 0;
-    
+
     /// <summary>
     /// アニメーション開始から斬撃が当たるまでの時間
     /// </summary>
     private float slashTime = 0.5f;
-    
+
     /// <summary>
     /// アニメーション開始から強化魔法が適用されるまでの時間
     /// </summary>
@@ -70,7 +70,7 @@ public class Warrior : Enemy
 
     /// <summary>
     /// 被ダメージ時のアニメーション再生処理
-    /// 
+    ///
     /// damageとhpは本関数を登録するイベントハンドラ側が
     /// 指定している引数の為、使用していないが残す
     /// </summary>
@@ -261,7 +261,7 @@ public class Warrior : Enemy
 
             // 筋力上昇等のパラメータ強化処理
             AddMuscle(muscleNum);
-                
+
             var bm = BattleManager.Instance;
             GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(4);
             if (visualEffectPrefab != null)

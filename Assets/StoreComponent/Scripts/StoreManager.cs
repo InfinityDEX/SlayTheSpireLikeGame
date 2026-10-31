@@ -9,6 +9,9 @@ public class StoreManager : MonoBehaviour
     [field: SerializeField, Header("カードビュワー")]
     private CardViewer cardViewer;
 
+    [field: SerializeField, Header("販売カード管理クラス")]
+    private SalesCardManager salesCardManager;
+
     [field: SerializeField, Header("体力回復料金")]
     private int recoveryPrice;
 
@@ -17,6 +20,9 @@ public class StoreManager : MonoBehaviour
 
     [field: SerializeField, Header("カード除去料金")]
     private int cardDeletePrice;
+
+    [field: SerializeField, Header("販売カード入れ替え料金")]
+    private int changeCardLineupPrice;
 
     /// <summary>
     /// 体力全回復
@@ -135,4 +141,28 @@ public class StoreManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// カードの購入を試す(SalesCardManagerにある関数のラッパー)
+    ///
+    /// 購入ができない場合は何も行わない
+    /// </summary>
+    public void BuySelectedCard()
+    {
+        if (salesCardManager != null)
+        {
+            salesCardManager.BuySelectedCard();
+        }
+    }
+
+    /// <summary>
+    /// 店に展示されているカードのラインナップを変更する(SalesCardManagerにある関数のラッパー)
+    /// </summary>
+    public void ChangeShowcaseLineup()
+    {
+        var saveDataHolder = SaveDataHolder.Instance;
+        if (salesCardManager != null && saveDataHolder != null && saveDataHolder.UseMoney(changeCardLineupPrice) == true)
+        {
+            salesCardManager.ChangeShowcaseLineup();
+        }
+    }
 }
