@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -66,7 +67,8 @@ public class DungeonMapManager : MonoBehaviour
     /// <summary>
     /// セーブデータの保存パス
     /// </summary>
-    public static string saveDataFilePath { private set; get;} = "SaveData/CurrentDungeonData.json" ;
+    public static string saveDataFolderPath { private set; get;} = "SaveData";
+    public static string saveDataFileName { private set; get;} = "CurrentDungeonData.json" ;
 
     /// <summary>
     /// 移動経路
@@ -241,7 +243,7 @@ public class DungeonMapManager : MonoBehaviour
 
                 // 選択したグリッドに合わせて画面遷移する
                 AudioController.Instance.PlaySE(decideSE);
-                StartCoroutine(LoadBattleSceneAfterDelay(2f, transSceneName));
+                StartCoroutine(LoadSceneAfterDelay(2f, transSceneName));
             }
         }
 
@@ -286,7 +288,7 @@ public class DungeonMapManager : MonoBehaviour
     /// <param name="delaySeconds">遅延時間（秒）</param>
     /// <param name="sceneName">遷移先のシーン名</param>
     /// <returns>IEnumerator</returns>
-    private IEnumerator LoadBattleSceneAfterDelay(float delaySeconds, string sceneName)
+    private IEnumerator LoadSceneAfterDelay(float delaySeconds, string sceneName)
     {
         // 指定した秒数だけ待機
         yield return new WaitForSeconds(delaySeconds);
@@ -311,11 +313,11 @@ public class DungeonMapManager : MonoBehaviour
         var saveDataHolder = SaveDataHolder.Instance;
         saveDataHolder.SetCurrentFloor(currentGridPos.Row);
 
-        // 一時的なダンジョンマップデータを作成し、シーンを跨いで破壊されないオブジェクトにして次のシーンに渡す。
+        // この段階では一時的なダンジョンマップデータを作成し、シーンを跨いで破壊されないオブジェクトにして次のシーンに渡す。
         GameObject temporaryDungeonMapDataObj = new GameObject();
         temporaryDungeonMapDataObj.name = "TemporaryDungeonMapData";
         var temporaryDungeonMapData = temporaryDungeonMapDataObj.AddComponent<TemporaryMapData>();
-        temporaryDungeonMapData.Init(mapGrids, movePath, currentGridPos, saveDataFilePath);
+        temporaryDungeonMapData.Init(mapGrids, movePath, currentGridPos, $"{saveDataFolderPath}/{saveDataFileName}");
         DontDestroyOnLoad(temporaryDungeonMapDataObj);
 
         // 指定されたシーンへ遷移
@@ -328,9 +330,10 @@ public class DungeonMapManager : MonoBehaviour
     /// <returns>セーブファイルから取得したDungeonMapJsonオブジェクト</returns>
     public DungeonMapJson SearchDungeonMapSaveData()
     {
-        var saveFilePath = System.IO.Path.Combine(Application.dataPath, saveDataFilePath);
-        if (!System.IO.File.Exists(saveFilePath)) return null;
-        var jsonText = System.IO.File.ReadAllText(saveFilePath, Encoding.UTF8);
+        string folderPath = Path.Combine(Application.persistentDataPath, saveDataFolderPath);
+        string saveFilePath = Path.Combine(folderPath, saveDataFileName);
+        if (!File.Exists(saveFilePath)) return null;
+        var jsonText = File.ReadAllText(saveFilePath, Encoding.UTF8);
 
         DungeonMapJson dungeonMapJson;
         dungeonMapJson = JsonUtility.FromJson<DungeonMapJson>(jsonText);
@@ -373,7 +376,15 @@ public class DungeonMapManager : MonoBehaviour
         dungeonMapJson.CurrentGridPos = currentGridPos;
 
         var jsonText = JsonUtility.ToJson(dungeonMapJson, true);
-        string saveFilePath = System.IO.Path.Combine(Application.dataPath, saveDataFilePath);
-        System.IO.File.WriteAllText(saveFilePath, jsonText, Encoding.UTF8);
+        string folderPath = Path.Combine(Application.persistentDataPath, saveDataFolderPath);
+        string saveFilePath = Path.Combine(folderPath, saveDataFileName);
+
+        //  フォルダが存在しない場合は作成する
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        File.WriteAllText(saveFilePath, jsonText, Encoding.UTF8);
     }
 }

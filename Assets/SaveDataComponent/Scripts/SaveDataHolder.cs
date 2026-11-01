@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 
 /// <summary>
@@ -34,7 +35,16 @@ public class SaveDataHolder : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
 
         // ゲームデータの読み込み
-        string saveFilePath = System.IO.Path.Combine(Application.dataPath, "SaveData/SaveData.json");
+        string folderPath = Path.Combine(Application.persistentDataPath, "SaveData");
+        string saveFilePath = System.IO.Path.Combine(folderPath, "SaveData.json");
+
+        //  フォルダが存在しない場合は作成する
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        // ファイルがあれば読み込み、無ければ新規でセーブデータオブジェクトを作成する。(ファイル作成はしない)
         if (System.IO.File.Exists(saveFilePath))
         {
             string jsonText = System.IO.File.ReadAllText(saveFilePath);
@@ -125,8 +135,17 @@ public class SaveDataHolder : MonoBehaviour
     {
         // ゲームデータの保存
         string json = JsonUtility.ToJson(SaveData, true);
-        string saveFilePath = System.IO.Path.Combine(Application.dataPath, "SaveData/SaveData.json");
-        System.IO.File.WriteAllText(saveFilePath, json);
+        string folderPath = Path.Combine(Application.persistentDataPath, "SaveData");
+        string saveFilePath = Path.Combine(folderPath, "SaveData.json");
+
+        //  フォルダが存在しない場合は作成する
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        // ファイルに書き込む
+        File.WriteAllText(saveFilePath, json);
     }
 
     /// <summary>
@@ -134,10 +153,18 @@ public class SaveDataHolder : MonoBehaviour
     /// </summary>
     public void DeleteSaveDataFile()
     {
-        string saveFilePath = System.IO.Path.Combine(Application.dataPath, "SaveData/SaveData.json");
-        if (System.IO.File.Exists(saveFilePath))
+        string folderPath = Path.Combine(Application.persistentDataPath, "SaveData");
+        string saveFilePath = Path.Combine(folderPath, "SaveData.json");
+
+        // フォルダがないならそもそもセーブデータファイルもないので以降の処理をスキップする
+        if (!Directory.Exists(folderPath))
         {
-            System.IO.File.Delete(saveFilePath);
+            return;
+        }
+
+        if (File.Exists(saveFilePath))
+        {
+            File.Delete(saveFilePath);
         }
     }
 }

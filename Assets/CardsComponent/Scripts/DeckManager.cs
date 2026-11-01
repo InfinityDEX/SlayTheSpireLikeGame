@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Experimental.AI;
@@ -55,7 +56,8 @@ public class DeckManager : MonoBehaviour
     }
 
     // デッキデータファイルのパス
-    private const string DeckDataFilePath = "SaveData/DeckData.json";
+    private const string DeckDataFolderPath = "SaveData";
+    private const string DeckDataFileName = "DeckData.json";
 
     private void Start()
     {
@@ -83,9 +85,18 @@ public class DeckManager : MonoBehaviour
     /// </summary>
     private void LoadDeckFromJson()
     {
-        // StreamingAssetsからDeckData.jsonを読み込む
-        string filePath = System.IO.Path.Combine(Application.dataPath, DeckDataFilePath);
-        if (!System.IO.File.Exists(filePath))
+        // DeckData.jsonを読み込む
+        string folderPath = Path.Combine(Application.persistentDataPath, DeckDataFolderPath);
+        string filePath = Path.Combine(folderPath, DeckDataFileName);
+
+        //  フォルダが存在しない場合は作成する
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        // ファイルがない場合はデフォルトデッキデータをコピーして新規作成する。
+        if (!File.Exists(filePath))
         {
             Debug.Log($"{filePath}が見つかりません。Resourcesフォルダ内の{DefaultDeckDataPath}を複製して新規作成します: ");
 
@@ -94,7 +105,7 @@ public class DeckManager : MonoBehaviour
             if (defaultDeckTextAsset != null)
             {
                 // DefaultDeckData.jsonの内容をDeckData.jsonに新規作成
-                System.IO.File.WriteAllText(filePath, defaultDeckTextAsset.text);
+                File.WriteAllText(filePath, defaultDeckTextAsset.text);
                 Debug.Log("DefaultDeckData.jsonをDeckData.jsonとしてコピーしました。");
             }
             else
@@ -130,10 +141,18 @@ public class DeckManager : MonoBehaviour
     /// </summary>
     public void DeleteDeckData()
     {
-        string filePath = System.IO.Path.Combine(Application.dataPath, DeckDataFilePath);
-        if (System.IO.File.Exists(filePath))
+        string folderPath = Path.Combine(Application.persistentDataPath, DeckDataFolderPath);
+        string filePath = Path.Combine(folderPath, DeckDataFileName);
+
+        //  フォルダが存在しない場合は削除することはできないので以降の処理をスキップする
+        if (!Directory.Exists(folderPath))
         {
-            System.IO.File.Delete(filePath);
+            return;
+        }
+
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
             Debug.Log("Deckデータファイルを削除しました: " + filePath);
         }
         else
@@ -172,10 +191,19 @@ public class DeckManager : MonoBehaviour
             int.Parse(cardEntryA.cardId).CompareTo(int.Parse(cardEntryB.cardId))
         );
 
+        // デッキデータの書き込み
         string json = JsonUtility.ToJson(deckDataJson, true);
+        string folderPath = Path.Combine(Application.persistentDataPath, DeckDataFolderPath);
+        string filePath = Path.Combine(folderPath, DeckDataFileName);
 
-        string filePath = System.IO.Path.Combine(Application.dataPath, DeckDataFilePath);
-        System.IO.File.WriteAllText(filePath, json);
+        //  フォルダが存在しない場合は作成する
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        // ファイルに書き込む
+        File.WriteAllText(filePath, json);
     }
 
     /// <summary>

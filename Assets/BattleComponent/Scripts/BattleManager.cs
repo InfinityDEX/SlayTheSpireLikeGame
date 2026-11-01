@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -404,9 +405,15 @@ public class BattleManager : MonoBehaviour
     /// <param name="clearFlag">バトル終了要因</param>
     private void EndBattle(EndBattleFactor clearFlag)
     {
-        string mapSaveFilePath = System.IO.Path.Combine(Application.dataPath, DungeonMapManager.saveDataFilePath);
+        // ダンジョンマップファイルのパスを取得
+        string mapSaveFilePath = Path.Combine(Application.persistentDataPath, $"{DungeonMapManager.saveDataFolderPath}/{DungeonMapManager.saveDataFileName}");
+
+        // バトル終了要因によって分岐
         switch (clearFlag)
         {
+            //////////////////////////////
+            /// プレイヤーが勝利した時
+            //////////////////////////////
             case EndBattleFactor.PlayerWin:
                 // ゲームデータの保存
                 SaveDataHolder.Instance?.WriteSaveData();
@@ -419,16 +426,19 @@ public class BattleManager : MonoBehaviour
                 temporaryMapData.SaveDungeonMapData();
 
                 break;
+            //////////////////////////////
+            /// プレイヤーが敗北した時
+            //////////////////////////////
             case EndBattleFactor.PlayerLoss:
                 // ゲームデータの破棄（はじめから）
 
                 // 進行情報削除
                 SaveDataHolder.Instance?.DeleteSaveDataFile();
                 // マップ情報の削除
-                if (System.IO.File.Exists(mapSaveFilePath))
+                if (File.Exists(mapSaveFilePath))
                 {
                     // マップ進行データを破棄して、次回プレイ時に初めからゲームが開始される状態にする
-                    System.IO.File.Delete(mapSaveFilePath);
+                    File.Delete(mapSaveFilePath);
                 }
                 // デッキ情報の削除
                 DeckManager.Instance.DeleteDeckData();
@@ -436,16 +446,19 @@ public class BattleManager : MonoBehaviour
                 // ゲームオーバーシーンに移動
                 SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);
                 break;
+            //////////////////////////////
+            /// プレイヤーが最終階層のボスを倒してクリアした時
+            //////////////////////////////
             case EndBattleFactor.GameClear:
                 // ゲームデータの破棄（はじめから）
 
                 // 進行情報削除
                 SaveDataHolder.Instance?.DeleteSaveDataFile();
                 // マップ情報の削除
-                if (System.IO.File.Exists(mapSaveFilePath))
+                if (File.Exists(mapSaveFilePath))
                 {
                     // マップ進行データを破棄して、次回プレイ時に初めからゲームが開始される状態にする
-                    System.IO.File.Delete(mapSaveFilePath);
+                    File.Delete(mapSaveFilePath);
                 }
                 // デッキ情報の削除
                 DeckManager.Instance.DeleteDeckData();
@@ -453,6 +466,9 @@ public class BattleManager : MonoBehaviour
                 // ゲームクリアシーンに移動
                 SceneManager.LoadScene("GameClearScene", LoadSceneMode.Additive);
                 break;
+            //////////////////////////////
+            /// エラー。適切なバトル終了フラグが割り振られていない
+            //////////////////////////////
             case EndBattleFactor.ERROR:
                 Debug.LogError("想定外の理由によるゲームオーバーが発生しました。clearFlag: " + clearFlag);
                 SceneManager.LoadScene("GameOverScene", LoadSceneMode.Single);

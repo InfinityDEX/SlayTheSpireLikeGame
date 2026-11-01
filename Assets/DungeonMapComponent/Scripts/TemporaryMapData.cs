@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UnityEngine;
 
@@ -90,9 +91,11 @@ public class TemporaryMapData : MonoBehaviour
 
         dungeonMapJson.CurrentGridPos = currentGridPos;
 
+        // ダンジョンマップデータの書き換え・保存
         var jsonText = JsonUtility.ToJson(dungeonMapJson, true);
-        string saveFilePath = System.IO.Path.Combine(Application.dataPath, saveDataFilePath);
-        System.IO.File.WriteAllText(saveFilePath, jsonText, Encoding.UTF8);
+        string saveFilePath = Path.Combine(Application.persistentDataPath, saveDataFilePath);
+
+        File.WriteAllText(saveFilePath, jsonText, Encoding.UTF8);
 
         // セーブデータの書き換え・保存
         var saveDataHolder = SaveDataHolder.Instance;
