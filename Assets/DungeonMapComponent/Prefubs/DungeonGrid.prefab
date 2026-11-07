@@ -58,9 +58,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 678025e9f9e6a2247b24132e104515c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapGirdFlicker
-  isEnabled: 0
+  isBlinkEnabled: 0
   target: {fileID: 8531844281141749439}
-  cycle: 1
+  blinkCycle: 1
   fastBlinkMode: 0
   fastBlinkMultiplier: 4
 --- !u!114 &8531844281141749439
@@ -147,12 +147,12 @@ MonoBehaviour:
   gridImage: {fileID: 8531844281141749439}
   gridInfo: {fileID: 0}
   gridInfoId: 0
-  underLayer: []
   upperLayer: []
+  lowerLayer: []
   pathLinePrefab: {fileID: 8130568839806005446, guid: 50e6b7f01db468b4fa3e252834f434e4, type: 3}
   pos:
-    row: 0
-    col: 0
+    Row: 0
+    Col: 0
   gridPosViewDisplay: {fileID: 5220248739471869222}
 --- !u!1 &9043561408240361751
 GameObject:
@@ -219,7 +219,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
