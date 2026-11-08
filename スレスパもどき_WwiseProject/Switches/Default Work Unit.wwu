@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{6F798264-5FCB-4BBC-A44B-6283F8A4D400}" SchemaVersion="133">
 	<Switches>
-		<WorkUnit Name="Default Work Unit" ID="{6F798264-5FCB-4BBC-A44B-6283F8A4D400}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{6F798264-5FCB-4BBC-A44B-6283F8A4D400}" PersistMode="Standalone">
+			<ChildrenList>
+				<SwitchGroup Name="Battle_BGM" ID="{A47263DD-14F4-4F82-8D9F-B2998FD6DB8E}">
+					<ChildrenList>
+						<Switch Name="Cave" ID="{13017A6C-9C24-41B3-8427-62A32D5321F5}"/>
+						<Switch Name="Ruins" ID="{A3A4637F-9B02-4D81-BD90-4918B60BAC62}"/>
+						<Switch Name="Hideout" ID="{E071C5D9-799A-4A4E-96C0-DD5C155215A4}"/>
+					</ChildrenList>
+				</SwitchGroup>
+			</ChildrenList>
+		</WorkUnit>
 	</Switches>
 </WwiseDocument>

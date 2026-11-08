@@ -1,0 +1,127 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Windows",
+  "BasePlatform": "Windows",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "1722279097",
+    "Type": "User",
+    "GUID": "{D9BD2044-F6C8-4F64-B519-04390FC873B1}",
+    "Language": "SFX",
+    "Hash": "{7F1205C8-0DD4-E49B-E064-AA419338BA5D}",
+    "ObjectPath": "\\SoundBanks\\Default Work Unit\\BattleScene",
+    "ShortName": "BattleScene",
+    "Path": "BattleScene.bnk",
+    "Media": [
+     {
+      "Id": "265533881",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "MusMus-BGM-136.wav",
+      "CachePath": "C7/{C7FC1466-6C52-0C24-0E16-30A8CC50C096}.wem"
+     },
+     {
+      "Id": "779826046",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "MusMus-BGM-166.wav",
+      "CachePath": "74/{7431673B-9350-3064-29A2-E53BC11ABD67}.wem"
+     },
+     {
+      "Id": "937111305",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "MusMus-BGM-075.wav",
+      "CachePath": "36/{363F61EE-6644-AD84-9883-691B069E2AB1}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "3463709863",
+      "Name": "StartBattleScene",
+      "ObjectPath": "\\Events\\Default Work Unit\\StartBattleScene",
+      "GUID": "{F3D687B6-EF4B-49E8-80CA-F105616C258D}",
+      "DurationType": "OneShot",
+      "DurationMin": "53.428616",
+      "DurationMax": "146.8182",
+      "SwitchContainers": [
+       {
+        "SwitchValue": {
+         "GroupType": "Switch",
+         "GroupId": "1116020140",
+         "Id": "4122393694",
+         "GUID": "{13017A6C-9C24-41B3-8427-62A32D5321F5}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "937111305"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "Switch",
+         "GroupId": "1116020140",
+         "Id": "417916826",
+         "GUID": "{A3A4637F-9B02-4D81-BD90-4918B60BAC62}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "265533881"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "Switch",
+         "GroupId": "1116020140",
+         "Id": "2650542075",
+         "GUID": "{E071C5D9-799A-4A4E-96C0-DD5C155215A4}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "779826046"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "SwitchGroups": [
+     {
+      "Id": "1116020140",
+      "Name": "Battle_BGM",
+      "ObjectPath": "\\Switches\\Default Work Unit\\Battle_BGM",
+      "GUID": "{A47263DD-14F4-4F82-8D9F-B2998FD6DB8E}",
+      "Switches": [
+       {
+        "Id": "417916826",
+        "Name": "Ruins",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Battle_BGM\\Ruins",
+        "GUID": "{A3A4637F-9B02-4D81-BD90-4918B60BAC62}"
+       },
+       {
+        "Id": "2650542075",
+        "Name": "Hideout",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Battle_BGM\\Hideout",
+        "GUID": "{E071C5D9-799A-4A4E-96C0-DD5C155215A4}"
+       },
+       {
+        "Id": "4122393694",
+        "Name": "Cave",
+        "ObjectPath": "\\Switches\\Default Work Unit\\Battle_BGM\\Cave",
+        "GUID": "{13017A6C-9C24-41B3-8427-62A32D5321F5}"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{D785BF2F-BEDD-A759-FEDC-07C547AAEA62}"
+ }
+}

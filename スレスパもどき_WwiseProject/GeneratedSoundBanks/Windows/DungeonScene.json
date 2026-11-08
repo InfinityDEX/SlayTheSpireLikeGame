@@ -1,0 +1,47 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Windows",
+  "BasePlatform": "Windows",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "994123635",
+    "Type": "User",
+    "GUID": "{FFD25747-66B4-45EC-9B1A-BA73A544E5E8}",
+    "Language": "SFX",
+    "Hash": "{FFB08F00-F763-DE58-2009-1AF6E8D45B8C}",
+    "ObjectPath": "\\SoundBanks\\Default Work Unit\\DungeonScene",
+    "ShortName": "DungeonScene",
+    "Path": "DungeonScene.bnk",
+    "Media": [
+     {
+      "Id": "503824993",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "maou_bgm_fantasy06.wav",
+      "CachePath": "8F/{8F037D90-D773-6233-1096-0514E45E7870}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "3576671881",
+      "Name": "StartDungeonScene",
+      "ObjectPath": "\\Events\\Default Work Unit\\StartDungeonScene",
+      "GUID": "{9B7273F3-74F8-4945-9A51-B87C5388F710}",
+      "DurationType": "OneShot",
+      "DurationMin": "99.683266",
+      "DurationMax": "99.683266",
+      "MediaRefs": [
+       {
+        "Id": "503824993"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{DEF5C69D-6260-4226-A436-6ED03E0D50D1}"
+ }
+}

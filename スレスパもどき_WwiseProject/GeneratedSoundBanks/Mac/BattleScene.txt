@@ -1,0 +1,16 @@
+Event	ID	Name			Wwise Object Path	Notes
+	3463709863	StartBattleScene			\Default Work Unit\StartBattleScene	
+
+Switch Group	ID	Name			Wwise Object Path	Notes
+	1116020140	Battle_BGM			\Default Work Unit\Battle_BGM	
+
+Switch	ID	Name	Switch Group			Notes
+	417916826	Ruins	Battle_BGM			
+	2650542075	Hideout	Battle_BGM			
+	4122393694	Cave	Battle_BGM			
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	265533881	MusMus-BGM-136	.cache\C7\{C7FC1466-6C52-0C24-0E16-30A8CC50C096}.wem		\Containers\Default Work Unit\BattleBGMs\MusMus-BGM-136		25898828
+	779826046	MusMus-BGM-166	.cache\74\{7431673B-9350-3064-29A2-E53BC11ABD67}.wem		\Containers\Default Work Unit\BattleBGMs\MusMus-BGM-166		9424904
+	937111305	MusMus-BGM-075	.cache\36\{363F61EE-6644-AD84-9883-691B069E2AB1}.wem		\Containers\Default Work Unit\BattleBGMs\MusMus-BGM-075		23998560
+

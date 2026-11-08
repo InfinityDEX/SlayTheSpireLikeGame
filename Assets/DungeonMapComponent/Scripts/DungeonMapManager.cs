@@ -83,6 +83,9 @@ public class DungeonMapManager : MonoBehaviour
     [field:SerializeField, Header("BGM")]
     private AudioClip bgm;
 
+    [field:SerializeField, Header("BGM再生Event(Wwiseイベント)")]
+    private AK.Wwise.Event bgmEvent;
+
     [field:SerializeField, Header("セレクト音")]
     private AudioClip selectSE;
 
@@ -189,7 +192,10 @@ public class DungeonMapManager : MonoBehaviour
         mainCamera.transform.position = cameraPos;
 
         // BGMの再生
-        AudioController.Instance.PlayBGM(bgm);
+        // AudioController.Instance.PlayBGM(bgm);
+
+        // BGMの再生イベント発火
+        AudioController.Instance.FireWwiseEvent(bgmEvent);
     }
 
     private void Update()

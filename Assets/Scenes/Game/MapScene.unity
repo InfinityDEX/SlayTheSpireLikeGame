@@ -119,6 +119,63 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &455801031
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 455801033}
+  - component: {fileID: 455801032}
+  m_Layer: 0
+  m_Name: WwiseGlobal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &455801032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455801031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8632b7d90157b9140ae19eb2df675b52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: AK.Wwise.Unity.MonoBehaviour::AkInitializer
+  InitializationSettings: {fileID: 11400000, guid: e0af9b0ced2c1c84a9859b12daa9409a, type: 2}
+  basePath: 
+  language: 
+  defaultPoolSize: 0
+  lowerPoolSize: 0
+  streamingPoolSize: 0
+  memoryCutoffThreshold: 0
+  monitorPoolSize: 0
+  monitorQueuePoolSize: 0
+  callbackManagerBufferSize: 0
+  spatialAudioPoolSize: 0
+  maxSoundPropagationDepth: 0
+  engineLogging: 0
+--- !u!4 &455801033
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455801031}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &461171232 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3249205361641326530, guid: 04d1070eb426c9941adba27c0502639b, type: 3}
@@ -174,6 +231,10 @@ MonoBehaviour:
   startGridInfo: {fileID: 11400000, guid: 3c2a50bab8953fd46b09620daebbc3a4, type: 2}
   bossGridInfo: {fileID: 11400000, guid: fc9f129ffd6a15a479414d00d4cdc6fb, type: 2}
   bgm: {fileID: 8300000, guid: 73a4a19e60d93824f9e187751ed2e84a, type: 3}
+  bgmEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 43195c4f9a929f9428af6675c5866de6, type: 2}
   selectSE: {fileID: 8300000, guid: d7d644609f8f45a448cd19079a9f9be4, type: 3}
   decideSE: {fileID: 8300000, guid: cb718b898b1e08b43b0dc9e4878a0884, type: 3}
 --- !u!4 &477543280
@@ -496,6 +557,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: AudioContller
       objectReference: {fileID: 0}
+    - target: {fileID: 8996212655304141655, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
+      propertyPath: banks.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8996212655304141655, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
+      propertyPath: Event.WwiseObjectReference
+      value: 
+      objectReference: {fileID: 11400000, guid: 43195c4f9a929f9428af6675c5866de6, type: 2}
+    - target: {fileID: 8996212655304141655, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
+      propertyPath: banks.Array.data[0].WwiseObjectReference
+      value: 
+      objectReference: {fileID: 11400000, guid: fd62bce9df03a6446bf7a7f3a66e5493, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -794,8 +867,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1293597186}
   - component: {fileID: 1293597185}
-  - component: {fileID: 1293597184}
   - component: {fileID: 1293597187}
+  - component: {fileID: 1293597189}
+  - component: {fileID: 1293597188}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -803,14 +877,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1293597184
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1293597183}
-  m_Enabled: 1
 --- !u!20 &1293597185
 Camera:
   m_ObjectHideFlags: 0
@@ -922,6 +988,46 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &1293597188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293597183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 226ecfacfbf2d67458056a32c8849e68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: AK.Wwise.Unity.MonoBehaviour::AkAudioListener
+  isDefaultListener: 1
+  bOverrideScalingFactor: 0
+  scalingFactor: -1
+  listenerId: 0
+--- !u!114 &1293597189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293597183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86f5b10f13fe3284a9eef99df057a7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: AK.Wwise.Unity.MonoBehaviour::AkGameObj
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 1
+  isEnvironmentAware: 0
+  isStaticObject: 0
+  usePositionOffsetData: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  scalingFactor: 1
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
 --- !u!1001 &1475358098
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1597,3 +1703,4 @@ SceneRoots:
   - {fileID: 1668335365}
   - {fileID: 1475358098}
   - {fileID: 545576065}
+  - {fileID: 455801033}

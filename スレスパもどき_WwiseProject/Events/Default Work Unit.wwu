@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{5ABFAB69-95BA-4482-86BF-94721A37C399}" SchemaVersion="133">
 	<Events>
-		<WorkUnit Name="Default Work Unit" ID="{5ABFAB69-95BA-4482-86BF-94721A37C399}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{5ABFAB69-95BA-4482-86BF-94721A37C399}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="StartDungeonScene" ID="{9B7273F3-74F8-4945-9A51-B87C5388F710}">
+					<ChildrenList>
+						<Action Name="" ID="{514C6146-AE4C-46E1-A4EC-0831116DF2CE}" ShortID="969886603">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="maou_bgm_fantasy06" ID="{76CD93C5-6551-4964-8354-417ED1932D68}" WorkUnitID="{BDAB8C4E-925B-4903-B06F-655167D6BA90}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="StartBattleScene" ID="{F3D687B6-EF4B-49E8-80CA-F105616C258D}">
+					<ChildrenList>
+						<Action Name="" ID="{53EADE40-EEBB-4B7A-8F6C-54E6C8BA1A13}" ShortID="955599488">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="BattleBGMs" ID="{C2A16300-5338-43FF-B4C0-78BE43B885AE}" WorkUnitID="{BDAB8C4E-925B-4903-B06F-655167D6BA90}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
 	</Events>
 </WwiseDocument>

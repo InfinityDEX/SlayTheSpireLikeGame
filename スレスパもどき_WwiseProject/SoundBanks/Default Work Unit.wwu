@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{0ABF86BE-71D4-49A8-A9B3-23DCA880B5F7}" SchemaVersion="133">
 	<SoundBanks>
-		<WorkUnit Name="Default Work Unit" ID="{0ABF86BE-71D4-49A8-A9B3-23DCA880B5F7}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{0ABF86BE-71D4-49A8-A9B3-23DCA880B5F7}" PersistMode="Standalone">
+			<ChildrenList>
+				<SoundBank Name="DungeonScene" ID="{FFD25747-66B4-45EC-9B1A-BA73A544E5E8}">
+					<ObjectInclusionList>
+						<ObjectRef Name="StartDungeonScene" ID="{9B7273F3-74F8-4945-9A51-B87C5388F710}" WorkUnitID="{5ABFAB69-95BA-4482-86BF-94721A37C399}" Origin="Manual" Filter="7"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+				<SoundBank Name="BattleScene" ID="{D9BD2044-F6C8-4F64-B519-04390FC873B1}">
+					<ObjectInclusionList>
+						<ObjectRef Name="StartBattleScene" ID="{F3D687B6-EF4B-49E8-80CA-F105616C258D}" WorkUnitID="{5ABFAB69-95BA-4482-86BF-94721A37C399}" Origin="Manual" Filter="7"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+			</ChildrenList>
+		</WorkUnit>
 	</SoundBanks>
 </WwiseDocument>

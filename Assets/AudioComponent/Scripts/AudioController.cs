@@ -1,8 +1,11 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 /// <summary>
 /// オーディオコントローラークラス
-/// 
+///
 /// 音系の操作を管理する。
 /// シングルトン。
 /// </summary>
@@ -10,34 +13,42 @@ public class AudioController : MonoBehaviour
 {
     public static AudioController Instance { get; private set; } // シングルトン
 
-    [SerializeField, Header("BGM用AudioSource")]
-    private AudioSource bgmSource;
-    
-    [SerializeField, Header("SE用AudioSource")]
-    private AudioSource seSource;
-    
+    // [SerializeField, Header("BGM用AudioSource")]
+    // private AudioSource bgmSource;
+
+    // [SerializeField, Header("SE用AudioSource")]
+    // private AudioSource seSource;
+
     [SerializeField, Header("マスター音量")]
     [Range(0f, 1f)]
     private float masterVolume = 1f;
-    
+
     [SerializeField, Header("BGM音量")]
     [Range(0f, 1f)]
     private float bgmVolume = 0.7f;
-    
+
     [SerializeField, Header("SE音量")]
     [Range(0f, 1f)]
     private float seVolume = 1f;
 
+    [SerializeField, Header("Wwise Sound Bankリスト")]
+    private List<AK.Wwise.Bank> banks;
+
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        // if (Instance != null && Instance != this)
+        // {
+        //     Destroy(gameObject);
+        //     return;
+        // }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        // DontDestroyOnLoad(gameObject);
         ApplyVolume();
+
+        foreach (var bank in banks)
+        {
+            bank.Load();
+        }
     }
 
     /// <summary>
@@ -50,17 +61,39 @@ public class AudioController : MonoBehaviour
         // 音源がnullだった場合再生しない
         if (clip == null) return;
 
-        // 再生している音源と同じ音源を再生しようとしたか、前のBGMがまだ再生中の場合、再生しない。
-        if (bgmSource.clip == clip && bgmSource.isPlaying) return;
-        bgmSource.clip = clip;
-        bgmSource.loop = loop;
-        bgmSource.Play();
+        // // 再生している音源と同じ音源を再生しようとしたか、前のBGMがまだ再生中の場合、再生しない。
+        // if (bgmSource.clip == clip && bgmSource.isPlaying) return;
+        // bgmSource.clip = clip;
+        // bgmSource.loop = loop;
+        // bgmSource.Play();
+    }
+
+    /// <summary>
+    /// WwiseのEventをトリガー(発火)させる
+    /// </summary>
+    /// <param name="e">ワイズイベント</param>
+    /// <returns></returns>
+    public bool FireWwiseEvent(AK.Wwise.Event e)
+    {
+        try
+        {
+            e.Post(gameObject);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+            return false;
+        }
+        return false;
     }
 
     /// <summary>
     /// BGMを停止する
     /// </summary>
-    public void StopBGM() => bgmSource.Stop();
+    public void StopBGM(){
+        // bgmSource.Stop();
+    }
 
     /// <summary>
     /// SEの再生
@@ -70,7 +103,7 @@ public class AudioController : MonoBehaviour
     {
         // 音源がnullだった場合再生しない
         if (clip == null) return;
-        seSource.PlayOneShot(clip);
+        // seSource.PlayOneShot(clip);
     }
 
     /// <summary>
@@ -105,13 +138,13 @@ public class AudioController : MonoBehaviour
 
     /// <summary>
     /// 音量の適用
-    /// 
+    ///
     /// マスター音量とBGM・SE音量の値を計算し、
     /// 実際のAudioSourceに適用する。
     /// </summary>
     private void ApplyVolume()
     {
-        bgmSource.volume = bgmVolume * masterVolume;
-        seSource.volume = seVolume * masterVolume;
+        // bgmSource.volume = bgmVolume * masterVolume;
+        // seSource.volume = seVolume * masterVolume;
     }
 }

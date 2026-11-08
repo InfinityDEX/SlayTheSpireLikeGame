@@ -1,0 +1,6 @@
+Event	ID	Name			Wwise Object Path	Notes
+	3576671881	StartDungeonScene			\Default Work Unit\StartDungeonScene	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	503824993	maou_bgm_fantasy06	.cache\8F\{8F037D90-D773-6233-1096-0514E45E7870}.wem		\Containers\Default Work Unit\maou_bgm_fantasy06		17584224
+
