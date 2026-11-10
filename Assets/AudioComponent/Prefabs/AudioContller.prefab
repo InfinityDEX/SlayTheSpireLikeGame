@@ -47,3 +47,10 @@ MonoBehaviour:
   masterVolume: 1
   bgmVolume: 0.7
   seVolume: 1
+  banks:
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 05902194ff8af4d408a4ec17c6bf316d, type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: fd62bce9df03a6446bf7a7f3a66e5493, type: 2}

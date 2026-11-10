@@ -148,7 +148,7 @@ public class Magician : Enemy
         if(animationCurrentTime >= castTime)
         {
             Debug.Log("魔法発動");
-            if(magicCastSE != null) AudioController.Instance?.PlaySE(magicCastSE);
+            if(magicCastSE != null) audioController.PlaySE(magicCastSE);
             animationCurrentTime = 0;
             // プレイヤーにダメージを与える
             BattleManager.Instance.Player.TakeDamage(magicDamage);
@@ -187,7 +187,7 @@ public class Magician : Enemy
         if(animationCurrentTime >= castTime)
         {
             Debug.Log("シールド展開");
-            if(activateShieldSE != null) AudioController.Instance?.PlaySE(activateShieldSE);
+            if(activateShieldSE != null) audioController.PlaySE(activateShieldSE);
             animationCurrentTime = 0;
             inAction = false;
             if(BattleManager.Instance != null)

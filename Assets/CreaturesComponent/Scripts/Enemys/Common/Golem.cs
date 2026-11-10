@@ -155,7 +155,7 @@ public class Golem : Enemy
         {
             Debug.Log("パンチ発動");
             var bm = BattleManager.Instance;
-            if (punchSE != null) AudioController.Instance?.PlaySE(punchSE);
+            if (punchSE != null) audioController.PlaySE(punchSE);
             animationCurrentTime = 0;
             inAction = false;
             bm.Player.TakeDamage(punchDamage + Muscle);
@@ -211,7 +211,7 @@ public class Golem : Enemy
                 }   
             }
 
-            if(defenseSE != null) AudioController.Instance?.PlaySE(defenseSE);
+            if(defenseSE != null) audioController.PlaySE(defenseSE);
 
             actionPattern = ActionPattern.Idle;
             return true;

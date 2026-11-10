@@ -44,6 +44,17 @@ public class Creature : MonoBehaviour
     [field:SerializeField, Header("バッチマネージャー")]
     public IconBatchManager BatchManager { get; private set; }
 
+    protected AudioController audioController;
+
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    /// <param name="audioController">オーディオコントローラー</param>
+    public void Init(AudioController audioController)
+    {
+        this.audioController = audioController;
+    }
+
     /// <summary>
     /// ブロック値バッチ（エフェクト）
     /// </summary>

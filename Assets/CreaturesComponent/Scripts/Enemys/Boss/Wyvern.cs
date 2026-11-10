@@ -244,7 +244,7 @@ public class Wyvern : Enemy
         {
             Debug.Log("ファイアブレス発動");
             var bm = BattleManager.Instance;
-            if (fireBreathSE != null) AudioController.Instance?.PlaySE(fireBreathSE);
+            if (fireBreathSE != null) audioController.PlaySE(fireBreathSE);
             animationCurrentTime = 0;
             inAction = false;
             bm.Player.TakeDamage(fireBreathDamage + Muscle);
@@ -288,7 +288,7 @@ public class Wyvern : Enemy
         {
             Debug.Log("テンペスト発動");
             var bm = BattleManager.Instance;
-            if (tempestSE != null) AudioController.Instance?.PlaySE(tempestSE);
+            if (tempestSE != null) audioController.PlaySE(tempestSE);
             bm.Player.TakeDamage(tempestDamage + Muscle);
             animationCurrentTime = 0;
             inAction = false;
@@ -326,7 +326,7 @@ public class Wyvern : Enemy
         {
             Debug.Log("飛行発動");
             var bm = BattleManager.Instance;
-            if (flySE != null) AudioController.Instance?.PlaySE(flySE);
+            if (flySE != null) audioController.PlaySE(flySE);
             animationCurrentTime = 0;
             inAction = false;
 
@@ -353,7 +353,7 @@ public class Wyvern : Enemy
         {
             Debug.Log("高空飛行発動");
             var bm = BattleManager.Instance;
-            if (soarSE != null) AudioController.Instance?.PlaySE(soarSE);
+            if (soarSE != null) audioController.PlaySE(soarSE);
             animationCurrentTime = 0;
             inAction = false;
 

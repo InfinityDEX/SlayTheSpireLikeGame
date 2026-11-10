@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using VContainer;
 
 /// <summary>
 /// バトルマネージャクラス
@@ -20,9 +21,6 @@ public class BattleManager : MonoBehaviour
 
     [field:SerializeField, Header("手札表示エリア(親オブジェクト)")]
     private Transform handArea;
-
-    [field:SerializeField, Header("敵マネージャー")]
-    public EnemyManager EnemyManager { get; private set;}
 
     [field:SerializeField, Header("カードプレハブ")]
     private GameObject cardTemplatePrefab;
@@ -44,6 +42,12 @@ public class BattleManager : MonoBehaviour
 
     [SerializeField, Header("現在のフェーズ")]
     private BattlePhase currentPhase = BattlePhase.Idle;
+
+    /// <summary>
+    /// エネミーマネージャー
+    /// </summary>
+    [Inject]
+    public EnemyManager EnemyManager { get; private set; }
 
     /// <summary>
     /// 一時的なダンジョンデータ

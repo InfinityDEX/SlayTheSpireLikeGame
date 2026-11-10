@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using VContainer;
 
 /// <summary>
 /// ダンジョンマップマネージャクラス
@@ -64,6 +65,9 @@ public class DungeonMapManager : MonoBehaviour
     [field:SerializeField, Header("ボスマス(終端)情報")]
     private MapGridInfo bossGridInfo;
 
+    [Inject]
+    private SaveDataHolder saveDataHolder;
+
     /// <summary>
     /// セーブデータの保存パス
     /// </summary>
@@ -91,6 +95,17 @@ public class DungeonMapManager : MonoBehaviour
 
     [field:SerializeField, Header("決定音")]
     private AudioClip decideSE;
+
+    private AudioController audioController;
+
+    [Inject]
+    /// <summary>
+    /// 初期化メソッド(依存性注入)
+    /// </summary>
+    public void Init(AudioController audioController)
+    {
+        this.audioController = audioController;
+    }
 
     /// <summary>
     /// 次に進むマップグリッドが、現在いるマップグリッドのupperLayerの何番目かを表すインデックス
@@ -192,10 +207,10 @@ public class DungeonMapManager : MonoBehaviour
         mainCamera.transform.position = cameraPos;
 
         // BGMの再生
-        // AudioController.Instance.PlayBGM(bgm);
+        // controller.PlayBGM(bgm);
 
         // BGMの再生イベント発火
-        AudioController.Instance.FireWwiseEvent(bgmEvent);
+        audioController.FireWwiseEvent(bgmEvent);
     }
 
     private void Update()
@@ -248,13 +263,13 @@ public class DungeonMapManager : MonoBehaviour
                 nextGrid.FlickerGrid(true, true);
 
                 // 選択したグリッドに合わせて画面遷移する
-                AudioController.Instance.PlaySE(decideSE);
+                audioController.PlaySE(decideSE);
                 StartCoroutine(LoadSceneAfterDelay(2f, transSceneName));
             }
         }
 
         // 現在の階層情報をセーブデータホルダー経由でセーブデータクラスに反映(Jsonファイルへの保存はしない)
-        SaveDataHolder.Instance.SetCurrentFloor(currentGridPos.Row);
+        saveDataHolder.SetCurrentFloor(currentGridPos.Row);
     }
 
     /// <summary>
@@ -276,7 +291,7 @@ public class DungeonMapManager : MonoBehaviour
         var upperLayerCount = mapGrids[currentGridPos.Row][currentGridPos.Col].upperLayer.Count;
         nextGridUpperLayerIndex = (nextGridUpperLayerIndex + dir + upperLayerCount) % upperLayerCount;
 
-        AudioController.Instance.PlaySE(selectSE);
+        audioController.PlaySE(selectSE);
 
         currentNextGrid = mapGrids[currentGridPos.Row][currentGridPos.Col].upperLayer[nextGridUpperLayerIndex];
 
@@ -304,7 +319,7 @@ public class DungeonMapManager : MonoBehaviour
         if (bgmCandidates != null && bgmCandidates.Length > 0)
         {
             int randomIndex = Random.Range(0, bgmCandidates.Length);
-            AudioController.Instance.PlayBGM(bgmCandidates[randomIndex]);
+            audioController.PlayBGM(bgmCandidates[randomIndex]);
         }
 
         // 移動経路（movePath）と現在のフロア（currentGridPos）を更新
@@ -316,14 +331,13 @@ public class DungeonMapManager : MonoBehaviour
         // SaveDungeonMapData();
 
         // セーブデータの書き換え
-        var saveDataHolder = SaveDataHolder.Instance;
         saveDataHolder.SetCurrentFloor(currentGridPos.Row);
 
         // この段階では一時的なダンジョンマップデータを作成し、シーンを跨いで破壊されないオブジェクトにして次のシーンに渡す。
         GameObject temporaryDungeonMapDataObj = new GameObject();
         temporaryDungeonMapDataObj.name = "TemporaryDungeonMapData";
         var temporaryDungeonMapData = temporaryDungeonMapDataObj.AddComponent<TemporaryMapData>();
-        temporaryDungeonMapData.Init(mapGrids, movePath, currentGridPos, $"{saveDataFolderPath}/{saveDataFileName}");
+        temporaryDungeonMapData.Init(mapGrids, movePath, currentGridPos, $"{saveDataFolderPath}/{saveDataFileName}", saveDataHolder);
         DontDestroyOnLoad(temporaryDungeonMapDataObj);
 
         // 指定されたシーンへ遷移

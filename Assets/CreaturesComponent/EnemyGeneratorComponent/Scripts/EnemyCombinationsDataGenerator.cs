@@ -26,7 +26,7 @@ public class EnemyCombinationsDataGenerator : MonoBehaviour
     public void GenerateData(EnemyType enemyType, StageData stageData)
     {
         var go = new GameObject();
-        go.AddComponent<EnemyCombinationsDataManager>();
+        var enemyCombinationsDataManager = go.AddComponent<EnemyCombinationsDataManager>();
         List<EnemyCombinationData> enemyCombinationDatas = null;
         switch (enemyType)
         {
@@ -42,6 +42,6 @@ public class EnemyCombinationsDataGenerator : MonoBehaviour
         }
    
         var selectedCombination = enemyCombinationDatas[Random.Range(0, enemyCombinationDatas.Count)];
-        go.GetComponent<EnemyCombinationsDataManager>().SetData(selectedCombination);
+        enemyCombinationsDataManager.SetData(selectedCombination);
     }
 }

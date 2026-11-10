@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using VContainer;
 
 /// <summary>
 /// オーディオコントローラークラス
@@ -11,7 +12,7 @@ using UnityEngine.Assertions;
 /// </summary>
 public class AudioController : MonoBehaviour
 {
-    public static AudioController Instance { get; private set; } // シングルトン
+    //public static AudioController Instance { get; private set; } // シングルトン
 
     // [SerializeField, Header("BGM用AudioSource")]
     // private AudioSource bgmSource;
@@ -34,6 +35,16 @@ public class AudioController : MonoBehaviour
     [SerializeField, Header("Wwise Sound Bankリスト")]
     private List<AK.Wwise.Bank> banks;
 
+    [Inject]
+    public void Init()
+    {
+        foreach (var bank in banks)
+        {
+            bank.Load();
+            Debug.Log($"Bank Load: {bank.Name}");
+        }
+    }
+
     private void Awake()
     {
         // if (Instance != null && Instance != this)
@@ -41,14 +52,14 @@ public class AudioController : MonoBehaviour
         //     Destroy(gameObject);
         //     return;
         // }
-        Instance = this;
+        //Instance = this;
         // DontDestroyOnLoad(gameObject);
         ApplyVolume();
 
-        foreach (var bank in banks)
-        {
-            bank.Load();
-        }
+        //foreach (var bank in banks)
+        //{
+        //    bank.Load();
+        //}
     }
 
     /// <summary>
@@ -85,7 +96,6 @@ public class AudioController : MonoBehaviour
             Debug.LogError(ex);
             return false;
         }
-        return false;
     }
 
     /// <summary>

@@ -35,17 +35,24 @@ public class TemporaryMapData : MonoBehaviour
     public bool CurrentFloorIsFinal { get { return currentGridPos.Row + 1 == mapGrids.Count;}}
 
     /// <summary>
+    /// セーブデータホルダー
+    /// </summary>
+    private SaveDataHolder saveDataHolder;
+
+    /// <summary>
     /// ダンジョンマップデータ初期化
     /// </summary>
     /// <param name="mapGrids">マップグリッド</param>
     /// <param name="movePath">移動経路</param>
     /// <param name="currentGridPos">現在位置</param>
     /// <param name="saveDataFilePath">ダンジョンマップセーブデータファイルのパス</param>
+    /// <param name="saveDataFolder">セーブデータホルダー</param>
     public void Init(
         List<List<MapGrid>> mapGrids,
         List<MapGridJsonEntity.MapGridPos> movePath,
         MapGridJsonEntity.MapGridPos currentGridPos,
-        string saveDataFilePath
+        string saveDataFilePath,
+        SaveDataHolder saveDataFolder
         )
     {
         this.mapGrids = mapGrids;
@@ -98,7 +105,6 @@ public class TemporaryMapData : MonoBehaviour
         File.WriteAllText(saveFilePath, jsonText, Encoding.UTF8);
 
         // セーブデータの書き換え・保存
-        var saveDataHolder = SaveDataHolder.Instance;
         saveDataHolder.SetCurrentFloor(currentGridPos.Row);
         saveDataHolder.WriteSaveData();
     }

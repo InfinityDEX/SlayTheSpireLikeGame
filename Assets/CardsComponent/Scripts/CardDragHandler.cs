@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using VContainer;
 
 public class CardDragHandler : MonoBehaviour
 {
@@ -23,6 +24,12 @@ public class CardDragHandler : MonoBehaviour
     /// マウスホールド開始位置から掴んでいるカードの中心位置とのオフセット
     /// </summary>
     private Vector3 dragOffset;
+
+    /// <summary>
+    /// オーディオコントローラー
+    /// </summary>
+    [Inject]
+    private AudioController audioController;
 
     private void Update()
     {
@@ -62,7 +69,7 @@ public class CardDragHandler : MonoBehaviour
                         if (selectCreature != null && selectCreature.gameObject.tag == "Enemy")
                         {
                             holdCard.Play(selectCreature);
-                            AudioController.Instance?.PlaySE(holdCard.ThisCardData.CastCardSE);
+                            audioController.PlaySE(holdCard.ThisCardData.CastCardSE);
                             GameObject visualEffectPrefab = BattleManager.Instance?.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
                             // ビジュアルエフェクトを生成
                             if (visualEffectPrefab != null)
@@ -99,7 +106,7 @@ public class CardDragHandler : MonoBehaviour
                             {
                                 holdCard.Play(enemy);
                             }
-                            AudioController.Instance?.PlaySE(holdCard.ThisCardData.CastCardSE);
+                            audioController.PlaySE(holdCard.ThisCardData.CastCardSE);
 
                             GameObject visualEffectPrefab = BattleManager.Instance?.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
                             // ビジュアルエフェクトを生成
@@ -136,7 +143,7 @@ public class CardDragHandler : MonoBehaviour
                             Debug.Log($"クリックしてからマウスを離すまでのマウスの移動距離：{Vector3.Distance(holdPos, point)}");
                             Creature player = BattleManager.Instance.Player;
                             holdCard.Play(player);
-                            AudioController.Instance?.PlaySE(holdCard.ThisCardData.CastCardSE);
+                            audioController.PlaySE(holdCard.ThisCardData.CastCardSE);
 
                             GameObject visualEffectPrefab = BattleManager.Instance?.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
                             // ビジュアルエフェクトを生成

@@ -176,7 +176,7 @@ public class Warrior : Enemy
         {
             Debug.Log("斬撃発動");
             var bm = BattleManager.Instance;
-            if (slashSE != null) AudioController.Instance?.PlaySE(slashSE);
+            if (slashSE != null) audioController.PlaySE(slashSE);
             animationCurrentTime = 0;
             inAction = false;
             bm.Player.TakeDamage(slashDamage + Muscle);
@@ -214,7 +214,7 @@ public class Warrior : Enemy
         {
             Debug.Log("斬撃発動");
             var bm = BattleManager.Instance;
-            if (slashSE != null) AudioController.Instance?.PlaySE(slashSE);
+            if (slashSE != null) audioController.PlaySE(slashSE);
             animationCurrentTime = 0;
             bm.Player.TakeDamage(slashDamage + Muscle);
 
@@ -271,7 +271,7 @@ public class Warrior : Enemy
             }
 
 
-            if(pumpUpSE != null) AudioController.Instance?.PlaySE(pumpUpSE);
+            if(pumpUpSE != null) audioController.PlaySE(pumpUpSE);
 
             actionPattern = ActionPattern.Idle;
             return true;

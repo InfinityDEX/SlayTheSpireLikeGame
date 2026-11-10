@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 
 /// <summary>
 /// エネミーマネージャ
@@ -12,6 +13,12 @@ public class EnemyManager : MonoBehaviour
     public List<Enemy> Enemies { get; private set; } = new List<Enemy>();
 
     /// <summary>
+    /// オーディオコントローラー
+    /// </summary>
+    [Inject]
+    private AudioController audioController;
+
+    /// <summary>
     /// エネミーの追加
     /// </summary>
     /// <param name="enemyCombinationData">エネミーコンビネーションデータ（バトルに参加させる全エネミーの情報）</param>
@@ -20,6 +27,7 @@ public class EnemyManager : MonoBehaviour
         foreach (var enemyData in enemyCombinationData.enemyCombinations)
         {
             var enemy = Instantiate(enemyData.enemyPrefab, this.transform);
+            enemy.Init(audioController);
             enemy.transform.position = enemyData.spawnPosition;
             Enemies.Add(enemy);
         }
