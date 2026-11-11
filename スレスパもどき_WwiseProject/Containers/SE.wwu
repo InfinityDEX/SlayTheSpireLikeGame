@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{2FB388DC-4C35-4818-828B-075D2A3228F5}" SchemaVersion="133" RootDocumentID="{BDAB8C4E-925B-4903-B06F-655167D6BA90}" ParentDocumentID="{BDAB8C4E-925B-4903-B06F-655167D6BA90}">
+	<Containers>
+		<WorkUnit Name="SE" ID="{2FB388DC-4C35-4818-828B-075D2A3228F5}" OwnerID="{BDAB8C4E-925B-4903-B06F-655167D6BA90}" PersistMode="Nested">
+			<ChildrenList>
+				<Sound Name="Short_Accent17-1(Low)" ID="{A240D2B0-8643-4C17-975F-F58DAA19430D}" ShortID="220252777">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D0E1E849-893E-4844-8B43-284BFB6EDA10}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{F0DD9D4A-7C4D-48CD-BD3F-E81D27A4861C}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Short_Accent17-1(Low)" ID="{28CFA02F-B34C-40F6-A358-656B7EDF8F51}">
+							<Language>SFX</Language>
+							<AudioFile>Short_Accent17-1(Low).wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="797562678"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Short_Accent17-1(Low)" ID="{28CFA02F-B34C-40F6-A358-656B7EDF8F51}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Short_Accent19-1(Dry)" ID="{882405FC-A5AF-4E10-8DCE-6B7F81890C5F}" ShortID="283761996">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D0E1E849-893E-4844-8B43-284BFB6EDA10}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{F0DD9D4A-7C4D-48CD-BD3F-E81D27A4861C}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Short_Accent19-1(Dry)" ID="{A678E30B-F872-44E0-8152-BAFF4B0298E8}">
+							<Language>SFX</Language>
+							<AudioFile>Short_Accent19-1(Dry).wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="309002296"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Short_Accent19-1(Dry)" ID="{A678E30B-F872-44E0-8152-BAFF4B0298E8}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+			</ChildrenList>
+		</WorkUnit>
+	</Containers>
+</WwiseDocument>

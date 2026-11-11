@@ -34,12 +34,12 @@ public class Magician : Enemy
     
     [SerializeField, Header("魔法使いのアニメータ")]
     private Animator animator;
+    
+    [SerializeField, Header("魔法発動音再生イベント(Wwiseイベント)")]
+    private AK.Wwise.Event magicCastSE_Event;
 
-    [SerializeField, Header("魔法発動音")]
-    private AudioClip magicCastSE;
-
-    [SerializeField, Header("シールド展開音")]
-    private AudioClip activateShieldSE;
+    [SerializeField, Header("シールド展開音再生イベント(Wwiseイベント)")]
+    private AK.Wwise.Event activateShieldSE_Event;
 
     [SerializeField, Header("魔法のダメージ")]
     private int magicDamage = 10;
@@ -148,7 +148,7 @@ public class Magician : Enemy
         if(animationCurrentTime >= castTime)
         {
             Debug.Log("魔法発動");
-            if(magicCastSE != null) audioController.PlaySE(magicCastSE);
+            if (magicCastSE_Event != null) audioController.FireWwiseEvent(magicCastSE_Event);
             animationCurrentTime = 0;
             // プレイヤーにダメージを与える
             BattleManager.Instance.Player.TakeDamage(magicDamage);
@@ -187,7 +187,7 @@ public class Magician : Enemy
         if(animationCurrentTime >= castTime)
         {
             Debug.Log("シールド展開");
-            if(activateShieldSE != null) audioController.PlaySE(activateShieldSE);
+            if (activateShieldSE_Event != null) audioController.FireWwiseEvent(activateShieldSE_Event);
             animationCurrentTime = 0;
             inAction = false;
             if(BattleManager.Instance != null)

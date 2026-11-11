@@ -1,0 +1,25 @@
+Event	ID	Name			Wwise Object Path	Notes
+	13776098	Explosion			\Default Work Unit\CreatureSound\Explosion	
+	507689684	BladeSlash			\Default Work Unit\CreatureSound\BladeSlash	
+	645565787	Punch			\Default Work Unit\CreatureSound\Punch	
+	3099166049	Tempest			\Default Work Unit\CreatureSound\Tempest	
+	3396027718	StunWyvern			\Default Work Unit\CreatureSound\StunWyvern	
+	3436465127	Firebreath			\Default Work Unit\CreatureSound\Firebreath	
+	3695695076	Buff_01			\Default Work Unit\CreatureSound\Buff_01	
+	3695695078	Buff_03			\Default Work Unit\CreatureSound\Buff_03	
+	3695695079	Buff_02			\Default Work Unit\CreatureSound\Buff_02	
+	3827174396	Flying			\Default Work Unit\CreatureSound\Flying	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	13911936	パワーチャージ	.cache\4D\{4D12C717-7384-3ECD-7C93-9D9CAD7FE9EE}.wem		\Containers\Default Work Unit\SE\CreatureSound\パワーチャージ		177692
+	40034101	se_magic_effect12	.cache\0B\{0B410375-2048-10A3-611B-612B06BB6925}.wem		\Containers\Default Work Unit\SE\CreatureSound\se_magic_effect12		254120
+	64953687	Hit-Punch09-3_Low_	.cache\AA\{AA8B8F96-E722-5909-04E7-B490031D7624}.wem		\Containers\Default Work Unit\SE\CreatureSound\Hit-Punch09-3_Low_		310012
+	384612265	ドラゴンが火を吐く	.cache\40\{406523A3-0ABE-556C-FA14-01FC5932652F}.wem		\Containers\Default Work Unit\SE\CreatureSound\ドラゴンが火を吐く		612480
+	441368127	翼竜の鳴き声1	.cache\BA\{BAF48ECC-834E-55BB-66DF-597F5D03F0FE}.wem		\Containers\Default Work Unit\SE\CreatureSound\翼竜の鳴き声1		194152
+	512295564	ステータス上昇魔法2	.cache\4C\{4CB3E6A3-7B0A-4A72-2EF9-DE6FDB401593}.wem		\Containers\Default Work Unit\SE\CreatureSound\ステータス上昇魔法2		317632
+	773422737	ドラゴンの羽ばたき	.cache\61\{618973D8-6BF9-727D-C3F3-A8D81EF96EAF}.wem		\Containers\Default Work Unit\SE\CreatureSound\ドラゴンの羽ばたき		252136
+	789204114	Explosion04-1_Short_	.cache\FB\{FBE3342E-4B18-90F9-E3F6-7609D853DD71}.wem		\Containers\Default Work Unit\SE\CreatureSound\Explosion04-1_Short_		551996
+	819985446	Wind-Synthetic02-6	.cache\4A\{4AEEAEAB-1AB4-049E-30E4-EEB9730DCA00}.wem		\Containers\Default Work Unit\SE\CreatureSound\Wind-Synthetic02-6		1018168
+	945878032	倒れる	.cache\93\{930283AC-E6D3-4FB6-A87A-D12470B7F599}.wem		\Containers\Default Work Unit\SE\CreatureSound\倒れる		194664
+	968031926	Cut01-1	.cache\54\{545C93CB-2906-9640-AD8C-E13DF8A69487}.wem		\Containers\Default Work Unit\SE\CreatureSound\Cut01-1		369836
+

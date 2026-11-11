@@ -1,0 +1,256 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Mac",
+  "BasePlatform": "Mac",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "1800404063",
+    "Type": "User",
+    "GUID": "{D153E004-87A0-49E5-9F4A-4EA4AB4F9D00}",
+    "Language": "SFX",
+    "Hash": "{394C8A2F-7707-8A63-ABC9-BE400096DFB0}",
+    "ObjectPath": "\\SoundBanks\\Default Work Unit\\CreatureSound",
+    "ShortName": "CreatureSound",
+    "Path": "CreatureSound.bnk",
+    "Media": [
+     {
+      "Id": "13911936",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "パワーチャージ.wav",
+      "CachePath": "4D/{4D12C717-7384-3ECD-7C93-9D9CAD7FE9EE}.wem"
+     },
+     {
+      "Id": "40034101",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "se_magic_effect12.wav",
+      "CachePath": "0B/{0B410375-2048-10A3-611B-612B06BB6925}.wem"
+     },
+     {
+      "Id": "64953687",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Hit-Punch09-3_Low_.wav",
+      "CachePath": "AA/{AA8B8F96-E722-5909-04E7-B490031D7624}.wem"
+     },
+     {
+      "Id": "384612265",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "ドラゴンが火を吐く.wav",
+      "CachePath": "40/{406523A3-0ABE-556C-FA14-01FC5932652F}.wem"
+     },
+     {
+      "Id": "441368127",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "翼竜の鳴き声1.wav",
+      "CachePath": "BA/{BAF48ECC-834E-55BB-66DF-597F5D03F0FE}.wem"
+     },
+     {
+      "Id": "512295564",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "ステータス上昇魔法2.wav",
+      "CachePath": "4C/{4CB3E6A3-7B0A-4A72-2EF9-DE6FDB401593}.wem"
+     },
+     {
+      "Id": "773422737",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "ドラゴンの羽ばたき.wav",
+      "CachePath": "61/{618973D8-6BF9-727D-C3F3-A8D81EF96EAF}.wem"
+     },
+     {
+      "Id": "789204114",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Explosion04-1_Short_.wav",
+      "CachePath": "FB/{FBE3342E-4B18-90F9-E3F6-7609D853DD71}.wem"
+     },
+     {
+      "Id": "819985446",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Wind-Synthetic02-6.wav",
+      "CachePath": "4A/{4AEEAEAB-1AB4-049E-30E4-EEB9730DCA00}.wem"
+     },
+     {
+      "Id": "945878032",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "倒れる.wav",
+      "CachePath": "93/{930283AC-E6D3-4FB6-A87A-D12470B7F599}.wem"
+     },
+     {
+      "Id": "968031926",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Cut01-1.wav",
+      "CachePath": "54/{545C93CB-2906-9640-AD8C-E13DF8A69487}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "507689684",
+      "Name": "BladeSlash",
+      "ObjectPath": "\\Events\\Default Work Unit\\CreatureSound\\BladeSlash",
+      "GUID": "{4BAD20E4-44C0-48DC-B125-2DEB49FF0731}",
+      "DurationType": "OneShot",
+      "DurationMin": "2.0960317",
+      "DurationMax": "2.0960317",
+      "MediaRefs": [
+       {
+        "Id": "968031926"
+       }
+      ]
+     },
+     {
+      "Id": "3695695076",
+      "Name": "Buff_01",
+      "ObjectPath": "\\Events\\Default Work Unit\\CreatureSound\\Buff_01",
+      "GUID": "{719B1413-0812-4F58-B899-F4A14C6F0FC1}",
+      "DurationType": "OneShot",
+      "DurationMin": "1.3230417",
+      "DurationMax": "1.3230417",
+      "MediaRefs": [
+       {
+        "Id": "40034101"
+       }
+      ]
+     },
+     {
+      "Id": "3695695079",
+      "Name": "Buff_02",
+      "ObjectPath": "\\Events\\Default Work Unit\\CreatureSound\\Buff_02",
+      "GUID": "{2FF39B34-AF83-43D1-8780-D696E3425397}",
+      "DurationType": "OneShot",
+      "DurationMin": "2.3000908",
+      "DurationMax": "2.3000908",
+      "MediaRefs": [
+       {
+        "Id": "512295564"
+       }
+      ]
+     },
+     {
+      "Id": "3695695078",
+      "Name": "Buff_03",
+      "ObjectPath": "\\Events\\Default Work Unit\\CreatureSound\\Buff_03",
+      "GUID": "{D1FEFFF4-9D92-4C28-BDD8-BBB02C032AFC}",
+      "DurationType": "OneShot",
+      "DurationMin": "1.00678",
+      "DurationMax": "1.00678",
+      "MediaRefs": [
+       {
+        "Id": "13911936"
+       }
+      ]
+     },
+     {
+      "Id": "13776098",
+      "Name": "Explosion",
+      "ObjectPath": "\\Events\\Default Work Unit\\CreatureSound\\Explosion",
+      "GUID": "{7E10C669-9D88-41DC-A0D7-DDC56D5F19C7}",
+      "DurationType": "OneShot",
+      "DurationMin": "3.1286848",
+      "DurationMax": "3.1286848",
+      "MediaRefs": [
+       {
+        "Id": "789204114"
+       }
+      ]
+     },
+     {
+      "Id": "3436465127",
+      "Name": "Firebreath",
+      "ObjectPath": "\\Events\\Default Work Unit\\CreatureSound\\Firebreath",
+      "GUID": "{AEADBA78-E7B6-4EE7-8C39-C039FAD047C0}",
+      "DurationType": "OneShot",
+      "DurationMin": "3.4715645",
+      "DurationMax": "3.4715645",
+      "MediaRefs": [
+       {
+        "Id": "384612265"
+       }
+      ]
+     },
+     {
+      "Id": "3827174396",
+      "Name": "Flying",
+      "ObjectPath": "\\Events\\Default Work Unit\\CreatureSound\\Flying",
+      "GUID": "{3A34EFE3-78E9-4128-8CFE-7F8C7C470565}",
+      "DurationType": "OneShot",
+      "DurationMin": "1.3127084",
+      "DurationMax": "1.3127084",
+      "MediaRefs": [
+       {
+        "Id": "773422737"
+       }
+      ]
+     },
+     {
+      "Id": "645565787",
+      "Name": "Punch",
+      "ObjectPath": "\\Events\\Default Work Unit\\CreatureSound\\Punch",
+      "GUID": "{688FF383-6DB8-4202-843E-FDB1998E9271}",
+      "DurationType": "OneShot",
+      "DurationMin": "1.7568934",
+      "DurationMax": "1.7568934",
+      "MediaRefs": [
+       {
+        "Id": "64953687"
+       }
+      ]
+     },
+     {
+      "Id": "3396027718",
+      "Name": "StunWyvern",
+      "ObjectPath": "\\Events\\Default Work Unit\\CreatureSound\\StunWyvern",
+      "GUID": "{37F461DD-BEBC-477C-80B6-07F02F156BBB}",
+      "DurationType": "OneShot",
+      "DurationMin": "1.513375",
+      "DurationMax": "1.513375",
+      "MediaRefs": [
+       {
+        "Id": "441368127"
+       },
+       {
+        "Id": "945878032"
+       }
+      ]
+     },
+     {
+      "Id": "3099166049",
+      "Name": "Tempest",
+      "ObjectPath": "\\Events\\Default Work Unit\\CreatureSound\\Tempest",
+      "GUID": "{746176D4-20F0-494E-AF55-1EBDDEEDC782}",
+      "DurationType": "OneShot",
+      "DurationMin": "5.7713833",
+      "DurationMax": "5.7713833",
+      "MediaRefs": [
+       {
+        "Id": "819985446"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{769FE169-AF5F-E784-0DE8-2842BC707BE9}"
+ }
+}

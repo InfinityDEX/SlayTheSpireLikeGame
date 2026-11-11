@@ -44,11 +44,11 @@ public class Golem : Enemy
     [SerializeField, Header("パンチダメージ")]
     private int punchDamage = 10;
 
-    [SerializeField, Header("パンチ音")]
-    private AudioClip punchSE;
+    [SerializeField, Header("パンチ音再生イベント(Wwiseイベント)")]
+    private AK.Wwise.Event punchSE_Event;
 
-    [SerializeField, Header("防御魔法音")]
-    private AudioClip defenseSE;
+    [SerializeField, Header("防御魔法音再生イベント(Wwiseイベント)")]
+    private AK.Wwise.Event defenseSE_Event;
 
     [SerializeField, Header("防御魔法で全体に振りまくShield値")]
     private int defenceShieldNum = 10;
@@ -155,7 +155,7 @@ public class Golem : Enemy
         {
             Debug.Log("パンチ発動");
             var bm = BattleManager.Instance;
-            if (punchSE != null) audioController.PlaySE(punchSE);
+            if (punchSE_Event != null) audioController.FireWwiseEvent(punchSE_Event);
             animationCurrentTime = 0;
             inAction = false;
             bm.Player.TakeDamage(punchDamage + Muscle);
@@ -211,7 +211,7 @@ public class Golem : Enemy
                 }   
             }
 
-            if(defenseSE != null) audioController.PlaySE(defenseSE);
+            if (defenseSE_Event != null) audioController.FireWwiseEvent(defenseSE_Event);
 
             actionPattern = ActionPattern.Idle;
             return true;

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{9B544A0A-796B-4511-87E0-BC69867061DA}" SchemaVersion="133" RootDocumentID="{BDAB8C4E-925B-4903-B06F-655167D6BA90}" ParentDocumentID="{BDAB8C4E-925B-4903-B06F-655167D6BA90}">
+	<Containers>
+		<WorkUnit Name="BGM" ID="{9B544A0A-796B-4511-87E0-BC69867061DA}" OwnerID="{BDAB8C4E-925B-4903-B06F-655167D6BA90}" PersistMode="Nested">
+			<ChildrenList>
+				<SwitchContainer Name="BattleBGMs" ID="{C2A16300-5338-43FF-B4C0-78BE43B885AE}" ShortID="488315561">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D0E1E849-893E-4844-8B43-284BFB6EDA10}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{F0DD9D4A-7C4D-48CD-BD3F-E81D27A4861C}"/>
+						</Reference>
+						<Reference Name="SwitchGroupOrStateGroup">
+							<ObjectRef Name="Battle_BGM" ID="{A47263DD-14F4-4F82-8D9F-B2998FD6DB8E}" WorkUnitID="{6F798264-5FCB-4BBC-A44B-6283F8A4D400}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<Sound Name="MusMus-BGM-075" ID="{3BD84F75-80CE-4EC2-9472-A93DE436C2AA}" ShortID="890890795">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D0E1E849-893E-4844-8B43-284BFB6EDA10}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{F0DD9D4A-7C4D-48CD-BD3F-E81D27A4861C}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="MusMus-BGM-075" ID="{2425C610-7B2D-44D4-998E-DEF575DED754}">
+									<Language>SFX</Language>
+									<AudioFile>MusMus-BGM-075.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="937111305"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="MusMus-BGM-075" ID="{2425C610-7B2D-44D4-998E-DEF575DED754}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="MusMus-BGM-136" ID="{F9BC47D5-FC07-4431-8754-305F3EF65ED4}" ShortID="473089806">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D0E1E849-893E-4844-8B43-284BFB6EDA10}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{F0DD9D4A-7C4D-48CD-BD3F-E81D27A4861C}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="MusMus-BGM-136" ID="{2506FC4F-5E93-46BB-AF4B-A17BFF6BEEE2}">
+									<Language>SFX</Language>
+									<AudioFile>MusMus-BGM-136.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="265533881"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="MusMus-BGM-136" ID="{2506FC4F-5E93-46BB-AF4B-A17BFF6BEEE2}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="MusMus-BGM-166" ID="{63251F37-E54C-4EAF-AAB4-35EB77CF269F}" ShortID="803232498">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D0E1E849-893E-4844-8B43-284BFB6EDA10}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{F0DD9D4A-7C4D-48CD-BD3F-E81D27A4861C}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="MusMus-BGM-166" ID="{C12CAE04-B7BC-45A1-8C36-7D88A37D167C}">
+									<Language>SFX</Language>
+									<AudioFile>MusMus-BGM-166.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="779826046"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="MusMus-BGM-166" ID="{C12CAE04-B7BC-45A1-8C36-7D88A37D167C}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+					</ChildrenList>
+					<GroupingInfo>
+						<GroupingBehaviorList>
+							<GroupingBehavior>
+								<ItemRef Name="MusMus-BGM-166" ID="{63251F37-E54C-4EAF-AAB4-35EB77CF269F}"/>
+							</GroupingBehavior>
+							<GroupingBehavior>
+								<ItemRef Name="MusMus-BGM-075" ID="{3BD84F75-80CE-4EC2-9472-A93DE436C2AA}"/>
+							</GroupingBehavior>
+							<GroupingBehavior>
+								<ItemRef Name="MusMus-BGM-136" ID="{F9BC47D5-FC07-4431-8754-305F3EF65ED4}"/>
+							</GroupingBehavior>
+						</GroupingBehaviorList>
+						<GroupingList>
+							<Grouping>
+								<SwitchRef Name="Cave" ID="{13017A6C-9C24-41B3-8427-62A32D5321F5}"/>
+								<ItemList>
+									<ItemRef Name="MusMus-BGM-075" ID="{3BD84F75-80CE-4EC2-9472-A93DE436C2AA}"/>
+								</ItemList>
+							</Grouping>
+							<Grouping>
+								<SwitchRef Name="Ruins" ID="{A3A4637F-9B02-4D81-BD90-4918B60BAC62}"/>
+								<ItemList>
+									<ItemRef Name="MusMus-BGM-136" ID="{F9BC47D5-FC07-4431-8754-305F3EF65ED4}"/>
+								</ItemList>
+							</Grouping>
+							<Grouping>
+								<SwitchRef Name="Hideout" ID="{E071C5D9-799A-4A4E-96C0-DD5C155215A4}"/>
+								<ItemList>
+									<ItemRef Name="MusMus-BGM-166" ID="{63251F37-E54C-4EAF-AAB4-35EB77CF269F}"/>
+								</ItemList>
+							</Grouping>
+						</GroupingList>
+					</GroupingInfo>
+				</SwitchContainer>
+				<Sound Name="maou_bgm_fantasy06" ID="{76CD93C5-6551-4964-8354-417ED1932D68}" ShortID="241330077">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{D0E1E849-893E-4844-8B43-284BFB6EDA10}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{F0DD9D4A-7C4D-48CD-BD3F-E81D27A4861C}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="maou_bgm_fantasy06" ID="{7442EA23-9446-4AF7-8532-9B95FA39A290}">
+							<Language>SFX</Language>
+							<AudioFile>maou_bgm_fantasy06.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="503824993"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="maou_bgm_fantasy06" ID="{7442EA23-9446-4AF7-8532-9B95FA39A290}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+			</ChildrenList>
+		</WorkUnit>
+	</Containers>
+</WwiseDocument>

@@ -77,9 +77,6 @@ public class Wyvern : Enemy
     [SerializeField, Header("テンペストダメージ")]
     private int tempestDamage = 30;
 
-    [SerializeField, Header("テンペスト音")]
-    private AudioClip tempestSE;
-
     [SerializeField, Header("FlyからSoarに移行するまでのターン数")]
     private int turnsToSoarFromFly = 3;
     /// <summary>
@@ -87,14 +84,17 @@ public class Wyvern : Enemy
     /// </summary>
     private int currentFlyTurns = 0;
 
-    [SerializeField, Header("飛行時の音")]
-    private AudioClip flySE;
+    [SerializeField, Header("テンペスト音再生イベント(Wwiseイベント)")]
+    private AK.Wwise.Event tempestSE_Event;
 
-    [SerializeField, Header("高空飛行時の音")]
-    private AudioClip soarSE;
+    [SerializeField, Header("飛行時の音再生イベント(Wwiseイベント)")]
+    private AK.Wwise.Event flySE_Event;
 
-    [SerializeField, Header("気絶した時の音")]
-    private AudioClip stunSE;
+    [SerializeField, Header("高空飛行時の音再生イベント(Wwiseイベント)")]
+    private AK.Wwise.Event soarSE_Event;
+
+    [SerializeField, Header("気絶した時の音再生イベント(Wwiseイベント)")]
+    private AK.Wwise.Event stunSE_Event;
 
     [SerializeField, Header("飛行状態で何回攻撃を受けたらスタンするか")]
     private int hitsToStunWhileFlying = 3;
@@ -217,6 +217,7 @@ public class Wyvern : Enemy
                 // スタン状態。行動シーケンスをリセットしてすぐにアクション終了
                 currentActionSequenceIndex = 0;
                 currentActionPattern = actionSequence[currentActionSequenceIndex];
+                if (stunSE_Event != null) audioController.FireWwiseEvent(stunSE_Event);
                 animator.SetTrigger("StunEnd");
                 return true; // 何もしない
             case ActionPattern.Idle:
@@ -288,7 +289,7 @@ public class Wyvern : Enemy
         {
             Debug.Log("テンペスト発動");
             var bm = BattleManager.Instance;
-            if (tempestSE != null) audioController.PlaySE(tempestSE);
+            if (tempestSE_Event != null) audioController.FireWwiseEvent(tempestSE_Event);
             bm.Player.TakeDamage(tempestDamage + Muscle);
             animationCurrentTime = 0;
             inAction = false;
@@ -326,7 +327,7 @@ public class Wyvern : Enemy
         {
             Debug.Log("飛行発動");
             var bm = BattleManager.Instance;
-            if (flySE != null) audioController.PlaySE(flySE);
+            if (flySE_Event != null) audioController.FireWwiseEvent(flySE_Event);
             animationCurrentTime = 0;
             inAction = false;
 
@@ -353,7 +354,7 @@ public class Wyvern : Enemy
         {
             Debug.Log("高空飛行発動");
             var bm = BattleManager.Instance;
-            if (soarSE != null) audioController.PlaySE(soarSE);
+            if (soarSE_Event != null) audioController.FireWwiseEvent(soarSE_Event);
             animationCurrentTime = 0;
             inAction = false;
 

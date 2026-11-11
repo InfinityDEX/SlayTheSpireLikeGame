@@ -28,7 +28,7 @@
      {
       "Id": "3576671881",
       "Name": "StartDungeonScene",
-      "ObjectPath": "\\Events\\Default Work Unit\\StartDungeonScene",
+      "ObjectPath": "\\Events\\Default Work Unit\\SceneStart\\StartDungeonScene",
       "GUID": "{9B7273F3-74F8-4945-9A51-B87C5388F710}",
       "DurationType": "OneShot",
       "DurationMin": "99.683266",
@@ -42,6 +42,6 @@
     ]
    }
   ],
-  "FileHash": "{49AE10EE-B240-67F5-9D71-9367E37D553F}"
+  "FileHash": "{DC324571-45BE-192E-7B29-5B2FE03B2584}"
  }
 }

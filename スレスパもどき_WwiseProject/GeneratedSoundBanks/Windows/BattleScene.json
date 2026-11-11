@@ -44,7 +44,7 @@
      {
       "Id": "3463709863",
       "Name": "StartBattleScene",
-      "ObjectPath": "\\Events\\Default Work Unit\\StartBattleScene",
+      "ObjectPath": "\\Events\\Default Work Unit\\SceneStart\\StartBattleScene",
       "GUID": "{F3D687B6-EF4B-49E8-80CA-F105616C258D}",
       "DurationType": "OneShot",
       "DurationMin": "53.428616",
@@ -122,6 +122,6 @@
     ]
    }
   ],
-  "FileHash": "{D785BF2F-BEDD-A759-FEDC-07C547AAEA62}"
+  "FileHash": "{4178ACC0-ABB2-C3AF-9E5F-DD91D607864B}"
  }
 }

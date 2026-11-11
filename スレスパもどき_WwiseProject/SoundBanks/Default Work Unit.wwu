@@ -17,6 +17,14 @@
 					<ObjectExclusionList/>
 					<GameSyncExclusionList/>
 				</SoundBank>
+				<SoundBank Name="SystemSound" ID="{93924C61-C2FD-4DE6-9DCA-897E0F9746EF}">
+					<ObjectInclusionList>
+						<ObjectRef Name="Short_Accent17-1(Low)" ID="{A240D2B0-8643-4C17-975F-F58DAA19430D}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Short_Accent19-1(Dry)" ID="{882405FC-A5AF-4E10-8DCE-6B7F81890C5F}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}" Origin="Manual" Filter="7"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
 			</ChildrenList>
 		</WorkUnit>
 	</SoundBanks>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Assertions;
 using VContainer;
@@ -12,14 +13,6 @@ using VContainer;
 /// </summary>
 public class AudioController : MonoBehaviour
 {
-    //public static AudioController Instance { get; private set; } // シングルトン
-
-    // [SerializeField, Header("BGM用AudioSource")]
-    // private AudioSource bgmSource;
-
-    // [SerializeField, Header("SE用AudioSource")]
-    // private AudioSource seSource;
-
     [SerializeField, Header("マスター音量")]
     [Range(0f, 1f)]
     private float masterVolume = 1f;
@@ -40,43 +33,17 @@ public class AudioController : MonoBehaviour
     {
         foreach (var bank in banks)
         {
-            bank.Load();
-            Debug.Log($"Bank Load: {bank.Name}");
+            var akBank = gameObject.AddComponent<AkBank>();
+            akBank.data = bank;
+            Debug.Log($"Bank Loading: {bank.Name}");
+            akBank.data.Load();
+            Debug.Log($"Bank Loaded: {bank.Name}");
         }
     }
 
     private void Awake()
     {
-        // if (Instance != null && Instance != this)
-        // {
-        //     Destroy(gameObject);
-        //     return;
-        // }
-        //Instance = this;
-        // DontDestroyOnLoad(gameObject);
         ApplyVolume();
-
-        //foreach (var bank in banks)
-        //{
-        //    bank.Load();
-        //}
-    }
-
-    /// <summary>
-    /// BGMの再生処理
-    /// </summary>
-    /// <param name="clip">再生したい音源</param>
-    /// <param name="loop">ループするか？</param>
-    public void PlayBGM(AudioClip clip, bool loop = true)
-    {
-        // 音源がnullだった場合再生しない
-        if (clip == null) return;
-
-        // // 再生している音源と同じ音源を再生しようとしたか、前のBGMがまだ再生中の場合、再生しない。
-        // if (bgmSource.clip == clip && bgmSource.isPlaying) return;
-        // bgmSource.clip = clip;
-        // bgmSource.loop = loop;
-        // bgmSource.Play();
     }
 
     /// <summary>

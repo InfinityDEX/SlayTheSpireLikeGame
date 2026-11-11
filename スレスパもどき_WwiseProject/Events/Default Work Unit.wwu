@@ -3,28 +3,58 @@
 	<Events>
 		<WorkUnit Name="Default Work Unit" ID="{5ABFAB69-95BA-4482-86BF-94721A37C399}" PersistMode="Standalone">
 			<ChildrenList>
-				<Event Name="StartDungeonScene" ID="{9B7273F3-74F8-4945-9A51-B87C5388F710}">
+				<Folder Name="SceneStart" ID="{B6496B06-105A-40CD-91A1-4976B46B8516}" ShortID="413224423">
 					<ChildrenList>
-						<Action Name="" ID="{514C6146-AE4C-46E1-A4EC-0831116DF2CE}" ShortID="969886603">
-							<ReferenceList>
-								<Reference Name="Target">
-									<ObjectRef Name="maou_bgm_fantasy06" ID="{76CD93C5-6551-4964-8354-417ED1932D68}" WorkUnitID="{BDAB8C4E-925B-4903-B06F-655167D6BA90}"/>
-								</Reference>
-							</ReferenceList>
-						</Action>
+						<Event Name="StartDungeonScene" ID="{9B7273F3-74F8-4945-9A51-B87C5388F710}">
+							<ChildrenList>
+								<Action Name="" ID="{514C6146-AE4C-46E1-A4EC-0831116DF2CE}" ShortID="969886603">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="maou_bgm_fantasy06" ID="{76CD93C5-6551-4964-8354-417ED1932D68}" WorkUnitID="{9B544A0A-796B-4511-87E0-BC69867061DA}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="StartBattleScene" ID="{F3D687B6-EF4B-49E8-80CA-F105616C258D}">
+							<ChildrenList>
+								<Action Name="" ID="{53EADE40-EEBB-4B7A-8F6C-54E6C8BA1A13}" ShortID="955599488">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="BattleBGMs" ID="{C2A16300-5338-43FF-B4C0-78BE43B885AE}" WorkUnitID="{9B544A0A-796B-4511-87E0-BC69867061DA}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
 					</ChildrenList>
-				</Event>
-				<Event Name="StartBattleScene" ID="{F3D687B6-EF4B-49E8-80CA-F105616C258D}">
+				</Folder>
+				<Folder Name="SystemSound" ID="{94714DF7-F702-4947-995E-08E0538B84E2}" ShortID="658322777">
 					<ChildrenList>
-						<Action Name="" ID="{53EADE40-EEBB-4B7A-8F6C-54E6C8BA1A13}" ShortID="955599488">
-							<ReferenceList>
-								<Reference Name="Target">
-									<ObjectRef Name="BattleBGMs" ID="{C2A16300-5338-43FF-B4C0-78BE43B885AE}" WorkUnitID="{BDAB8C4E-925B-4903-B06F-655167D6BA90}"/>
-								</Reference>
-							</ReferenceList>
-						</Action>
+						<Event Name="Select" ID="{6A7A2AC5-DC88-49B4-A3A9-DBBDCC21F0F9}">
+							<ChildrenList>
+								<Action Name="" ID="{EE7DFA32-2975-4D36-B34F-0CCB3186A660}" ShortID="134718064">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Short_Accent19-1(Dry)" ID="{882405FC-A5AF-4E10-8DCE-6B7F81890C5F}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Dicision" ID="{1B031AC2-832C-4047-AF99-CB801FF4B9C6}">
+							<ChildrenList>
+								<Action Name="" ID="{35CDEEF8-6C0E-4F95-B21E-E084C70686D7}" ShortID="831608034">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Short_Accent17-1(Low)" ID="{A240D2B0-8643-4C17-975F-F58DAA19430D}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
 					</ChildrenList>
-				</Event>
+				</Folder>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

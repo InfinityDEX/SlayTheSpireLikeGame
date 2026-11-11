@@ -171,8 +171,14 @@ MonoBehaviour:
   animator: {fileID: 7555199572338204783}
   slashDamage: 5
   consecutiveSlashCount: 6
-  slashSE: {fileID: 8300000, guid: 1884ac0a49d75e941b11cba85823c509, type: 3}
-  pumpUpSE: {fileID: 8300000, guid: ab81c8259baa9104eae146907600efca, type: 3}
+  slashSE_Event:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 36736905d7dabe84d9f8841bc8764bb5, type: 2}
+  pumpUpSE_Event:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: dc3d7924c11b4f147b5cad91f5f8be32, type: 2}
   muscleNum: 3
 --- !u!114 &8069421120261711902 stripped
 MonoBehaviour:

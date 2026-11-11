@@ -52,11 +52,11 @@ public class Warrior : Enemy
     /// </summary>
     private int currentConsecutiveSlashCount = 1;
 
-    [SerializeField, Header("斬撃音")]
-    private AudioClip slashSE;
+    [SerializeField, Header("斬撃音再生イベント(Wwiseイベント)")]
+    private AK.Wwise.Event slashSE_Event;
 
-    [SerializeField, Header("身体強化音")]
-    private AudioClip pumpUpSE;
+    [SerializeField, Header("身体強化音再生イベント(Wwiseイベント)")]
+    private AK.Wwise.Event pumpUpSE_Event;
 
     [SerializeField, Header("バンプアップ時に上がる筋力")]
     private int muscleNum = 5;
@@ -176,7 +176,7 @@ public class Warrior : Enemy
         {
             Debug.Log("斬撃発動");
             var bm = BattleManager.Instance;
-            if (slashSE != null) audioController.PlaySE(slashSE);
+            if (slashSE_Event != null) audioController.FireWwiseEvent(slashSE_Event);
             animationCurrentTime = 0;
             inAction = false;
             bm.Player.TakeDamage(slashDamage + Muscle);
@@ -214,7 +214,7 @@ public class Warrior : Enemy
         {
             Debug.Log("斬撃発動");
             var bm = BattleManager.Instance;
-            if (slashSE != null) audioController.PlaySE(slashSE);
+            if (slashSE_Event != null) audioController.FireWwiseEvent(slashSE_Event);
             animationCurrentTime = 0;
             bm.Player.TakeDamage(slashDamage + Muscle);
 
@@ -271,7 +271,7 @@ public class Warrior : Enemy
             }
 
 
-            if(pumpUpSE != null) audioController.PlaySE(pumpUpSE);
+            if (pumpUpSE_Event != null) audioController.FireWwiseEvent(pumpUpSE_Event);
 
             actionPattern = ActionPattern.Idle;
             return true;

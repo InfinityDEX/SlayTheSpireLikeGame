@@ -1,0 +1,8 @@
+Event	ID	Name			Wwise Object Path	Notes
+	138539787	Dicision			\Default Work Unit\SystemSound\Dicision	
+	1432588725	Select			\Default Work Unit\SystemSound\Select	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	309002296	Short_Accent19-1(Dry)	.cache\9F\{9F4B7880-5C93-C103-98DC-B7CC80781B8A}.wem		\Containers\Default Work Unit\SE\Short_Accent19-1(Dry)		309412
+	797562678	Short_Accent17-1(Low)	.cache\BD\{BDF6642B-8917-7156-74B2-A61BE6C04621}.wem		\Containers\Default Work Unit\SE\Short_Accent17-1(Low)		309396
+

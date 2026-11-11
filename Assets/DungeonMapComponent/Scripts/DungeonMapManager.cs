@@ -65,14 +65,11 @@ public class DungeonMapManager : MonoBehaviour
     [field:SerializeField, Header("ボスマス(終端)情報")]
     private MapGridInfo bossGridInfo;
 
-    [Inject]
-    private SaveDataHolder saveDataHolder;
-
     /// <summary>
     /// セーブデータの保存パス
     /// </summary>
     public static string saveDataFolderPath { private set; get;} = "SaveData";
-    public static string saveDataFileName { private set; get;} = "CurrentDungeonData.json" ;
+    public static string saveDataFileName { private set; get;} = "CurrentDungeonData.json";
 
     /// <summary>
     /// 移動経路
@@ -84,29 +81,25 @@ public class DungeonMapManager : MonoBehaviour
     /// </summary>
     private MapGridJsonEntity.MapGridPos currentGridPos;
 
-    [field:SerializeField, Header("BGM")]
-    private AudioClip bgm;
+    [field:SerializeField, Header("セレクト音再生Event(Wwiseイベント)")]
+    private AK.Wwise.Event selectSE_Event;
 
-    [field:SerializeField, Header("BGM再生Event(Wwiseイベント)")]
-    private AK.Wwise.Event bgmEvent;
 
-    [field:SerializeField, Header("セレクト音")]
-    private AudioClip selectSE;
+    [field:SerializeField, Header("決定音再生Event(Wwiseイベント)")]
+    private AK.Wwise.Event dicisionSE_Event;
 
-    [field:SerializeField, Header("決定音")]
-    private AudioClip decideSE;
-
-    private AudioController audioController;
-
-    [Inject]
     /// <summary>
-    /// 初期化メソッド(依存性注入)
+    /// セーブデータホルダー
     /// </summary>
-    public void Init(AudioController audioController)
-    {
-        this.audioController = audioController;
-    }
+    [Inject]
+    private SaveDataHolder saveDataHolder;
 
+    /// <summary>
+    /// オーディオコントローラー
+    /// </summary>
+    [Inject]
+    private AudioController audioController;
+    
     /// <summary>
     /// 次に進むマップグリッドが、現在いるマップグリッドのupperLayerの何番目かを表すインデックス
     /// </summary>
@@ -205,12 +198,6 @@ public class DungeonMapManager : MonoBehaviour
         Vector3 cameraPos = mainCamera.transform.position;
         cameraPos.y = mainCameraDefault_YPos;
         mainCamera.transform.position = cameraPos;
-
-        // BGMの再生
-        // controller.PlayBGM(bgm);
-
-        // BGMの再生イベント発火
-        audioController.FireWwiseEvent(bgmEvent);
     }
 
     private void Update()
@@ -263,7 +250,7 @@ public class DungeonMapManager : MonoBehaviour
                 nextGrid.FlickerGrid(true, true);
 
                 // 選択したグリッドに合わせて画面遷移する
-                audioController.PlaySE(decideSE);
+                audioController.FireWwiseEvent(dicisionSE_Event);
                 StartCoroutine(LoadSceneAfterDelay(2f, transSceneName));
             }
         }
@@ -291,7 +278,7 @@ public class DungeonMapManager : MonoBehaviour
         var upperLayerCount = mapGrids[currentGridPos.Row][currentGridPos.Col].upperLayer.Count;
         nextGridUpperLayerIndex = (nextGridUpperLayerIndex + dir + upperLayerCount) % upperLayerCount;
 
-        audioController.PlaySE(selectSE);
+        audioController.FireWwiseEvent(selectSE_Event);
 
         currentNextGrid = mapGrids[currentGridPos.Row][currentGridPos.Col].upperLayer[nextGridUpperLayerIndex];
 
@@ -314,21 +301,10 @@ public class DungeonMapManager : MonoBehaviour
         // 指定した秒数だけ待機
         yield return new WaitForSeconds(delaySeconds);
 
-        // BGMをランダムで再生
-        var bgmCandidates = stageData.battleBgmCandidates;
-        if (bgmCandidates != null && bgmCandidates.Length > 0)
-        {
-            int randomIndex = Random.Range(0, bgmCandidates.Length);
-            audioController.PlayBGM(bgmCandidates[randomIndex]);
-        }
-
         // 移動経路（movePath）と現在のフロア（currentGridPos）を更新
         currentGridPos = mapGrids[currentGridPos.Row][currentGridPos.Col].upperLayer[nextGridUpperLayerIndex].pos;
 
         movePath.Add(currentGridPos); // 現在位置を移動経路に追加
-
-        // // マップ保存
-        // SaveDungeonMapData();
 
         // セーブデータの書き換え
         saveDataHolder.SetCurrentFloor(currentGridPos.Row);

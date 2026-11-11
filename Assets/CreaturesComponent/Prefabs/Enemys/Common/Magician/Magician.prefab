@@ -177,8 +177,14 @@ MonoBehaviour:
   <BatchManager>k__BackingField: {fileID: 781556576310375559}
   actionPattern: 0
   animator: {fileID: 1746152135516377099}
-  magicCastSE: {fileID: 8300000, guid: d6ab26d146e91a34287b08907240684a, type: 3}
-  activateShieldSE: {fileID: 8300000, guid: 6223395f1f04ffd4381a91a8c6898d6a, type: 3}
+  magicCastSE_Event:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: e0efd078c25c6eb449f416cc59f6d8b2, type: 2}
+  activateShieldSE_Event:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 29498b6582c27e34db93c05dd6f6e465, type: 2}
   magicDamage: 10
   activateShieldNum: 5
 --- !u!114 &5119423566219283521 stripped

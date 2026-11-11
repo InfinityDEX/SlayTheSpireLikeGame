@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 012a93a481f5bea4abc2fb13750dbd4a, type: 3}
+  m_Name: A47263DD-14F4-4F82-8D9F-B2998FD6DB8E
+  m_EditorClassIdentifier: AK.Wwise.Unity.API.WwiseTypes::WwiseSwitchGroupReference
+  objectName: Battle_BGM
+  id: 1116020140
+  guid: A47263DD-14F4-4F82-8D9F-B2998FD6DB8E

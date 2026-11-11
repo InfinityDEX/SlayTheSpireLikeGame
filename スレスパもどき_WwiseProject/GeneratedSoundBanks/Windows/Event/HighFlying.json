@@ -1,0 +1,48 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Windows",
+  "BasePlatform": "Windows",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "1090410072",
+    "Type": "Event",
+    "GUID": "{1E73A37B-2C90-4E94-84D8-A14B8BC625F9}",
+    "Language": "SFX",
+    "Hash": "{414E61BF-901B-D90A-FFC8-8F829933D1F0}",
+    "ObjectPath": "HighFlying",
+    "ShortName": "HighFlying",
+    "Path": "Event/HighFlying.bnk",
+    "Media": [
+     {
+      "Id": "773422737",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Loose",
+      "ShortName": "ドラゴンの羽ばたき.wav",
+      "Path": "Media/773422737.wem",
+      "CachePath": "61/{618973D8-6BF9-727D-C3F3-A8D81EF96EAF}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "1090410072",
+      "Name": "HighFlying",
+      "ObjectPath": "\\Events\\Default Work Unit\\CreatureSound\\HighFlying",
+      "GUID": "{1E73A37B-2C90-4E94-84D8-A14B8BC625F9}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.7671319",
+      "DurationMax": "0.7671319",
+      "MediaRefs": [
+       {
+        "Id": "773422737"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{E81C9337-B341-CA41-A325-E32C037DE0D3}"
+ }
+}

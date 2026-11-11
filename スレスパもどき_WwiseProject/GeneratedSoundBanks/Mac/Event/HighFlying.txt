@@ -1,0 +1,3 @@
+Event	ID	Name			Wwise Object Path	Notes
+	1090410072	HighFlying			\Default Work Unit\CreatureSound\HighFlying	
+

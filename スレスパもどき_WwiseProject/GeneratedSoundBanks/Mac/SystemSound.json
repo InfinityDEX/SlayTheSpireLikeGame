@@ -1,0 +1,69 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Mac",
+  "BasePlatform": "Mac",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "1808468399",
+    "Type": "User",
+    "GUID": "{93924C61-C2FD-4DE6-9DCA-897E0F9746EF}",
+    "Language": "SFX",
+    "Hash": "{AF4F507E-E903-B9F5-DB6D-60E16127DED0}",
+    "ObjectPath": "\\SoundBanks\\Default Work Unit\\SystemSound",
+    "ShortName": "SystemSound",
+    "Path": "SystemSound.bnk",
+    "Media": [
+     {
+      "Id": "309002296",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Short_Accent19-1(Dry).wav",
+      "CachePath": "9F/{9F4B7880-5C93-C103-98DC-B7CC80781B8A}.wem"
+     },
+     {
+      "Id": "797562678",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Short_Accent17-1(Low).wav",
+      "CachePath": "BD/{BDF6642B-8917-7156-74B2-A61BE6C04621}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "138539787",
+      "Name": "Dicision",
+      "ObjectPath": "\\Events\\Default Work Unit\\SystemSound\\Dicision",
+      "GUID": "{1B031AC2-832C-4047-AF99-CB801FF4B9C6}",
+      "DurationType": "OneShot",
+      "DurationMin": "1.7534014",
+      "DurationMax": "1.7534014",
+      "MediaRefs": [
+       {
+        "Id": "797562678"
+       }
+      ]
+     },
+     {
+      "Id": "1432588725",
+      "Name": "Select",
+      "ObjectPath": "\\Events\\Default Work Unit\\SystemSound\\Select",
+      "GUID": "{6A7A2AC5-DC88-49B4-A3A9-DBBDCC21F0F9}",
+      "DurationType": "OneShot",
+      "DurationMin": "1.7534921",
+      "DurationMax": "1.7534921",
+      "MediaRefs": [
+       {
+        "Id": "309002296"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{E768DD28-DD5D-8C0C-F233-A2D790B876E9}"
+ }
+}
