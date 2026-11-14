@@ -89,6 +89,12 @@ public class DungeonMapManager : MonoBehaviour
     private AK.Wwise.Event dicisionSE_Event;
 
     /// <summary>
+    /// 一時的なマップデータ
+    /// </summary>
+    [Inject]
+    private TemporaryMapData temporaryDungeonMapData;
+
+    /// <summary>
     /// セーブデータホルダー
     /// </summary>
     [Inject]
@@ -309,12 +315,9 @@ public class DungeonMapManager : MonoBehaviour
         // セーブデータの書き換え
         saveDataHolder.SetCurrentFloor(currentGridPos.Row);
 
-        // この段階では一時的なダンジョンマップデータを作成し、シーンを跨いで破壊されないオブジェクトにして次のシーンに渡す。
-        GameObject temporaryDungeonMapDataObj = new GameObject();
-        temporaryDungeonMapDataObj.name = "TemporaryDungeonMapData";
-        var temporaryDungeonMapData = temporaryDungeonMapDataObj.AddComponent<TemporaryMapData>();
-        temporaryDungeonMapData.Init(mapGrids, movePath, currentGridPos, $"{saveDataFolderPath}/{saveDataFileName}", saveDataHolder);
-        DontDestroyOnLoad(temporaryDungeonMapDataObj);
+        // 一時的なダンジョンマップデータを作成し、シーンを跨いで破壊されないオブジェクトにして次のシーンに渡す。
+        // 遷移先のシーンが終了したら正式にマップ情報を保存する。
+        temporaryDungeonMapData.Init(mapGrids, movePath, currentGridPos, $"{saveDataFolderPath}/{saveDataFileName}", saveDataHolder, saveDataHolder);
 
         // 指定されたシーンへ遷移
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);

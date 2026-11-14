@@ -1,18 +1,13 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using VContainer;
 
 /// <summary>
 /// ストア内で実行できるアクションを管理するクラス
 /// </summary>
 public class StoreManager : MonoBehaviour
 {
-    [field: SerializeField, Header("カードビュワー")]
-    private CardViewer cardViewer;
-
-    [field: SerializeField, Header("販売カード管理クラス")]
-    private SalesCardManager salesCardManager;
-
     [field: SerializeField, Header("体力回復料金")]
     private int recoveryPrice;
 
@@ -25,24 +20,52 @@ public class StoreManager : MonoBehaviour
     [field: SerializeField, Header("販売カード入れ替え料金")]
     private int changeCardLineupPrice;
 
-    TemporaryMapData temporaryMapData;
+    /// <summary>
+    /// 販売カード管理クラス
+    /// </summary>
+    [Inject]
+    private SalesCardManager salesCardManager;
 
-    public void Start()
-    {
-        temporaryMapData = GameObject.Find("TemporaryDungeonMapData")?.GetComponent<TemporaryMapData>();
-    }
+    /// <summary>
+    /// カードビュワー
+    /// </summary>
+    [Inject]
+    private CardViewer cardViewer;
+
+    /// <summary>
+    /// 仮のマップデータ
+    /// </summary>
+    [Inject]
+    private TemporaryMapData temporaryMapData;
+
+    /// <summary>
+    /// カードデータライブラリ
+    /// </summary>
+    [Inject]
+    public CardDataLibrary CardDataLibraryInstance { get; private set; }
+
+    /// <summary>
+    /// デッキマネージャー
+    /// </summary>
+    [Inject]
+    public DeckManager DeckManagerInstance { get; private set; }
+
+    /// <summary>
+    /// セーブデータホルダー
+    /// </summary>
+    [Inject]
+    public SaveDataHolder SaveDataHolderInstance { get; private set; }
 
     /// <summary>
     /// 体力全回復
     /// </summary>
     public void FullRecovery()
     {
-        var saveDataHolder = SaveDataHolder.Instance;
-        if (saveDataHolder != null)
+        if (SaveDataHolderInstance != null)
         {
-            if (saveDataHolder.UseMoney(recoveryPrice) == true)
+            if (SaveDataHolderInstance.UseMoney(recoveryPrice) == true)
             {
-                saveDataHolder.FullRecovery();
+                SaveDataHolderInstance.FullRecovery();
             }
         }
     }
@@ -52,12 +75,9 @@ public class StoreManager : MonoBehaviour
     /// </summary>
     public void CardUpgradeMenuOpen()
     {
-        var saveDataHolder = SaveDataHolder.Instance;
-        var deckManager = DeckManager.Instance;
-        var cardDataLibrary = CardDataLibrary.Instance;
-        if (saveDataHolder != null && deckManager != null && cardDataLibrary != null && cardViewer != null)
+        if (SaveDataHolderInstance != null && DeckManagerInstance != null && CardDataLibraryInstance != null && cardViewer != null)
         {
-            deckManager.OpenDrawPailView();
+            DeckManagerInstance.OpenDrawPileView();
             var cardList = cardViewer.GetActiveCards();
             foreach (var card in cardList)
             {
@@ -80,15 +100,13 @@ public class StoreManager : MonoBehaviour
                     controller.RegisterOnClickListener(() =>
                     {
                         // 強化料金が支払えるか確認する。
-                        if (saveDataHolder.UseMoney(cardUpgradePrice) == false)
+                        if (SaveDataHolderInstance.UseMoney(cardUpgradePrice) == false)
                         {
                             // 払えないのであれば何もしない。
                             return;
                         }
                         // 選択したカードのカードIDと最初に一致したカードをアップグレードする
-                        // (選択したカードと直接紐づいているものをアップグレードしないが、処理後のデッキ構成は変わらない為これで問題なし)
-                        var idx = deckManager.DrawPile.FindIndex(cardData => cardData.CardID == card.ThisCardData.CardID);
-                        deckManager.DrawPile[idx] = cardDataLibrary.SearchCardData(deckManager.DrawPile[idx].UpgradedCardId);
+                        DeckManagerInstance.UpgradeCard(card.ThisCardData);
 
                         // 強化が済んだらビュワーを非表示にする
                         cardViewer.DisableViewer();
@@ -103,12 +121,9 @@ public class StoreManager : MonoBehaviour
     /// </summary>
     public void CardDeleteMenuOpen()
     {
-        var saveDataHolder = SaveDataHolder.Instance;
-        var deckManager = DeckManager.Instance;
-        var cardDataLibrary = CardDataLibrary.Instance;
-        if (saveDataHolder != null && deckManager != null && cardDataLibrary != null && cardViewer != null)
+        if (SaveDataHolderInstance != null && DeckManagerInstance != null && CardDataLibraryInstance != null && cardViewer != null)
         {
-            deckManager.OpenDrawPailView();
+            DeckManagerInstance.OpenDrawPileView();
             var cardList = cardViewer.GetActiveCards();
             foreach (var card in cardList)
             {
@@ -131,17 +146,16 @@ public class StoreManager : MonoBehaviour
                     controller.RegisterOnClickListener(() =>
                     {
                         // カード除去料金が支払えるか確認する。
-                        if (saveDataHolder.UseMoney(cardDeletePrice) == false)
+                        if (SaveDataHolderInstance.UseMoney(cardDeletePrice) == false)
                         {
                             // 払えないのであれば何もしない。
                             return;
                         }
-                        // 選択したカードのカードIDと最初に一致したカードを除去する
-                        // (選択したカードと直接紐づいているものを除去しないが、処理後のデッキ構成は変わらない為これで問題なし)
-                        var idx = deckManager.DrawPile.FindIndex(cardData => cardData.CardID == card.ThisCardData.CardID);
-                        deckManager.DrawPile.Remove(deckManager.DrawPile[idx]);
 
-                        // 強化が済んだらビュワーを非表示にする
+                        // 選択したカードを除去する
+                        DeckManagerInstance.RemoveCard(card.ThisCardData);
+
+                        // 除去が済んだらビュワーを非表示にする
                         cardViewer.DisableViewer();
                     });
                 }
@@ -167,8 +181,7 @@ public class StoreManager : MonoBehaviour
     /// </summary>
     public void ChangeShowcaseLineup()
     {
-        var saveDataHolder = SaveDataHolder.Instance;
-        if (salesCardManager != null && saveDataHolder != null && saveDataHolder.UseMoney(changeCardLineupPrice) == true)
+        if (salesCardManager != null && SaveDataHolderInstance != null && SaveDataHolderInstance.UseMoney(changeCardLineupPrice) == true)
         {
             salesCardManager.ChangeShowcaseLineup();
         }
@@ -182,12 +195,9 @@ public class StoreManager : MonoBehaviour
         // 一時的な情報としていたダンジョンマップデータを保存する
         temporaryMapData.SaveDungeonMapData();
 
-        // このままだとシーンを跨いでも残り続けてしまうので破壊する
-        SceneManager.MoveGameObjectToScene(temporaryMapData.gameObject, SceneManager.GetActiveScene());
-        Destroy(temporaryMapData.gameObject);
-
-        DeckManager.Instance?.WriteDeckData(); // デッキの保存
-        SaveDataHolder.Instance?.WriteSaveData(); // セーブデータのJson保存
+        DeckManagerInstance.ReturnAllCardsToDrawPile(); // デッキのリセット
+        DeckManagerInstance.WriteDeckData(); // デッキの保存
+        SaveDataHolderInstance.WriteSaveData(); // セーブデータのJson保存
         SceneManager.LoadScene("MapScene", LoadSceneMode.Single);
     }
 }

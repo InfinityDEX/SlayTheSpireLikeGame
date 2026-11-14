@@ -10,12 +10,22 @@ namespace CardEffect.CardActionModules
     public class DrawCard : CardActionComponent
     {
         /// <summary>
+        /// デッキマネージャー
+        /// </summary>
+        private DeckInfomation deckInfo;
+
+        public DrawCard(DeckInfomation deckInfo)
+        {
+            this.deckInfo = deckInfo;
+        }
+
+        /// <summary>
         /// 自己複製コンポーネント
         /// </summary>
         /// <returns>複製したコンポーネント</returns>
         public override CardActionComponent Spawn()
         {
-            return new DrawCard();
+            return new DrawCard(deckInfo);
         }
 
         /// <summary>
@@ -56,7 +66,7 @@ namespace CardEffect.CardActionModules
             // パラメータで設定された数だけカードを引く
             for (int i = 0; i < drawCardNum; i++)
             {
-                DeckManager.Instance.DrawCard();
+                deckInfo.DrawCard();
             }
             // 手札の見た目を修整(ゲーム中に表示するカードオブジェクトは現在バトルマネージャが管理している)
             BattleManager.Instance.ResetHandCardView();

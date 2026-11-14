@@ -55,6 +55,161 @@
 						</Event>
 					</ChildrenList>
 				</Folder>
+				<Folder Name="CreatureSound" ID="{10E1D66F-BA41-4B53-AE63-2E92F48DCFAE}" ShortID="30923741">
+					<ChildrenList>
+						<Event Name="BladeSlash" ID="{4BAD20E4-44C0-48DC-B125-2DEB49FF0731}">
+							<ChildrenList>
+								<Action Name="" ID="{B51EA247-8F80-4B84-ACB6-998F025DCA71}" ShortID="390559712">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Cut01-1" ID="{C6EE8035-E16A-4A63-B680-78E0824053A0}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Explosion" ID="{7E10C669-9D88-41DC-A0D7-DDC56D5F19C7}">
+							<ChildrenList>
+								<Action Name="" ID="{45182B2F-EDCE-4F7A-9581-7DDBDB3817C8}" ShortID="103393925">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Explosion04-1_Short_" ID="{17F61A7B-3849-4E53-B1A3-3FA4F1B11A8E}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Punch" ID="{688FF383-6DB8-4202-843E-FDB1998E9271}">
+							<ChildrenList>
+								<Action Name="" ID="{7A704234-1483-4962-BA0D-CF489990C57B}" ShortID="584501861">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Hit-Punch09-3_Low_" ID="{411C0C30-C720-4E40-815D-F2B16774DBF1}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Buff_01" ID="{719B1413-0812-4F58-B899-F4A14C6F0FC1}">
+							<ChildrenList>
+								<Action Name="" ID="{1AF0EF53-12B1-4FF6-B0BA-6B313A3D857E}" ShortID="267034569">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="se_magic_effect12" ID="{80348442-43AE-479A-81EB-1EB0C2AAB099}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Buff_02" ID="{2FF39B34-AF83-43D1-8780-D696E3425397}">
+							<ChildrenList>
+								<Action Name="" ID="{CBA09008-21EA-4AA5-BE75-B972785574EE}" ShortID="548605416">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="ステータス上昇魔法2" ID="{47234CD8-3F8E-4D49-BAFF-966D5ECE170D}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{0C9E6345-665B-4B48-B26A-041A69055269}" ShortID="912611769">
+									<PropertyList>
+										<Property Name="Delay" Type="Real64" Value="0.5"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="ステータス上昇魔法2" ID="{47234CD8-3F8E-4D49-BAFF-966D5ECE170D}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{FF6210F1-A85C-4AFF-B0DA-4E5D391E631F}" ShortID="437546654">
+									<PropertyList>
+										<Property Name="Delay" Type="Real64" Value="0.5"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="ステータス上昇魔法2" ID="{47234CD8-3F8E-4D49-BAFF-966D5ECE170D}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Tempest" ID="{746176D4-20F0-494E-AF55-1EBDDEEDC782}">
+							<ChildrenList>
+								<Action Name="" ID="{F34E6602-7341-4ECA-871E-E075BCA54672}" ShortID="585410812">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Wind-Synthetic02-6" ID="{DDA4D0F8-C34E-41BF-A0FB-B56DE6C7134E}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Firebreath" ID="{AEADBA78-E7B6-4EE7-8C39-C039FAD047C0}">
+							<ChildrenList>
+								<Action Name="" ID="{4E0365F6-D877-4118-AEBE-1798D60A1F5E}" ShortID="886932293">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="ドラゴンが火を吐く" ID="{19E51220-3F7B-4069-AE2B-AD2C348032BF}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Flying" ID="{3A34EFE3-78E9-4128-8CFE-7F8C7C470565}">
+							<ChildrenList>
+								<Action Name="" ID="{1ACF9949-8D64-4836-896B-FB2B9766CB02}" ShortID="983316756">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="ドラゴンの羽ばたき" ID="{B392543B-6B5B-4B01-9AEA-C370A41CA6F2}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Buff_03" ID="{D1FEFFF4-9D92-4C28-BDD8-BBB02C032AFC}">
+							<ChildrenList>
+								<Action Name="" ID="{E8E47968-60EC-438E-AA42-E1A5BBB94C04}" ShortID="546086098">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="パワーチャージ" ID="{B0A54C8F-B074-498E-929E-8836B6608778}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="StunWyvern" ID="{37F461DD-BEBC-477C-80B6-07F02F156BBB}">
+							<ChildrenList>
+								<Action Name="" ID="{B6072E8D-0988-40E8-BD8C-2846800AC902}" ShortID="49341580">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="翼竜の鳴き声1" ID="{23A33728-7DBC-4085-8D8E-57F8D71730FD}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{89A9FC42-B628-4612-9A53-B1C106DE7973}" ShortID="429870161">
+									<PropertyList>
+										<Property Name="Delay" Type="Real64" Value="0.5"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="倒れる" ID="{A91036F8-E599-4BDD-8AA9-7BC71270701B}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="HighFlying" ID="{1E73A37B-2C90-4E94-84D8-A14B8BC625F9}">
+							<ChildrenList>
+								<Action Name="" ID="{8935A146-EF72-4442-B1D5-8205324C247C}" ShortID="322921781">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="ドラゴンの羽ばたき_HighPitch" ID="{4F9BFA99-FDB3-410D-BAEA-1939C253D9BD}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+					</ChildrenList>
+				</Folder>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

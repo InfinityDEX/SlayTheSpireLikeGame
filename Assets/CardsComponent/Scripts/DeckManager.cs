@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Experimental.AI;
 using VContainer;
+using static DeckInfomation;
 
 /// <summary>
 /// デッキマネージャクラス
@@ -12,72 +12,70 @@ using VContainer;
 /// </summary>
 public class DeckManager : MonoBehaviour
 {
-    // デッキマネージャーインスタンス
-    private static DeckManager instance;
-    public static DeckManager Instance { get {return instance;} }
-
-    [field: Header("カードビュワー"), SerializeField]
-    private CardViewer cardViewer;
-
-    /// <summary>
-    /// 山札
-    /// </summary>
-    public List<CardData> DrawPile { get ; private set;} = new();
-
-    /// <summary>
-    /// 手札
-    /// </summary>
-    public List<CardInHand> Hand { get ; private set;} = new();
-
-    /// <summary>
-    /// 捨て札
-    /// </summary>
-    public List<CardData> DiscardPile { get ; private set;} = new();
-
     /// <summary>
     /// デフォルトデッキのファイルパス(Resourcesフォルダ内)
     /// </summary>
     private const string DefaultDeckDataPath = "MetaData/DefaultDeckData.json";
 
     /// <summary>
-    /// デッキ中全てのカードのリスト
-    /// Getアクセサのみ
-    ///
-    /// 山札手札捨て札全てのカードを集約して返す。
-    /// これでバトル中でも所持している全てのカードのリストが取得できる
+    /// 山札枚数
     /// </summary>
-    public List<CardData> DeckCardList { get {
-        return DrawPile // 山札に
-            .Concat(Hand.Select(cardInHand => cardInHand.cardData).ToList()) // 手札と
-            .Concat(DiscardPile).ToList() // 捨て札を連結して
-            .OrderBy(cardData => cardData.CardID ) // IDで昇順ソートして
-            .ToList(); // リストにして返す
-        }
-    }
+    public int DrawPileCount { get { return deckInfo.DrawPile.Count; } }
+
+    /// <summary>
+    /// 手札枚数
+    /// </summary>
+    public int HandCount { get { return deckInfo.Hand.Count; } }
+
+    /// <summary>
+    /// 捨札枚数
+    /// </summary>
+    public int DiscardPileCount { get { return deckInfo.DiscardPile.Count; } }
+
+    /// <summary>
+    /// 手札
+    /// </summary>
+    public List<CardInHand> Hand { get { return deckInfo.Hand; } }
 
     // デッキデータファイルのパス
     private const string DeckDataFolderPath = "SaveData";
     private const string DeckDataFileName = "DeckData.json";
 
+    /// <summary>
+    /// カードデータライブラリ
+    /// </summary>
+    private CardDataLibrary cardDataLibrary;
+
+    /// <summary>
+    /// デッキ情報
+    /// </summary>
+    private DeckInfomation deckInfo;
+
+    /// <summary>
+    /// カードビュワー
+    /// </summary>
+    private CardViewer cardViewer;
+
+    /// <summary>
+    /// 依存性注入
+    /// </summary>
+    /// <param name="cardDataLibrary">カードデータライブラリ</param>
+    /// <param name="deckInfomation">デッキ情報</param>
+    /// <param name="cardViewer">カードビュワー</param>
+    [Inject]
+    public void Init(CardDataLibrary cardDataLibrary, DeckInfomation deckInfomation, CardViewer cardViewer)
+    {
+        this.cardDataLibrary = cardDataLibrary;
+        deckInfo = deckInfomation;
+        this.cardViewer = cardViewer;
+    }
+
     private void Start()
     {
-        // シングルトン
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        // DrawPile.Clear();
-
         LoadDeckFromJson();
 
         // 山札をシャッフル
-        Shuffle(DrawPile);
+        deckInfo.Shuffle();
     }
 
     /// <summary>
@@ -125,13 +123,13 @@ public class DeckManager : MonoBehaviour
             if (!int.TryParse(cardEntry.cardId, out int cardId))
                 continue;
 
-            var cardData = CardDataLibrary.Instance?.SearchCardData(cardId);
+            var cardData = cardDataLibrary.SearchCardData(cardId);
             if (cardData == null)
                 continue;
 
             for (int i = 0; i < cardEntry.count; i++)
             {
-                DrawPile.Add(cardData);
+                deckInfo.DrawPile.Add(cardData);
             }
         }
     }
@@ -162,184 +160,85 @@ public class DeckManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 全てのカードをデッキに戻す
+    /// </summary>
+    public void ReturnAllCardsToDrawPile()
+    {
+        deckInfo.ReturnAllCardsToDrawPile();
+    }
+
+    /// <summary>
     /// 現在のデッキデータをDeckData.jsonに保存する
     /// </summary>
     public void WriteDeckData()
     {
-        DeckDataJson deckDataJson = new();
-        deckDataJson.CurrentDeck = new();
-        foreach (var cardData in DeckCardList)
-        {
-            // 既に登録したかどうか確認
-            if (deckDataJson.CurrentDeck.Exists(cardEntry => cardEntry.cardId == cardData.CardID.ToString()))
-            {
-                // 既に登録済みなら登録したCardEntryのCountを+1する
-                deckDataJson.CurrentDeck.Find(cardEntry => cardEntry.cardId == cardData.CardID.ToString()).count++;
-            }
-            else
-            {
-                // 初めて追加する場合はCardEntryを新規作成して登録
-                CardEntry entry = new CardEntry{
-                    cardId = cardData.CardID.ToString(),
-                    count = 1
-                };
-                deckDataJson.CurrentDeck.Add(entry);
-            }
-        }
-
-        deckDataJson.CurrentDeck.Sort((cardEntryA, cardEntryB) =>
-            int.Parse(cardEntryA.cardId).CompareTo(int.Parse(cardEntryB.cardId))
-        );
-
-        // デッキデータの書き込み
-        string json = JsonUtility.ToJson(deckDataJson, true);
-        string folderPath = Path.Combine(Application.persistentDataPath, DeckDataFolderPath);
-        string filePath = Path.Combine(folderPath, DeckDataFileName);
-
-        //  フォルダが存在しない場合は作成する
-        if (!Directory.Exists(folderPath))
-        {
-            Directory.CreateDirectory(folderPath);
-        }
-
-        // ファイルに書き込む
-        File.WriteAllText(filePath, json);
+        deckInfo.WriteDeckData(DeckDataFileName, DeckDataFolderPath);
     }
 
     /// <summary>
-    /// カードをシャッフルする処理
+    /// カードを引く
     /// </summary>
-    /// <param name="list">山札</param>
-    private void Shuffle(List<CardData> list)
+    public void DrawCard()
     {
-        for (int i = 0; i < list.Count; i++)
-        {
-            CardData temp = list[i];
-            int randomIndex = Random.Range(i, list.Count);
-            list[i] = list[randomIndex];
-            list[randomIndex] = temp;
-        }
+        deckInfo.DrawCard();
     }
 
     /// <summary>
-    /// カードの追加
+    /// カードのデッキ自体に追加
     /// </summary>
     /// <param name="cardData">追加したいカード</param>
     public void AddCard(CardData cardData)
     {
-        DrawPile.Add(cardData);
+        deckInfo.DrawPile.Add(cardData);
     }
 
     /// <summary>
-    /// DeckData.json取得用のカードエントリクラス
+    /// カードの削除
     /// </summary>
-    [System.Serializable]
-    private class CardEntry
+    /// <param name="cardData">削除したいカード</param>
+    public void RemoveCard(CardData cardData)
     {
-        public string cardId; // jsonはstring
-        public int count;
+        // 渡されたカードのカードIDと最初に一致したカードを除去する
+        // (選択したカードと直接紐づいているものを除去しないが、処理後のデッキ構成は変わらない為これで問題なし)
+        var idx = deckInfo.DrawPile.FindIndex(currentCardData => currentCardData.CardID == cardData.CardID);
+        deckInfo.DrawPile.Remove(deckInfo.DrawPile[idx]);
     }
 
     /// <summary>
-    /// デッキデータのJson構造定義クラス
+    /// カードの強化
     /// </summary>
-    [System.Serializable]
-    private class DeckDataJson
+    /// <param name="cardData">強化したいカード</param>
+    public void UpgradeCard(CardData cardData)
     {
-        public List<CardEntry> CurrentDeck;
+        // 渡されたカードのカードIDと最初に一致したカードをアップグレードする
+        // (選択したカードと直接紐づいているものをアップグレードしないが、処理後のデッキ構成は変わらない為これで問題なし)
+        var idx = deckInfo.DrawPile.FindIndex(currentCardData => currentCardData.CardID == cardData.CardID);
+        deckInfo.DrawPile[idx] = cardDataLibrary.SearchCardData(deckInfo.DrawPile[idx].UpgradedCardId);
     }
 
     /// <summary>
-    /// 手札クラス
+    /// 手札のカードを捨て札に送る
     /// </summary>
-    [System.Serializable]
-    public class CardInHand
-    {
-        /// <summary>
-        /// カードデータ
-        /// </summary>
-        public CardData cardData;
-
-        /// <summary>
-        /// 手札の何番目かを表すインデックス
-        /// 右にあるカードから順に連番
-        /// </summary>
-        public int cardIdx;
-
-        public CardInHand(CardData data, int idx)
-        {
-            cardData = data;
-            cardIdx = idx;
-        }
-    }
-
-    /// <summary>
-    /// 指定IDのカード(Cardクラスのid)を手札から捨て札へ
-    /// </summary>
-    /// <param name="idx">捨てるカード(Card)のidx</param>
+    /// <param name="idx">墓場に送るカードの手札インデックス</param>
     public void DiscardCardById(int idx)
     {
-        var cardInHand = Hand.Find(c => c.cardIdx == idx);
-        if (cardInHand != null)
-        {
-            Hand.Remove(cardInHand);
-            DiscardPile.Add(cardInHand.cardData);
-        }
+        deckInfo.DiscardCardById(idx);
     }
 
     /// <summary>
-    /// 手札を全て破棄する
+    /// 手札をすべて捨てる
     /// </summary>
-    public void DiscardCardAll()
+    public void DiscardHandCardAll()
     {
-        // 手札の全カードを捨て札に移動する
-        foreach (var cardInHand in Hand)
-        {
-            DiscardPile.Add(cardInHand.cardData);
-        }
-        Hand.Clear();
-    }
-
-    /// <summary>
-    /// カードをドローする処理（カードのidをCardクラス用に付与）
-    /// </summary>
-    public void DrawCard()
-    {
-        // 山札が空の場合は捨て札を山札に加える
-        if (DrawPile.Count == 0)
-        {
-            DrawPile.AddRange(DiscardPile);
-            DiscardPile.Clear();
-
-            if (DrawPile.Count == 0) return; // 墓地をデッキの戻しても山札枚数が0 → すべてのデッキのカードが手札にある
-        }
-
-        // 山札からカードを引く
-        var cardData = DrawPile[0];
-        DrawPile.RemoveAt(0);
-
-        int assignedIdx = HandCardIndexGenerator.GetNextIdx();
-        Hand.Add(new CardInHand(cardData, assignedIdx));
-    }
-
-    /// <summary>
-    /// 手札に設定するIDを生成する静的クラス。
-    /// </summary>
-    public static class HandCardIndexGenerator
-    {
-        private static int nextId = 1;
-        public static int GetNextIdx()
-        {
-            return nextId++;
-        }
+        deckInfo.DiscardHandCardAll();
     }
 
     /// <summary>
     /// デッキにあるカードをカードビュワーで表示
     /// </summary>
-    public void OpenDrawPailView()
+    public void OpenDrawPileView()
     {
-        cardViewer?.EnableViewer(DrawPile);
+        cardViewer?.EnableViewer(deckInfo.DrawPile);
     }
 
     /// <summary>
@@ -347,6 +246,6 @@ public class DeckManager : MonoBehaviour
     /// </summary>
     public void OpenDiscardPileView()
     {
-        cardViewer?.EnableViewer(DiscardPile);
+        cardViewer?.EnableViewer(deckInfo.DiscardPile);
     }
 }

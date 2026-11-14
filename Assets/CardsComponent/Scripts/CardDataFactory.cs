@@ -6,11 +6,12 @@ using CardEffect.Expressions;
 using Newtonsoft.Json.Linq;
 using OneOf;
 using UnityEngine;
+using VContainer;
 
 /// <summary>
 /// カードデータファクトリークラス
 /// </summary>
-class CardDataFactory
+public class CardDataFactory
 {
     /// <summary>
     /// カードデータファイルのパス
@@ -44,6 +45,21 @@ class CardDataFactory
     /// カード式コンポーネントリスト
     /// </summary>
     private List<ValueExpressionWithID> valueExpressionWithIDs = new();
+
+    /// <summary>
+    /// デッキ情報クラス
+    /// </summary>
+    private DeckInfomation deckInfomation;
+    
+    /// <summary>
+    /// DI用初期化メソッド
+    /// </summary>
+    /// <param name="deckInfomation">デッキ情報クラス</param>
+    [Inject]
+    public void Init(DeckInfomation deckInfomation)
+    {
+        this.deckInfomation = deckInfomation;
+    }
 
     public List<CardData> CreateCardDataList()
     {
@@ -90,7 +106,7 @@ class CardDataFactory
         SetAction(1, new AddBlock());
         SetAction(2, new AddMuscle());
         SetAction(3, new AddWeakened());
-        SetAction(100, new DrawCard());
+        SetAction(100, new DrawCard(deckInfomation));
 
         // カード式リスト初期化
         SetValueExpression(0, new Number());
@@ -98,7 +114,7 @@ class CardDataFactory
         SetValueExpression(3, new Sub());
         SetValueExpression(4, new Mul());
         SetValueExpression(5, new Div());
-        SetValueExpression(30, new HandCount());
+        SetValueExpression(30, new HandCount(deckInfomation));
     }
 
     private void SetAction(int _id, CardActionComponent _cardAction)

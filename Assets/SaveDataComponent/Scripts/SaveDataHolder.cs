@@ -11,26 +11,12 @@ using UnityEngine;
 public class SaveDataHolder : MonoBehaviour
 {
     /// <summary>
-    /// シングルトンインスタンス
-    /// </summary>
-    public static SaveDataHolder Instance { get; private set;}
-
-    /// <summary>
     /// セーブデータエンティティ
     /// </summary>
     public SaveDataEntity SaveData { get; private set; }
 
     public void Awake()
     {
-        // セーブデータホルダーは複数個存在できない
-        if (Instance != null)
-        {
-            Destroy(this.gameObject);
-            return;
-        }
-
-        Instance = this;
-
         // 特定のタイミングを除き破壊不能
         DontDestroyOnLoad(this.gameObject);
 

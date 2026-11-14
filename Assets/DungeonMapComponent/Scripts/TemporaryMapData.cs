@@ -52,13 +52,15 @@ public class TemporaryMapData : MonoBehaviour
         List<MapGridJsonEntity.MapGridPos> movePath,
         MapGridJsonEntity.MapGridPos currentGridPos,
         string saveDataFilePath,
-        SaveDataHolder saveDataFolder
+        SaveDataHolder saveDataFolder,
+        SaveDataHolder saveDataHolder
         )
     {
         this.mapGrids = mapGrids;
         this.movePath = movePath;
         this.currentGridPos = currentGridPos;
         this.saveDataFilePath = saveDataFilePath;
+        this.saveDataHolder = saveDataHolder;
     }
 
     // TODO:↓DungeonMapManagerクラスにまったく同じ関数が書いてあるのでどうにかして一緒にしたい。

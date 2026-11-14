@@ -25,6 +25,23 @@
 					<ObjectExclusionList/>
 					<GameSyncExclusionList/>
 				</SoundBank>
+				<SoundBank Name="CreatureSound" ID="{D153E004-87A0-49E5-9F4A-4EA4AB4F9D00}">
+					<ObjectInclusionList>
+						<ObjectRef Name="ドラゴンが火を吐く" ID="{19E51220-3F7B-4069-AE2B-AD2C348032BF}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="翼竜の鳴き声1" ID="{23A33728-7DBC-4085-8D8E-57F8D71730FD}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Wind-Synthetic02-6" ID="{DDA4D0F8-C34E-41BF-A0FB-B56DE6C7134E}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="se_magic_effect12" ID="{80348442-43AE-479A-81EB-1EB0C2AAB099}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="パワーチャージ" ID="{B0A54C8F-B074-498E-929E-8836B6608778}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Cut01-1" ID="{C6EE8035-E16A-4A63-B680-78E0824053A0}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="ドラゴンの羽ばたき" ID="{B392543B-6B5B-4B01-9AEA-C370A41CA6F2}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="倒れる" ID="{A91036F8-E599-4BDD-8AA9-7BC71270701B}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="ステータス上昇魔法2" ID="{47234CD8-3F8E-4D49-BAFF-966D5ECE170D}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Hit-Punch09-3_Low_" ID="{411C0C30-C720-4E40-815D-F2B16774DBF1}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Explosion04-1_Short_" ID="{17F61A7B-3849-4E53-B1A3-3FA4F1B11A8E}" WorkUnitID="{2FB388DC-4C35-4818-828B-075D2A3228F5}" Origin="Manual" Filter="7"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
 			</ChildrenList>
 		</WorkUnit>
 	</SoundBanks>

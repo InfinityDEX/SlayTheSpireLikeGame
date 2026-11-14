@@ -459,7 +459,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   counter: {fileID: 3348696556071273259}
-  deckManager: {fileID: 0}
+  cardViewerEnableButton: {fileID: 2636003143847485981}
 --- !u!1 &9076602279491506947
 GameObject:
   m_ObjectHideFlags: 0

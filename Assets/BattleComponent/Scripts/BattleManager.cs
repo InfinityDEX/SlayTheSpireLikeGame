@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using UnityEngine;
@@ -15,9 +14,6 @@ using VContainer;
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance { get; private set; }
-
-    [field:SerializeField, Header("デッキマネージャー")]
-    private DeckManager deckManager;
 
     [field:SerializeField, Header("手札表示エリア(親オブジェクト)")]
     private Transform handArea;
@@ -44,14 +40,9 @@ public class BattleManager : MonoBehaviour
     private BattlePhase currentPhase = BattlePhase.Idle;
 
     /// <summary>
-    /// エネミーマネージャー
-    /// </summary>
-    [Inject]
-    public EnemyManager EnemyManager { get; private set; }
-
-    /// <summary>
     /// 一時的なダンジョンデータ
     /// </summary>
+    [Inject]
     private TemporaryMapData temporaryMapData;
 
     /// <summary>
@@ -63,6 +54,30 @@ public class BattleManager : MonoBehaviour
     /// 最初のアップデート処理か？
     /// </summary>
     private bool isFirstUpdate = true;
+
+    /// <summary>
+    /// カードデータライブラリ
+    /// </summary>
+    [Inject]
+    public CardDataLibrary CardDataLibraryInstance { get; private set; }
+
+    /// <summary>
+    /// デッキマネージャー
+    /// </summary>
+    [Inject]
+    public DeckManager DeckManagerInstance { get; private set; }
+
+    /// <summary>
+    /// エネミーマネージャー
+    /// </summary>
+    [Inject]
+    public EnemyManager EnemyManagerInstance { get; private set; }
+
+    /// <summary>
+    /// セーブデータホルダー
+    /// </summary>
+    [Inject]
+    public SaveDataHolder SaveDataHolderInstance { get; private set; }
 
     private void Awake()
     {
@@ -82,13 +97,10 @@ public class BattleManager : MonoBehaviour
         EnergyManager.RefreshEnergy();
 
         // EnemyCombinationDataManagerから今回生成するエネミー群データを取得してEnemyManagerもセットする
-        EnemyManager.SetEnemy(EnemyCombinationsDataManager.Instance.GetData());
+        EnemyManagerInstance.SetEnemy(EnemyCombinationsDataManager.Instance.GetData());
 
         // バトルフェーズを初期化フェーズにする
         currentPhase = BattlePhase.InitializePhase;
-
-        // 一時的なダンジョンデータを取得する。
-        temporaryMapData = GameObject.Find("TemporaryDungeonMapData")?.GetComponent<TemporaryMapData>();
     }
 
     private void Update()
@@ -99,14 +111,14 @@ public class BattleManager : MonoBehaviour
         if (isFirstUpdate)
         {
             // プレイヤーの体力値をセーブデータから取得
-            if (SaveDataHolder.Instance != null)
-                Player.SetHealth(SaveDataHolder.Instance.SaveData.currentHealth);
+            if (SaveDataHolderInstance != null)
+                Player.SetHealth(SaveDataHolderInstance.SaveData.currentHealth);
             isFirstUpdate = false;
         }
 
         // セーブデータエンティティの更新
-        SaveDataHolder.Instance?.SetMaxHealth(Player.MaxHealth);
-        SaveDataHolder.Instance?.SetCurrentHealth(Player.Hp);
+        SaveDataHolderInstance?.SetMaxHealth(Player.MaxHealth);
+        SaveDataHolderInstance?.SetCurrentHealth(Player.Hp);
 
         // バトルループ
         if (isBattleActive)
@@ -141,10 +153,10 @@ public class BattleManager : MonoBehaviour
         {
             case BattlePhase.InitializePhase:
                 // 全ての敵クリーチャーがStart処理を終えるまで待つ
-                if(EnemyManager.Enemies.All(e => e.IsEndStartFunc()))
+                if(EnemyManagerInstance.Enemies.All(e => e.IsEndStartFunc()))
                 {
                     // 敵の次の行動を示す
-                    EnemyManager.Enemies.ForEach(e => e.RefreshActionIcon());
+                    EnemyManagerInstance.Enemies.ForEach(e => e.RefreshActionIcon());
                     // ドローフェーズへ
                     currentPhase = BattlePhase.DrawPhase;
                 }
@@ -167,7 +179,7 @@ public class BattleManager : MonoBehaviour
 
             case BattlePhase.PlayerEndPhase:
                 // プレイヤーエンドフェーズ
-                deckManager?.DiscardCardAll(); // 手札全捨て処理関数
+                DeckManagerInstance.DiscardHandCardAll(); // 手札全捨て処理関数
                 // 敵の行動フェーズへ
                 currentPhase = BattlePhase.EnemyBuffRefreshPhase;
                 break;
@@ -199,7 +211,7 @@ public class BattleManager : MonoBehaviour
                 EnergyManager.RefreshEnergy();
 
                 // 敵の次の行動を示す
-                EnemyManager.Enemies.ForEach(e => e.RefreshActionIcon());
+                EnemyManagerInstance.Enemies.ForEach(e => e.RefreshActionIcon());
 
                 currentPhase = BattlePhase.DrawPhase;
                 break;
@@ -242,10 +254,10 @@ public class BattleManager : MonoBehaviour
     private void StartPlayerTurn()
     {
         // プレイヤーターン開始時の処理: カードを5枚引く
-        if (deckManager != null)
+        if (DeckManagerInstance != null)
         {
             for (int i = 0; i < 5; i++)
-            deckManager.DrawCard();
+                DeckManagerInstance.DrawCard();
         }
 
         // 手札の見た目を修整
@@ -269,7 +281,7 @@ public class BattleManager : MonoBehaviour
             }
 
             // 手札の配置（アーチ状）のパラメータ
-            int cardCount = deckManager.Hand.Count;
+            int cardCount = DeckManagerInstance.HandCount;
             float archRadius = 10f; // 弧の大きさ（調整可。単位はローカル座標）
             float archAngle = 50f; // 全体で使う角度の最大値(度)。180より小
             float angleStep = cardCount > 1 ? archAngle / (cardCount - 1) : 0;
@@ -279,7 +291,7 @@ public class BattleManager : MonoBehaviour
             for (int i = 0; i < cardCount; i++)
             {
                 int reverseIndex = cardCount - 1 - i; // handの先頭が右端
-                var handCard = deckManager.Hand[reverseIndex];
+                var handCard = DeckManagerInstance.Hand[reverseIndex];
 
                 // プレハブの複製
                 GameObject cardObj = Instantiate(cardTemplatePrefab, handArea);
@@ -337,10 +349,10 @@ public class BattleManager : MonoBehaviour
     /// <returns>全てのエネミーが死んでいるか？</returns>
     private bool AreEnemiesDefeated()
     {
-        EnemyManager.Enemies.RemoveAll(enemy => enemy == null);
+        EnemyManagerInstance.Enemies.RemoveAll(enemy => enemy == null);
 
         // 体力が0ならクリーチャを破壊する
-        foreach (var enemy in EnemyManager.Enemies)
+        foreach (var enemy in EnemyManagerInstance.Enemies)
         {
             if (enemy.Hp <= 0)
             {
@@ -349,14 +361,14 @@ public class BattleManager : MonoBehaviour
                 var enemyData = enemy.CreatureData;
                 if (enemyData is EnemyData)
                 {
-                    SaveDataHolder.Instance.AddMoney(((EnemyData)enemyData).gold);
+                    SaveDataHolderInstance.AddMoney(((EnemyData)enemyData).gold);
                 }
                 Destroy(enemy.gameObject);
             }
         }
 
 
-        return EnemyManager.Enemies.Count == 0;
+        return EnemyManagerInstance.Enemies.Count == 0;
     }
 
     /// <summary>
@@ -372,7 +384,7 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void RefreshEnemiesBuffs()
     {
-        EnemyManager.Enemies.ForEach(e => e.ResetBlock());
+        EnemyManagerInstance.Enemies.ForEach(e => e.ResetBlock());
     }
 
     private int currentActionEnemy = 0;
@@ -383,10 +395,10 @@ public class BattleManager : MonoBehaviour
     /// <returns>エネミーの行動がすべて終わったか？</returns>
     private bool EnemyAction()
     {
-        if (EnemyManager.Enemies[currentActionEnemy].Hp == 0 || EnemyManager.Enemies[currentActionEnemy].Action())
+        if (EnemyManagerInstance.Enemies[currentActionEnemy].Hp == 0 || EnemyManagerInstance.Enemies[currentActionEnemy].Action())
         {
             currentActionEnemy++;
-            if (EnemyManager.Enemies.Count <= currentActionEnemy)
+            if (EnemyManagerInstance.Enemies.Count <= currentActionEnemy)
             {
                 currentActionEnemy = 0;
                 return true;
@@ -420,11 +432,14 @@ public class BattleManager : MonoBehaviour
             //////////////////////////////
             case EndBattleFactor.PlayerWin:
                 // ゲームデータの保存
-                SaveDataHolder.Instance?.WriteSaveData();
+                SaveDataHolderInstance.WriteSaveData();
 
-                List<CardData> cardDatas = CardDataLibrary.Instance.GetRandomCards(3);
+                List<CardData> cardDatas = CardDataLibraryInstance.GetRandomCards(3);
 
                 battleRewardManager?.EnableRewardView(cardDatas);
+
+                // 全てのカードをデッキに戻す（マップシーンで表示可能なデッキビューがデッキマネージャーの山札(DrawPile)を参照しているため）
+                DeckManagerInstance.ReturnAllCardsToDrawPile();
 
                 // 一時的な情報としていたダンジョンマップデータを保存する
                 temporaryMapData.SaveDungeonMapData();
@@ -437,7 +452,7 @@ public class BattleManager : MonoBehaviour
                 // ゲームデータの破棄（はじめから）
 
                 // 進行情報削除
-                SaveDataHolder.Instance?.DeleteSaveDataFile();
+                SaveDataHolderInstance?.DeleteSaveDataFile();
                 // マップ情報の削除
                 if (File.Exists(mapSaveFilePath))
                 {
@@ -445,7 +460,7 @@ public class BattleManager : MonoBehaviour
                     File.Delete(mapSaveFilePath);
                 }
                 // デッキ情報の削除
-                DeckManager.Instance.DeleteDeckData();
+                DeckManagerInstance.DeleteDeckData();
 
                 // ゲームオーバーシーンに移動
                 SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);
@@ -457,7 +472,7 @@ public class BattleManager : MonoBehaviour
                 // ゲームデータの破棄（はじめから）
 
                 // 進行情報削除
-                SaveDataHolder.Instance?.DeleteSaveDataFile();
+                SaveDataHolderInstance?.DeleteSaveDataFile();
                 // マップ情報の削除
                 if (File.Exists(mapSaveFilePath))
                 {
@@ -465,7 +480,7 @@ public class BattleManager : MonoBehaviour
                     File.Delete(mapSaveFilePath);
                 }
                 // デッキ情報の削除
-                DeckManager.Instance.DeleteDeckData();
+                DeckManagerInstance.DeleteDeckData();
 
                 // ゲームクリアシーンに移動
                 SceneManager.LoadScene("GameClearScene", LoadSceneMode.Additive);
@@ -478,8 +493,5 @@ public class BattleManager : MonoBehaviour
                 SceneManager.LoadScene("GameOverScene", LoadSceneMode.Single);
                 break;
         }
-        // このままだとシーンを跨いでも残り続けてしまうので破壊する
-        SceneManager.MoveGameObjectToScene(temporaryMapData.gameObject, SceneManager.GetActiveScene());
-        Destroy(temporaryMapData.gameObject);
     }
 }

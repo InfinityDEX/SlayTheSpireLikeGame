@@ -49,4 +49,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   saveDataHolder: {fileID: 132327681414035339, guid: 81e16248917508147995991f076454ff, type: 3}
-  audioController: {fileID: 8996212655304141655, guid: dab746d1a1b2a3e4d81d122e8669804a, type: 3}
+  cardDataLibrary: {fileID: 4658072243495600213, guid: 122f3f48eecbc004185e8b60ccad4bbf, type: 3}
+  temporaryMapData: {fileID: 6171503142802765811, guid: 411af4590d9a6544eaa86e92d960a188, type: 3}
+  deckManager: {fileID: 3249205361641326530, guid: 04d1070eb426c9941adba27c0502639b, type: 3}
+  cardViewer: {fileID: 6724228580887307704, guid: e4cde47bb96220b4a97c870ca642c53f, type: 3}

@@ -31,6 +31,12 @@ public class CardDragHandler : MonoBehaviour
     [Inject]
     private AudioController audioController;
 
+    /// <summary>
+    /// デッキマネージャー
+    /// </summary>
+    [Inject]
+    public DeckManager DeckManagerInstance { get; private set; }
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -78,7 +84,7 @@ public class CardDragHandler : MonoBehaviour
                                 ve.transform.position = selectCreature.transform.position;
                             }
                             // カードを捨て札に置く
-                            DeckManager deckManager = DeckManager.Instance;
+                            DeckManager deckManager = DeckManagerInstance;
                             if (deckManager != null)
                             {
                                 deckManager.DiscardCardById(holdCard.HandIdx);
@@ -102,7 +108,7 @@ public class CardDragHandler : MonoBehaviour
                         {
                             Debug.Log($"クリックしてからマウスを離すまでのマウスの移動距離：{Vector3.Distance(holdPos, point)}");
                             // 全てのエネミーに対してカードの効果を適用する。
-                            foreach (var enemy in BattleManager.Instance.EnemyManager.Enemies)
+                            foreach (var enemy in BattleManager.Instance.EnemyManagerInstance.Enemies)
                             {
                                 holdCard.Play(enemy);
                             }
@@ -112,13 +118,13 @@ public class CardDragHandler : MonoBehaviour
                             // ビジュアルエフェクトを生成
                             if (visualEffectPrefab != null)
                             {
-                                foreach (var enemy in BattleManager.Instance.EnemyManager.Enemies)
+                                foreach (var enemy in BattleManager.Instance.EnemyManagerInstance.Enemies)
                                 {
                                     GameObject ve = Instantiate(visualEffectPrefab);
                                     ve.transform.position = enemy.transform.position;
                                 }
                             }
-                            DeckManager deckManager = DeckManager.Instance;
+                            DeckManager deckManager = DeckManagerInstance;
                             if (deckManager != null)
                             {
                                 deckManager.DiscardCardById(holdCard.HandIdx);
@@ -152,7 +158,7 @@ public class CardDragHandler : MonoBehaviour
                                 GameObject ve = Instantiate(visualEffectPrefab);
                                 ve.transform.position = player.transform.position;
                             }
-                            DeckManager deckManager = DeckManager.Instance;
+                            DeckManager deckManager = DeckManagerInstance;
                             if (deckManager != null)
                             {
                                 deckManager.DiscardCardById(holdCard.HandIdx);

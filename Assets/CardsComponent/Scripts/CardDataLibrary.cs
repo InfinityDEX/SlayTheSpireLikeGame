@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using VContainer;
 
 /// <summary>
 /// カードライブラリクラス
@@ -8,32 +9,25 @@ using UnityEngine;
 public class CardDataLibrary : MonoBehaviour
 {
     /// <summary>
-    /// シングルトン
-    /// </summary>
-    public static CardDataLibrary Instance { get; private set;} = null;
-
-    /// <summary>
     /// カードリスト
     /// </summary>
     private List<CardData> cardList = new();
 
+    private CardDataFactory cardDataFactory;
+
+    [Inject]
+    public void Init(CardDataFactory cardDataFactory)
+    {
+        this.cardDataFactory = cardDataFactory;
+    }
+
     private void Start()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
-
         // シーンを跨ぐ際に破壊されない
         DontDestroyOnLoad(this.gameObject);
 
         // CardDataListの初期化
-        var factory = new CardDataFactory();
-        cardList = factory.CreateCardDataList();
+        cardList = cardDataFactory.CreateCardDataList();
     }
 
     /// <summary>

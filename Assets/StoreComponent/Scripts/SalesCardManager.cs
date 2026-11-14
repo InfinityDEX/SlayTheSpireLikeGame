@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 // using VContainer;
 
 public class SalesCardManager : MonoBehaviour
@@ -17,16 +18,24 @@ public class SalesCardManager : MonoBehaviour
     /// </summary>
     private SalesCard selectedCard = null;
 
-    // TODO:バグって全体が動かなくなったので今度実装する
-    // private CardDataLibrary cardDataLibrary;
-    // private DeckManager deckManager;
+    /// <summary>
+    /// カードデータライブラリ
+    /// </summary>
+    [Inject]
+    public CardDataLibrary CardDataLibraryInstance { get; private set; }
 
-    // [Inject]
-    // public void Init(CardDataLibrary cardDataLibrary, DeckManager deckManager)
-    // {
-    //     this.cardDataLibrary = cardDataLibrary;
-    //     this.deckManager = deckManager;
-    // }
+    /// <summary>
+    /// デッキマネージャー
+    /// </summary>
+    [Inject]
+    public DeckManager DeckManagerInstance { get; private set; }
+
+    /// <summary>
+    /// セーブデータホルダー
+    /// </summary>
+    [Inject]
+    public SaveDataHolder SaveDataHolderInstance { get; private set; }
+
 
     private void Start()
     {
@@ -65,10 +74,10 @@ public class SalesCardManager : MonoBehaviour
     {
         if (selectedCard != null)
         {
-            if (SaveDataHolder.Instance?.UseMoney(selectedCard.SalesPrice) == true)
+            if (SaveDataHolderInstance.UseMoney(selectedCard.SalesPrice) == true)
             {
-                DeckManager.Instance?.AddCard(selectedCard.CardData);
-                DeckManager.Instance?.WriteDeckData();
+                DeckManagerInstance.AddCard(selectedCard.CardData);
+                DeckManagerInstance.WriteDeckData();
 
                 salesCards.Remove(selectedCard);
                 Destroy(selectedCard.gameObject);
@@ -84,7 +93,7 @@ public class SalesCardManager : MonoBehaviour
         // すべてのカードを非アクティブ化する
         salesCards.ForEach(card => card.gameObject.SetActive(false));
         // 9個のランダムなカードデータを抽出
-        var cardDatas = CardDataLibrary.Instance?.GetRandomCards(9);
+        var cardDatas = CardDataLibraryInstance.GetRandomCards(9);
         foreach (var cardData in cardDatas)
         {
             // TODO：previewCardPrefabにSalesCardViewとSalesCardが登録されていることを前提にしているが、

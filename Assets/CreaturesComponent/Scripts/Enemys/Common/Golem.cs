@@ -197,7 +197,7 @@ public class Golem : Enemy
             var bm = BattleManager.Instance;
 
             // 全ての敵キャラ（ゴーレムにとっては味方）にShieldを付与する
-            var enemyMG = bm.EnemyManager;
+            var enemyMG = bm.EnemyManagerInstance;
             foreach(var enemy in enemyMG.Enemies)
             {
                 // Shieldを付与

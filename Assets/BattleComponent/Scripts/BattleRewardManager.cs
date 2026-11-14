@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using VContainer;
 
 public class BattleRewardManager : MonoBehaviour
 {
@@ -24,6 +25,12 @@ public class BattleRewardManager : MonoBehaviour
     /// リワードカードのセレクターカーソル
     /// </summary>
     private int selectingRewardCardIdx = 0;
+
+    /// <summary>
+    /// デッキマネージャー
+    /// </summary>
+    [Inject]
+    public DeckManager DeckManagerInstance { get; private set; }
 
     private void Awake()
     {
@@ -86,7 +93,7 @@ public class BattleRewardManager : MonoBehaviour
     /// </summary>
     public void OnPushCardGetButton()
     {
-        var deckManager = DeckManager.Instance;
+        var deckManager = DeckManagerInstance;
         deckManager.AddCard(rewardCardList[selectingRewardCardIdx].ThisCardData);
         deckManager.WriteDeckData();
         StartCoroutine(LoadMapSceneAfterDelay(2.0f));
