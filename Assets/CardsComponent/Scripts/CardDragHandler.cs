@@ -26,6 +26,12 @@ public class CardDragHandler : MonoBehaviour
     private Vector3 dragOffset;
 
     /// <summary>
+    /// バトルマネージャー
+    /// </summary>
+    [Inject]
+    private BattleManager battleManager;
+
+    /// <summary>
     /// オーディオコントローラー
     /// </summary>
     [Inject]
@@ -62,7 +68,7 @@ public class CardDragHandler : MonoBehaviour
         if (Input.GetMouseButtonUp(0) && holdCard != null)
         {
             // コストが支払えるか確認して、払えたらカードの効果を適用する。
-            if(BattleManager.Instance.EnergyManager.UseEnergy(holdCard.ThisCardData.Cost))
+            if(battleManager.EnergyManager.UseEnergy(holdCard.ThisCardData.Cost))
             {
                 Vector3 world = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector2 point = new Vector2(world.x, world.y);
@@ -76,7 +82,7 @@ public class CardDragHandler : MonoBehaviour
                         {
                             holdCard.Play(selectCreature);
                             audioController.PlaySE(holdCard.ThisCardData.CastCardSE);
-                            GameObject visualEffectPrefab = BattleManager.Instance?.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
+                            GameObject visualEffectPrefab = battleManager.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
                             // ビジュアルエフェクトを生成
                             if (visualEffectPrefab != null)
                             {
@@ -95,12 +101,12 @@ public class CardDragHandler : MonoBehaviour
                             }
                             Destroy(holdCard.gameObject); // カードをゲーム空間から削除
 
-                            BattleManager.Instance.ResetHandCardView(); // 手札の配置リセット
+                            battleManager.ResetHandCardView(); // 手札の配置リセット
                         }
                         else
                         {
                             // 敵をターゲットに取らなかった場合は使用したコストをもとに戻す
-                            BattleManager.Instance.EnergyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
+                            battleManager.EnergyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
                         }
                         break;
                     case CardData.Target.AllEnemy:
@@ -108,17 +114,17 @@ public class CardDragHandler : MonoBehaviour
                         {
                             Debug.Log($"クリックしてからマウスを離すまでのマウスの移動距離：{Vector3.Distance(holdPos, point)}");
                             // 全てのエネミーに対してカードの効果を適用する。
-                            foreach (var enemy in BattleManager.Instance.EnemyManagerInstance.Enemies)
+                            foreach (var enemy in battleManager.EnemyManagerInstance.Enemies)
                             {
                                 holdCard.Play(enemy);
                             }
                             audioController.PlaySE(holdCard.ThisCardData.CastCardSE);
 
-                            GameObject visualEffectPrefab = BattleManager.Instance?.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
+                            GameObject visualEffectPrefab = battleManager.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
                             // ビジュアルエフェクトを生成
                             if (visualEffectPrefab != null)
                             {
-                                foreach (var enemy in BattleManager.Instance.EnemyManagerInstance.Enemies)
+                                foreach (var enemy in battleManager.EnemyManagerInstance.Enemies)
                                 {
                                     GameObject ve = Instantiate(visualEffectPrefab);
                                     ve.transform.position = enemy.transform.position;
@@ -134,24 +140,24 @@ public class CardDragHandler : MonoBehaviour
                                 Debug.LogError("DeckManager が見つかりません。カードを捨て札にできませんでした。");
                             }
                             Destroy(holdCard.gameObject); // カードをゲーム空間から削除
-                            BattleManager.Instance.ResetHandCardView(); // 手札の配置リセット
+                            battleManager.ResetHandCardView(); // 手札の配置リセット
                         }
                         else
                         {
                             // カードを選択した状態で、指定した長さだけマウスホバーしなかった場合は、カードを使用しなかったものとして
                             // 消費したコストをもとに戻す
-                            BattleManager.Instance.EnergyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
+                            battleManager.EnergyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
                         }
                         break;
                     case CardData.Target.OnePlayer:
                         if(Vector3.Distance(holdPos, point) >= cardPlayDragDistance)
                         {
                             Debug.Log($"クリックしてからマウスを離すまでのマウスの移動距離：{Vector3.Distance(holdPos, point)}");
-                            Creature player = BattleManager.Instance.Player;
+                            Creature player = battleManager.Player;
                             holdCard.Play(player);
                             audioController.PlaySE(holdCard.ThisCardData.CastCardSE);
 
-                            GameObject visualEffectPrefab = BattleManager.Instance?.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
+                            GameObject visualEffectPrefab = battleManager.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
                             // ビジュアルエフェクトを生成
                             if (visualEffectPrefab != null)
                             {
@@ -168,13 +174,13 @@ public class CardDragHandler : MonoBehaviour
                                 Debug.LogError("DeckManager が見つかりません。カードを捨て札にできませんでした。");
                             }
                             Destroy(holdCard.gameObject); // カードをゲーム空間から削除
-                            BattleManager.Instance.ResetHandCardView(); // 手札の配置リセット
+                            battleManager.ResetHandCardView(); // 手札の配置リセット
                         }
                         else
                         {
                             // カードを選択した状態で、指定した長さだけマウスホバーしなかった場合は、カードを使用しなかったものとして
                             // 消費したコストをもとに戻す
-                            BattleManager.Instance.EnergyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
+                            battleManager.EnergyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
                         }
                         break;
                 }

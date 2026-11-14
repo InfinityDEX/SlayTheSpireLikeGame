@@ -217,7 +217,7 @@ public class Wyvern : Enemy
                 // スタン状態。行動シーケンスをリセットしてすぐにアクション終了
                 currentActionSequenceIndex = 0;
                 currentActionPattern = actionSequence[currentActionSequenceIndex];
-                if (stunSE_Event != null) audioController.FireWwiseEvent(stunSE_Event);
+                if (stunSE_Event != null) AudioControllerInstance.FireWwiseEvent(stunSE_Event);
                 animator.SetTrigger("StunEnd");
                 return true; // 何もしない
             case ActionPattern.Idle:
@@ -244,14 +244,14 @@ public class Wyvern : Enemy
         if (animationCurrentTime >= fireBreathTime)
         {
             Debug.Log("ファイアブレス発動");
-            var bm = BattleManager.Instance;
-            if (fireBreathSE != null) audioController.PlaySE(fireBreathSE);
+            
+            if (fireBreathSE != null) AudioControllerInstance.PlaySE(fireBreathSE);
             animationCurrentTime = 0;
             inAction = false;
-            bm.Player.TakeDamage(fireBreathDamage + Muscle);
+            PlayerManagerInstance.Player.TakeDamage(fireBreathDamage + Muscle);
 
             // ファイアブレスエフェクトを生成
-            GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(5);
+            GameObject visualEffectPrefab = VisualEffectLibraryInstance.GetEffectById(5);
             if (visualEffectPrefab != null)
             {
                 GameObject ve = Instantiate(visualEffectPrefab);
@@ -288,19 +288,18 @@ public class Wyvern : Enemy
         if (animationCurrentTime >= tempestTime)
         {
             Debug.Log("テンペスト発動");
-            var bm = BattleManager.Instance;
-            if (tempestSE_Event != null) audioController.FireWwiseEvent(tempestSE_Event);
-            bm.Player.TakeDamage(tempestDamage + Muscle);
+            if (tempestSE_Event != null) AudioControllerInstance.FireWwiseEvent(tempestSE_Event);
+            PlayerManagerInstance.Player.TakeDamage(tempestDamage + Muscle);
             animationCurrentTime = 0;
             inAction = false;
 
             // テンペスト攻撃のエフェクトを生成
-            GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(1);
+            GameObject visualEffectPrefab = VisualEffectLibraryInstance.GetEffectById(1);
             if (visualEffectPrefab != null)
             {
                 GameObject ve = Instantiate(visualEffectPrefab);
 
-                ve.transform.position = bm.Player.transform.position;
+                ve.transform.position = PlayerManagerInstance.Player.transform.position;
                 ve.transform.Rotate(Vector3.forward, -90);
             }
 
@@ -326,8 +325,7 @@ public class Wyvern : Enemy
         if (animationCurrentTime >= flyTime)
         {
             Debug.Log("飛行発動");
-            var bm = BattleManager.Instance;
-            if (flySE_Event != null) audioController.FireWwiseEvent(flySE_Event);
+            if (flySE_Event != null) AudioControllerInstance.FireWwiseEvent(flySE_Event);
             animationCurrentTime = 0;
             inAction = false;
 
@@ -353,8 +351,7 @@ public class Wyvern : Enemy
         if (animationCurrentTime >= soarTime)
         {
             Debug.Log("高空飛行発動");
-            var bm = BattleManager.Instance;
-            if (soarSE_Event != null) audioController.FireWwiseEvent(soarSE_Event);
+            if (soarSE_Event != null) AudioControllerInstance.FireWwiseEvent(soarSE_Event);
             animationCurrentTime = 0;
             inAction = false;
 

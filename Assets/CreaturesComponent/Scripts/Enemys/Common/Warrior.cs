@@ -175,19 +175,18 @@ public class Warrior : Enemy
         if (animationCurrentTime >= slashTime)
         {
             Debug.Log("斬撃発動");
-            var bm = BattleManager.Instance;
-            if (slashSE_Event != null) audioController.FireWwiseEvent(slashSE_Event);
+            if (slashSE_Event != null) AudioControllerInstance.FireWwiseEvent(slashSE_Event);
             animationCurrentTime = 0;
             inAction = false;
-            bm.Player.TakeDamage(slashDamage + Muscle);
+            PlayerManagerInstance.Player.TakeDamage(slashDamage + Muscle);
 
             // ビジュアルエフェクトを生成
-            GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(0);
+            GameObject visualEffectPrefab = VisualEffectLibraryInstance.GetEffectById(0);
             if (visualEffectPrefab != null)
             {
                 GameObject ve = Instantiate(visualEffectPrefab);
 
-                ve.transform.position = bm.Player.transform.position;
+                ve.transform.position = PlayerManagerInstance.Player.transform.position;
             }
 
             actionPattern = ActionPattern.Idle;
@@ -213,18 +212,17 @@ public class Warrior : Enemy
         if (animationCurrentTime >= slashTime)
         {
             Debug.Log("斬撃発動");
-            var bm = BattleManager.Instance;
-            if (slashSE_Event != null) audioController.FireWwiseEvent(slashSE_Event);
+            if (slashSE_Event != null) AudioControllerInstance.FireWwiseEvent(slashSE_Event);
             animationCurrentTime = 0;
-            bm.Player.TakeDamage(slashDamage + Muscle);
+            PlayerManagerInstance.Player.TakeDamage(slashDamage + Muscle);
 
             // ビジュアルエフェクトを生成
-            GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(0);
+            GameObject visualEffectPrefab = VisualEffectLibraryInstance.GetEffectById(0);
             if (visualEffectPrefab != null)
             {
                 GameObject ve = Instantiate(visualEffectPrefab);
 
-                ve.transform.position = bm.Player.transform.position;
+                ve.transform.position = PlayerManagerInstance.Player.transform.position;
             }
 
             if (consecutiveSlashCount <= currentConsecutiveSlashCount)
@@ -261,9 +259,7 @@ public class Warrior : Enemy
 
             // 筋力上昇等のパラメータ強化処理
             AddMuscle(muscleNum);
-
-            var bm = BattleManager.Instance;
-            GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(4);
+            GameObject visualEffectPrefab = VisualEffectLibraryInstance.GetEffectById(4);
             if (visualEffectPrefab != null)
             {
                 var go = Instantiate(visualEffectPrefab);
@@ -271,7 +267,7 @@ public class Warrior : Enemy
             }
 
 
-            if (pumpUpSE_Event != null) audioController.FireWwiseEvent(pumpUpSE_Event);
+            if (pumpUpSE_Event != null) AudioControllerInstance.FireWwiseEvent(pumpUpSE_Event);
 
             actionPattern = ActionPattern.Idle;
             return true;

@@ -9,9 +9,9 @@ using UnityEngine;
 using VContainer;
 
 /// <summary>
-/// カードデータファクトリークラス
+/// カードアクションデータファクトリークラス
 /// </summary>
-public class CardDataFactory
+public class CardActionDataFactory : ICardDataFactory
 {
     /// <summary>
     /// カードデータファイルのパス
@@ -47,6 +47,11 @@ public class CardDataFactory
     private List<ValueExpressionWithID> valueExpressionWithIDs = new();
 
     /// <summary>
+    /// プレイヤーマネージャー
+    /// </summary>
+    private PlayerManager playerManager;
+
+    /// <summary>
     /// デッキ情報クラス
     /// </summary>
     private DeckInfomation deckInfomation;
@@ -56,11 +61,16 @@ public class CardDataFactory
     /// </summary>
     /// <param name="deckInfomation">デッキ情報クラス</param>
     [Inject]
-    public void Init(DeckInfomation deckInfomation)
+    public void Init(DeckInfomation deckInfomation, PlayerManager playerManager)
     {
         this.deckInfomation = deckInfomation;
+        this.playerManager = playerManager;
     }
 
+    /// <summary>
+    /// カードデータを生成する
+    /// </summary>
+    /// <returns>カードデータ</returns>
     public List<CardData> CreateCardDataList()
     {
         // カード効果とカード式のリスト登録
@@ -102,7 +112,7 @@ public class CardDataFactory
     private void CreateCardActionAndValueExpressionList()
     {
         // カード処理リスト初期化
-        SetAction(0, new Attack());
+        SetAction(0, new Attack(playerManager));
         SetAction(1, new AddBlock());
         SetAction(2, new AddMuscle());
         SetAction(3, new AddWeakened());

@@ -9,12 +9,9 @@ using VContainer;
 /// バトルマネージャクラス
 ///
 /// バトルの進行や、プレイヤーおよびエネミーの死亡判定を行う。
-/// シングルトン。
 /// </summary>
 public class BattleManager : MonoBehaviour
 {
-    public static BattleManager Instance { get; private set; }
-
     [field:SerializeField, Header("手札表示エリア(親オブジェクト)")]
     private Transform handArea;
 
@@ -27,12 +24,6 @@ public class BattleManager : MonoBehaviour
     [field:SerializeField, Header("エナジー管理オブジェクト")]
     public EnergyManager EnergyManager { get; private set;}
 
-    [field:SerializeField, Header("ビジュアルエフェクト一覧")]
-    public VisualEffectLibrary VisualEffectLibrary { get; private set;}
-
-    [field:SerializeField, Header("ダメージポップアップジェネレータ")]
-    public DamagePopupGenerator DamagePopupGenerator { get; private set;}
-
     [field:SerializeField, Header("リワード画面マネージャ")]
     public BattleRewardManager battleRewardManager { get; private set;}
 
@@ -44,6 +35,18 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     [Inject]
     private TemporaryMapData temporaryMapData;
+
+    /// <summary>
+    /// ビジュアルエフェクトライブラリ
+    /// </summary>
+    [Inject]
+    public VisualEffectLibrary VisualEffectLibrary { get; private set; }
+
+    /// <summary>
+    /// ダメージポップジェネレーター
+    /// </summary>
+    [Inject]
+    public DamagePopupGenerator DamagePopupGenerator { get; private set; }
 
     /// <summary>
     /// バトル中かどうか
@@ -74,25 +77,22 @@ public class BattleManager : MonoBehaviour
     public EnemyManager EnemyManagerInstance { get; private set; }
 
     /// <summary>
+    /// プレイヤーマネージャー
+    /// </summary>
+    [Inject]
+    public PlayerManager PlayerManagerInstance { get; private set; }
+
+    /// <summary>
     /// セーブデータホルダー
     /// </summary>
     [Inject]
     public SaveDataHolder SaveDataHolderInstance { get; private set; }
 
-    private void Awake()
-    {
-        // シングルトン違反判定
-        if (Instance != null && Instance != this)
-        {
-            Debug.LogError("BattleManagerが複数存在しようとしています。");
-            Destroy(this.gameObject);
-            return;
-        }
-        Instance = this;
-    }
-
     private void Start()
     {
+        // プレイヤーマネージャーにプレイヤーをセット(カード効果モジュールに渡す用)
+        PlayerManagerInstance.SetPlayer(Player);
+
         // エナジーの初期化（回復）
         EnergyManager.RefreshEnergy();
 

@@ -19,6 +19,18 @@ public class BattleSceneScope : LifetimeScope
     [field: SerializeField, Header("バトルリワードマネージャー")]
     private BattleRewardManager battleRewardManager;
 
+    [field: SerializeField, Header("カードデータライブラリ")]
+    private CardDataLibrary cardDataLibrary;
+
+    [field: SerializeField, Header("デッキマネージャー")]
+    private DeckManager deckManager;
+    
+    [field: SerializeField, Header("ビジュアルエフェクトライブラリ")]
+    public VisualEffectLibrary VisualEffectLibrary { get; private set; }
+
+    [field: SerializeField, Header("ダメージポップアップジェネレーター")]
+    public DamagePopupGenerator DamagePopupGenerator { get; private set; }
+
     [field: SerializeField, Header("HUD 体力バーコントローラー")]
     private HUDHealthBarController hUDHealthBarController;
 
@@ -36,11 +48,18 @@ public class BattleSceneScope : LifetimeScope
 
     protected override void Configure(IContainerBuilder builder)
     {
+        builder.Register<PlayerManager>(Lifetime.Singleton);
+        builder.Register<DeckInfomation>(Lifetime.Singleton);
+        builder.Register<CardActionDataFactory>(Lifetime.Singleton).As<ICardDataFactory>();
         builder.RegisterComponent<BattleManager>(battleManager);
         builder.RegisterComponent<EnemyManager>(enemyManager);
         builder.RegisterComponent<CardDragHandler>(cardDragHandler);
         builder.RegisterComponent<AudioController>(audioController);
         builder.RegisterComponent<BattleRewardManager>(battleRewardManager);
+        builder.RegisterComponent<CardDataLibrary>(cardDataLibrary);
+        builder.RegisterComponent<DeckManager>(deckManager);
+        builder.RegisterComponent<VisualEffectLibrary>(VisualEffectLibrary);
+        builder.RegisterComponent<DamagePopupGenerator>(DamagePopupGenerator);
         builder.RegisterComponent<HUDHealthBarController>(hUDHealthBarController);
         builder.RegisterComponent<HUDCoinCounter>(hUDCoinCounter);
         builder.RegisterComponent<HUDFloorNumberCounter>(hUDFloorNumberCounter);

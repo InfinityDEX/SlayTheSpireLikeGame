@@ -10,12 +10,22 @@ namespace CardEffect.CardActionModules
     public class Attack : CardActionComponent
     {
         /// <summary>
+        /// プレイヤーマネージャー
+        /// </summary>
+        private PlayerManager playerManager;
+
+        public Attack(PlayerManager playerManager)
+        {
+            this.playerManager = playerManager;
+        }
+
+        /// <summary>
         /// 自己複製コンポーネント
         /// </summary>
         /// <returns>複製したコンポーネント</returns>
         public override CardActionComponent Spawn()
         {
-            return new Attack();
+            return new Attack(playerManager);
         }
 
         /// <summary>
@@ -54,7 +64,7 @@ namespace CardEffect.CardActionModules
             }
 
             // 対象にダメージを与える
-            target.TakeDamage((int)damageVal + BattleManager.Instance.Player.Muscle);
+            target.TakeDamage((int)damageVal + playerManager.Player.Muscle);
 
             return null;
         }

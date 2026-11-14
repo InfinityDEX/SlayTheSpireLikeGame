@@ -13,18 +13,12 @@ public class CardDataLibrary : MonoBehaviour
     /// </summary>
     private List<CardData> cardList = new();
 
-    private CardDataFactory cardDataFactory;
+    private ICardDataFactory cardDataFactory;
 
     [Inject]
-    public void Init(CardDataFactory cardDataFactory)
+    public void Init(ICardDataFactory cardDataFactory)
     {
         this.cardDataFactory = cardDataFactory;
-    }
-
-    private void Start()
-    {
-        // シーンを跨ぐ際に破壊されない
-        DontDestroyOnLoad(this.gameObject);
 
         // CardDataListの初期化
         cardList = cardDataFactory.CreateCardDataList();

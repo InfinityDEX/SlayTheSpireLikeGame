@@ -9,7 +9,7 @@ public class ParticleSizeByDistance : MonoBehaviour
     /// <summary>
     /// パーティクルシステム
     /// </summary>
-    private ParticleSystem particleSystem;
+    private ParticleSystem targetParticleSystem;
 
     /// <summary>
     /// パーティクルシステムで生成している粒子
@@ -24,7 +24,7 @@ public class ParticleSizeByDistance : MonoBehaviour
 
     void Start()
     {
-        particleSystem = GetComponent<ParticleSystem>();
+        targetParticleSystem = GetComponent<ParticleSystem>();
     }
 
     void LateUpdate()
@@ -32,10 +32,10 @@ public class ParticleSizeByDistance : MonoBehaviour
         InitializeParticlesArray();
 
         // 現在生存しているパーティクルを取得
-        int numParticlesAlive = particleSystem.GetParticles(particles);
+        int numParticlesAlive = targetParticleSystem.GetParticles(particles);
         
         // Shapeモジュールの最大半径を取得（基準値として使用）
-        float maxDistance = particleSystem.shape.radius;
+        float maxDistance = targetParticleSystem.shape.radius;
 
         for (int i = 0; i < numParticlesAlive; i++)
         {
@@ -57,7 +57,7 @@ public class ParticleSizeByDistance : MonoBehaviour
         }
 
         // 変更したパーティクルデータをシステムに再適用
-        particleSystem.SetParticles(particles, numParticlesAlive);
+        targetParticleSystem.SetParticles(particles, numParticlesAlive);
     }
 
     /// <summary>
@@ -66,9 +66,9 @@ public class ParticleSizeByDistance : MonoBehaviour
     private void InitializeParticlesArray()
     {
         // パーティクルシステムの最大パーティクル数だけのサイズのParticleSystem.Particle配列を用意する
-        if (particles == null || particles.Length < particleSystem.main.maxParticles)
+        if (particles == null || particles.Length < targetParticleSystem.main.maxParticles)
         {
-            particles = new ParticleSystem.Particle[particleSystem.main.maxParticles];
+            particles = new ParticleSystem.Particle[targetParticleSystem.main.maxParticles];
         }
     }
 }

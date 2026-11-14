@@ -1,5 +1,3 @@
-using CardEffect.Expressions;
-
 namespace CardEffect.CardActionModules
 {
     /// <summary>
@@ -13,6 +11,7 @@ namespace CardEffect.CardActionModules
         /// デッキマネージャー
         /// </summary>
         private DeckInfomation deckInfo;
+
 
         public DrawCard(DeckInfomation deckInfo)
         {
@@ -68,8 +67,6 @@ namespace CardEffect.CardActionModules
             {
                 deckInfo.DrawCard();
             }
-            // 手札の見た目を修整(ゲーム中に表示するカードオブジェクトは現在バトルマネージャが管理している)
-            BattleManager.Instance.ResetHandCardView();
             return null;
         }
     }

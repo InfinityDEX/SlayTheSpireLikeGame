@@ -19,6 +19,24 @@ public class EnemyManager : MonoBehaviour
     private AudioController audioController;
 
     /// <summary>
+    /// ダメージポップアップジェネレーター
+    /// </summary>
+    [Inject]
+    private DamagePopupGenerator damagePopupGenerator;
+
+    /// <summary>
+    /// プレイヤーマネージャー
+    /// </summary>
+    [Inject]
+    private PlayerManager playerManager;
+
+    /// <summary>
+    /// ビジュアルエフェクトライブラリ
+    /// </summary>
+    [Inject]
+    private VisualEffectLibrary visualEffectLibrary;
+
+    /// <summary>
     /// エネミーの追加
     /// </summary>
     /// <param name="enemyCombinationData">エネミーコンビネーションデータ（バトルに参加させる全エネミーの情報）</param>
@@ -27,7 +45,7 @@ public class EnemyManager : MonoBehaviour
         foreach (var enemyData in enemyCombinationData.enemyCombinations)
         {
             var enemy = Instantiate(enemyData.enemyPrefab, this.transform);
-            enemy.Init(audioController);
+            enemy.Init(audioController, damagePopupGenerator, playerManager, this, visualEffectLibrary);
             enemy.transform.position = enemyData.spawnPosition;
             Enemies.Add(enemy);
         }

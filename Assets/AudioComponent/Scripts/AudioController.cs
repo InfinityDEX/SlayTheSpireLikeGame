@@ -9,7 +9,6 @@ using VContainer;
 /// オーディオコントローラークラス
 ///
 /// 音系の操作を管理する。
-/// シングルトン。
 /// </summary>
 public class AudioController : MonoBehaviour
 {

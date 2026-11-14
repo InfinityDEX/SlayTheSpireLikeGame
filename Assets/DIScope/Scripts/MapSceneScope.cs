@@ -11,6 +11,12 @@ public class MapSceneScope : LifetimeScope
     [field: SerializeField, Header("オーディオコントローラー")]
     private AudioController audioController;
 
+    [field: SerializeField, Header("カードデータライブラリ")]
+    private CardDataLibrary cardDataLibrary;
+
+    [field: SerializeField, Header("デッキマネージャー")]
+    private DeckManager deckManager;
+
     [field: SerializeField, Header("HUD 体力バーコントローラー")]
     private HUDHealthBarController hUDHealthBarController;
 
@@ -25,10 +31,12 @@ public class MapSceneScope : LifetimeScope
 
     protected override void Configure(IContainerBuilder builder)
     {
-        
+        builder.Register<CardViewDataFactory>(Lifetime.Singleton).As<ICardDataFactory>();
         builder.RegisterComponent<DungeonMapManager>(mapManager);
         builder.RegisterComponent<AudioController>(audioController);
         builder.RegisterComponent<DrawPailGUI>(drawCard);
+        builder.RegisterComponent<CardDataLibrary>(cardDataLibrary);
+        builder.RegisterComponent<DeckManager>(deckManager);
         builder.RegisterComponent<HUDHealthBarController>(hUDHealthBarController);
         builder.RegisterComponent<HUDCoinCounter>(hUDCoinCounter);
         builder.RegisterComponent<HUDFloorNumberCounter>(hUDFloorNumberCounter);

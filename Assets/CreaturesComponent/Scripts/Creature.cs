@@ -44,15 +44,51 @@ public class Creature : MonoBehaviour
     [field:SerializeField, Header("バッチマネージャー")]
     public IconBatchManager BatchManager { get; private set; }
 
-    protected AudioController audioController;
+    /// <summary>
+    /// オーディオコントローラー
+    /// </summary>
+    protected AudioController AudioControllerInstance { get; private set; }
+
+    /// <summary>
+    /// ダメージポップアップジェネレーター
+    /// </summary>
+    protected DamagePopupGenerator DamagePopupGeneratorInstance { get; private set; }
+
+    /// <summary>
+    /// プレイヤーマネージャー
+    /// </summary>
+    protected PlayerManager PlayerManagerInstance { get; private set; }
+
+    /// <summary>
+    /// エネミーマネージャー
+    /// </summary>
+    protected EnemyManager EnemyManagerInstance { get; private set; }
+
+    /// <summary>
+    /// ビジュアルエフェクトライブラリ
+    /// </summary>
+    protected VisualEffectLibrary VisualEffectLibraryInstance { get; private set; }
 
     /// <summary>
     /// 初期化処理
     /// </summary>
     /// <param name="audioController">オーディオコントローラー</param>
-    public void Init(AudioController audioController)
+    /// <param name="damagePopupGenerator">ダメージポップアップジェネレーター</param>
+    /// <param name="playerManager">プレイヤーマネージャー</param>
+    /// <param name="enemyManager">エネミーマネージャー</param>
+    /// <param name="visualEffectLibrary">ビジュアルエフェクトライブラリ</param>
+    public void Init(
+        AudioController audioController,
+        DamagePopupGenerator damagePopupGenerator,
+        PlayerManager playerManager,
+        EnemyManager enemyManager,
+        VisualEffectLibrary visualEffectLibrary)
     {
-        this.audioController = audioController;
+        this.AudioControllerInstance = audioController;
+        this.DamagePopupGeneratorInstance = damagePopupGenerator;
+        this.PlayerManagerInstance = playerManager;
+        this.EnemyManagerInstance = enemyManager;
+        this.VisualEffectLibraryInstance = visualEffectLibrary;
     }
 
     /// <summary>
@@ -250,7 +286,7 @@ public class Creature : MonoBehaviour
         UpdateHealthText();
         if(diff > 0 && damageBatchGeneratePoint != null)
         {
-            BattleManager.Instance.DamagePopupGenerator.GenerateDamagePopup(damageBatchGeneratePoint.position, diff);
+            DamagePopupGeneratorInstance.GenerateDamagePopup(damageBatchGeneratePoint.position, diff);
         }
         TakeDamageEvents?.Invoke(damage, Hp);
     }

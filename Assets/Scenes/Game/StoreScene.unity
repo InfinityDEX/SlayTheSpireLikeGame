@@ -2021,6 +2021,74 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1396875022}
   m_CullTransparentMesh: 1
+--- !u!1001 &1396968505
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3508186631884670067, guid: 04d1070eb426c9941adba27c0502639b, type: 3}
+      propertyPath: m_Name
+      value: DeckManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468082888062654638, guid: 04d1070eb426c9941adba27c0502639b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1289.8303
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468082888062654638, guid: 04d1070eb426c9941adba27c0502639b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 532.2487
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468082888062654638, guid: 04d1070eb426c9941adba27c0502639b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468082888062654638, guid: 04d1070eb426c9941adba27c0502639b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468082888062654638, guid: 04d1070eb426c9941adba27c0502639b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468082888062654638, guid: 04d1070eb426c9941adba27c0502639b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468082888062654638, guid: 04d1070eb426c9941adba27c0502639b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468082888062654638, guid: 04d1070eb426c9941adba27c0502639b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468082888062654638, guid: 04d1070eb426c9941adba27c0502639b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468082888062654638, guid: 04d1070eb426c9941adba27c0502639b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 04d1070eb426c9941adba27c0502639b, type: 3}
+--- !u!114 &1396968506 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3249205361641326530, guid: 04d1070eb426c9941adba27c0502639b, type: 3}
+  m_PrefabInstance: {fileID: 1396968505}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b494489952de36449801d1b696b66dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1423988447
 GameObject:
   m_ObjectHideFlags: 0
@@ -2180,6 +2248,74 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundTrigger
   audioClip: {fileID: 8300000, guid: cb718b898b1e08b43b0dc9e4878a0884, type: 3}
+--- !u!1001 &1457059476
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5659499119138190125, guid: 122f3f48eecbc004185e8b60ccad4bbf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1045.8186
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659499119138190125, guid: 122f3f48eecbc004185e8b60ccad4bbf, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 554.2229
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659499119138190125, guid: 122f3f48eecbc004185e8b60ccad4bbf, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659499119138190125, guid: 122f3f48eecbc004185e8b60ccad4bbf, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659499119138190125, guid: 122f3f48eecbc004185e8b60ccad4bbf, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659499119138190125, guid: 122f3f48eecbc004185e8b60ccad4bbf, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659499119138190125, guid: 122f3f48eecbc004185e8b60ccad4bbf, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659499119138190125, guid: 122f3f48eecbc004185e8b60ccad4bbf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659499119138190125, guid: 122f3f48eecbc004185e8b60ccad4bbf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659499119138190125, guid: 122f3f48eecbc004185e8b60ccad4bbf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5711877739477062269, guid: 122f3f48eecbc004185e8b60ccad4bbf, type: 3}
+      propertyPath: m_Name
+      value: CardListLibrary
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 122f3f48eecbc004185e8b60ccad4bbf, type: 3}
+--- !u!114 &1457059477 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4658072243495600213, guid: 122f3f48eecbc004185e8b60ccad4bbf, type: 3}
+  m_PrefabInstance: {fileID: 1457059476}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46a8fffb328f43848b76fd86c6416900, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardDataLibrary
 --- !u!1 &1551228561
 GameObject:
   m_ObjectHideFlags: 0
@@ -2259,7 +2395,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82d534719747f2940a17d59461900e71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StoreManager
-  salesCardManager: {fileID: 686644163}
   recoveryPrice: 500
   cardUpgradePrice: 100
   cardDeletePrice: 100
@@ -2495,6 +2630,8 @@ MonoBehaviour:
   autoInjectGameObjects: []
   storeManager: {fileID: 1551228564}
   saleCardManager: {fileID: 686644163}
+  cardDataLibrary: {fileID: 1457059477}
+  deckManager: {fileID: 1396968506}
   hUDHealthBarController: {fileID: 1935268247}
   hUDCoinCounter: {fileID: 174684532}
   hUDFloorNumberCounter: {fileID: 1378205091}
@@ -3120,6 +3257,8 @@ SceneRoots:
   - {fileID: 1688658725}
   - {fileID: 110447068}
   - {fileID: 919034379}
+  - {fileID: 1457059476}
+  - {fileID: 1396968505}
   - {fileID: 1974017718}
   - {fileID: 278960897}
   - {fileID: 1839359875}

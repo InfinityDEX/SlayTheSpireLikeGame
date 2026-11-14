@@ -154,19 +154,18 @@ public class Golem : Enemy
         if (animationCurrentTime >= punchTime)
         {
             Debug.Log("パンチ発動");
-            var bm = BattleManager.Instance;
-            if (punchSE_Event != null) audioController.FireWwiseEvent(punchSE_Event);
+            if (punchSE_Event != null) AudioControllerInstance.FireWwiseEvent(punchSE_Event);
             animationCurrentTime = 0;
             inAction = false;
-            bm.Player.TakeDamage(punchDamage + Muscle);
+            PlayerManagerInstance.Player.TakeDamage(punchDamage + Muscle);
 
             // パンチエフェクトを生成
-            GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(1);
+            GameObject visualEffectPrefab = VisualEffectLibraryInstance.GetEffectById(1);
             if (visualEffectPrefab != null)
             {
                 GameObject ve = Instantiate(visualEffectPrefab);
 
-                ve.transform.position = bm.Player.transform.position;
+                ve.transform.position = PlayerManagerInstance.Player.transform.position;
                 ve.transform.Rotate(Vector3.forward, -90);
             }
 
@@ -194,16 +193,14 @@ public class Golem : Enemy
             Debug.Log("防御魔法を発動");
             animationCurrentTime = 0;
             inAction = false;
-            var bm = BattleManager.Instance;
 
             // 全ての敵キャラ（ゴーレムにとっては味方）にShieldを付与する
-            var enemyMG = bm.EnemyManagerInstance;
-            foreach(var enemy in enemyMG.Enemies)
+            foreach(var enemy in EnemyManagerInstance.Enemies)
             {
                 // Shieldを付与
                 enemy.AddBlock(defenceShieldNum);
 
-                GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(3);
+                GameObject visualEffectPrefab = VisualEffectLibraryInstance.GetEffectById(3);
                 if (visualEffectPrefab != null)
                 {
                     var go = Instantiate(visualEffectPrefab);
@@ -211,7 +208,7 @@ public class Golem : Enemy
                 }   
             }
 
-            if (defenseSE_Event != null) audioController.FireWwiseEvent(defenseSE_Event);
+            if (defenseSE_Event != null) AudioControllerInstance.FireWwiseEvent(defenseSE_Event);
 
             actionPattern = ActionPattern.Idle;
             return true;

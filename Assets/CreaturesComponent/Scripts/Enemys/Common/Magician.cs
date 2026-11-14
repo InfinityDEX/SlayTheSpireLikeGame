@@ -148,21 +148,20 @@ public class Magician : Enemy
         if(animationCurrentTime >= castTime)
         {
             Debug.Log("魔法発動");
-            if (magicCastSE_Event != null) audioController.FireWwiseEvent(magicCastSE_Event);
+            if (magicCastSE_Event != null) AudioControllerInstance.FireWwiseEvent(magicCastSE_Event);
             animationCurrentTime = 0;
             // プレイヤーにダメージを与える
-            BattleManager.Instance.Player.TakeDamage(magicDamage);
+            PlayerManagerInstance.Player.TakeDamage(magicDamage);
             inAction = false;
-            if(BattleManager.Instance != null)
+            if(VisualEffectLibraryInstance != null)
             {
-                var bm = BattleManager.Instance;
-                GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(2);
+                GameObject visualEffectPrefab = VisualEffectLibraryInstance.GetEffectById(2);
                 // ビジュアルエフェクトを生成
                 if (visualEffectPrefab != null)
                 {
                     GameObject ve = Instantiate(visualEffectPrefab);
                     
-                    ve.transform.position = bm.Player.transform.position;
+                    ve.transform.position = PlayerManagerInstance.Player.transform.position;
                 }
                 actionPattern = ActionPattern.Idle;
             }
@@ -187,16 +186,15 @@ public class Magician : Enemy
         if(animationCurrentTime >= castTime)
         {
             Debug.Log("シールド展開");
-            if (activateShieldSE_Event != null) audioController.FireWwiseEvent(activateShieldSE_Event);
+            if (activateShieldSE_Event != null) AudioControllerInstance.FireWwiseEvent(activateShieldSE_Event);
             animationCurrentTime = 0;
             inAction = false;
-            if(BattleManager.Instance != null)
+            if(VisualEffectLibraryInstance != null)
             {
                 // シールドを張る
                 AddBlock(activateShieldNum);
 
-                var bm = BattleManager.Instance;
-                GameObject visualEffectPrefab = bm.VisualEffectLibrary.GetEffectById(3);
+                GameObject visualEffectPrefab = VisualEffectLibraryInstance.GetEffectById(3);
                 if (visualEffectPrefab != null)
                 {
                     var go = Instantiate(visualEffectPrefab);
