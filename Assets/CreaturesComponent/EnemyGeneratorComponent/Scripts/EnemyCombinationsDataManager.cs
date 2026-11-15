@@ -29,8 +29,6 @@ public class EnemyCombinationsDataManager : MonoBehaviour
     /// <returns>エネミー組み合わせデータ</returns>
     public EnemyCombinationData GetData()
     {
-        // データを明け渡したらこのインスタンスを消去する。
-        Destroy(gameObject);
         return enemyCombinationData;
     }
 }
