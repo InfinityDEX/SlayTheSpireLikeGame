@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 
 /// <summary>
 /// エネミーの組み合わせデータジェネレータクラス
@@ -11,6 +12,9 @@ using UnityEngine;
 /// </summary>
 public class EnemyCombinationsDataGenerator : MonoBehaviour
 {
+    [Inject]
+    private EnemyCombinationsDataManager enemyCombinationsDataManager;
+
     public enum EnemyType
     {
         Enemy,
@@ -25,8 +29,6 @@ public class EnemyCombinationsDataGenerator : MonoBehaviour
     /// <param name="stageData">ステージデータ</param>
     public void GenerateData(EnemyType enemyType, StageData stageData)
     {
-        var go = new GameObject();
-        var enemyCombinationsDataManager = go.AddComponent<EnemyCombinationsDataManager>();
         List<EnemyCombinationData> enemyCombinationDatas = null;
         switch (enemyType)
         {

@@ -88,6 +88,12 @@ public class BattleManager : MonoBehaviour
     [Inject]
     public SaveDataHolder SaveDataHolderInstance { get; private set; }
 
+    /// <summary>
+    /// エネミー組み合わせデータマネージャー
+    /// </summary>
+    [Inject]
+    public EnemyCombinationsDataManager EnemyCombinationsDataManagerInstance { get; private set; }
+
     private void Start()
     {
         // プレイヤーマネージャーにプレイヤーをセット(カード効果モジュールに渡す用)
@@ -97,7 +103,7 @@ public class BattleManager : MonoBehaviour
         EnergyManager.RefreshEnergy();
 
         // EnemyCombinationDataManagerから今回生成するエネミー群データを取得してEnemyManagerもセットする
-        EnemyManagerInstance.SetEnemy(EnemyCombinationsDataManager.Instance.GetData());
+        EnemyManagerInstance.SetEnemy(EnemyCombinationsDataManagerInstance.GetData());
 
         // バトルフェーズを初期化フェーズにする
         currentPhase = BattlePhase.InitializePhase;

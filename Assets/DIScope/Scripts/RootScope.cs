@@ -14,6 +14,9 @@ public class RootScope : LifetimeScope
     [field: SerializeField, Header("カードビュワー(prefab)")]
     private CardViewer cardViewer;
 
+    [field: SerializeField, Header("エネミー組み合わせデータマネージャ(prefab)")]
+    private EnemyCombinationsDataManager enemyCombinationsDataManager;
+
     protected override void Configure(IContainerBuilder builder)
     {
         builder.Register<DeckInfomation>(Lifetime.Singleton);
@@ -22,6 +25,8 @@ public class RootScope : LifetimeScope
         builder.RegisterComponentInNewPrefab(temporaryMapData, Lifetime.Singleton)
            .DontDestroyOnLoad();
         builder.RegisterComponentInNewPrefab(cardViewer, Lifetime.Singleton)
+            .DontDestroyOnLoad();
+        builder.RegisterComponentInNewPrefab(enemyCombinationsDataManager, Lifetime.Singleton)
             .DontDestroyOnLoad();
     }
 }

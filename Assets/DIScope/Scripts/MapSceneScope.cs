@@ -17,6 +17,9 @@ public class MapSceneScope : LifetimeScope
     [field: SerializeField, Header("デッキマネージャー")]
     private DeckManager deckManager;
 
+    [field: SerializeField, Header("エネミー組み合わせデータジェネレーター")]
+    private EnemyCombinationsDataGenerator enemyCombinationsDataGenerator;
+
     [field: SerializeField, Header("HUD 体力バーコントローラー")]
     private HUDHealthBarController hUDHealthBarController;
 
@@ -37,6 +40,7 @@ public class MapSceneScope : LifetimeScope
         builder.RegisterComponent<DrawPailGUI>(drawCard);
         builder.RegisterComponent<CardDataLibrary>(cardDataLibrary);
         builder.RegisterComponent<DeckManager>(deckManager);
+        builder.RegisterComponent<EnemyCombinationsDataGenerator>(enemyCombinationsDataGenerator);
         builder.RegisterComponent<HUDHealthBarController>(hUDHealthBarController);
         builder.RegisterComponent<HUDCoinCounter>(hUDCoinCounter);
         builder.RegisterComponent<HUDFloorNumberCounter>(hUDFloorNumberCounter);

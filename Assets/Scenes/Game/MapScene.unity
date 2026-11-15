@@ -231,6 +231,7 @@ MonoBehaviour:
   audioController: {fileID: 2105389592}
   cardDataLibrary: {fileID: 1299766303}
   deckManager: {fileID: 538038454}
+  enemyCombinationsDataGenerator: {fileID: 2036516770}
   hUDHealthBarController: {fileID: 1668335369}
   hUDCoinCounter: {fileID: 1668335368}
   hUDFloorNumberCounter: {fileID: 1668335367}

@@ -10,25 +10,9 @@ using UnityEngine;
 public class EnemyCombinationsDataManager : MonoBehaviour
 {
     /// <summary>
-    /// シングルトンインスタンス
-    /// </summary>
-    public static EnemyCombinationsDataManager Instance { get; private set; }
-
-    /// <summary>
     /// エネミー組み合わせデータ
     /// </summary>
     private EnemyCombinationData enemyCombinationData;
-
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
 
     /// <summary>
     /// エネミー組み合わせデータのセット
@@ -38,7 +22,6 @@ public class EnemyCombinationsDataManager : MonoBehaviour
     {
         enemyCombinationData = data;
     }
-
 
     /// <summary>
     /// エネミー組み合わせデータの取得
