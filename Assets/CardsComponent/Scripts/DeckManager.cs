@@ -68,12 +68,15 @@ public class DeckManager : MonoBehaviour
         this.cardDataLibrary = cardDataLibrary;
         deckInfo = deckInfomation;
         this.cardViewer = cardViewer;
+        // デッキ情報が空の場合は、DeckData.jsonからデータを読み込み、drawPileを構築する
+        if (deckInfo.DrawPile.Count == 0 && deckInfo.Hand.Count == 0 && deckInfo.DiscardPile.Count == 0)
+        {
+            LoadDeckFromJson();
+        }
     }
 
     private void Start()
     {
-        LoadDeckFromJson();
-
         // 山札をシャッフル
         deckInfo.Shuffle();
     }
