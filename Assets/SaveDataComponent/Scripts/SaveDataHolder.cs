@@ -54,18 +54,19 @@ public class SaveDataHolder : MonoBehaviour
     /// <param name="maxHealth">最大体力値</param>
     public void SetMaxHealth(int maxHealth)
     {
-        if (SaveData != null)
+        // 処理のタイミングによりゲームオーバー等でセーブデータインスタンスが破棄済みの場合があるので、nullチェックを行い
+        // nullの場合は処理をスキップする
+        if (SaveData == null)
+            return;
+
+        // maxHealthが0以上であれば更新
+        if (maxHealth >= 0)
         {
-            // maxHealthが0以上であれば更新
-            if (maxHealth >= 0)
-            {
-                SaveData.maxHealth = maxHealth;
+            SaveData.maxHealth = maxHealth;
 
-                // もしも最大体力が現在の体力を下回ってしまった場合、現在の体力を最大体力に更新する
-                if (SaveData.maxHealth < SaveData.currentHealth)
-                    SaveData.currentHealth = SaveData.maxHealth;
-            }
-
+            // もしも最大体力が現在の体力を下回ってしまった場合、現在の体力を最大体力に更新する
+            if (SaveData.maxHealth < SaveData.currentHealth)
+                SaveData.currentHealth = SaveData.maxHealth;
         }
     }
 
@@ -75,6 +76,11 @@ public class SaveDataHolder : MonoBehaviour
     /// <param name="currentHealth">現在の体力値</param>
     public void SetCurrentHealth(int currentHealth)
     {
+        // 処理のタイミングによりゲームオーバー等でセーブデータインスタンスが破棄済みの場合があるので、nullチェックを行い
+        // nullの場合は処理をスキップする
+        if (SaveData == null)
+            return;
+
         // currentHealthが0以上で、かつMaxHealthを超えていなければ更新
         if (currentHealth >= 0 && currentHealth <= SaveData.maxHealth)
             SaveData.currentHealth = currentHealth;
