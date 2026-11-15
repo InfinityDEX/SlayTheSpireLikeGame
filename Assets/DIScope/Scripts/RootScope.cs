@@ -26,6 +26,11 @@ public class RootScope : LifetimeScope
            .DontDestroyOnLoad();
         builder.RegisterComponentInNewPrefab(cardViewer, Lifetime.Singleton)
             .DontDestroyOnLoad();
+        builder.RegisterBuildCallback(container =>
+        {
+            var saveDataHolderInstance = container.Resolve<CardViewer>();
+            saveDataHolderInstance.gameObject.SetActive(false);
+        });
         builder.RegisterComponentInNewPrefab(enemyCombinationsDataManager, Lifetime.Singleton)
             .DontDestroyOnLoad();
     }
