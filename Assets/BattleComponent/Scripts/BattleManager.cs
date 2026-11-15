@@ -49,16 +49,6 @@ public class BattleManager : MonoBehaviour
     public DamagePopupGenerator DamagePopupGenerator { get; private set; }
 
     /// <summary>
-    /// バトル中かどうか
-    /// </summary>
-    private bool isBattleActive = true;
-
-    /// <summary>
-    /// 最初のアップデート処理か？
-    /// </summary>
-    private bool isFirstUpdate = true;
-
-    /// <summary>
     /// カードデータライブラリ
     /// </summary>
     [Inject]
@@ -93,6 +83,16 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     [Inject]
     public EnemyCombinationsDataManager EnemyCombinationsDataManagerInstance { get; private set; }
+
+    /// <summary>
+    /// バトル中かどうか
+    /// </summary>
+    private bool isBattleActive = true;
+
+    /// <summary>
+    /// 最初のアップデート処理か？
+    /// </summary>
+    private bool isFirstUpdate = true;
 
     private void Start()
     {
@@ -456,17 +456,7 @@ public class BattleManager : MonoBehaviour
             //////////////////////////////
             case EndBattleFactor.PlayerLoss:
                 // ゲームデータの破棄（はじめから）
-
-                // 進行情報削除
-                SaveDataHolderInstance?.DeleteSaveDataFile();
-                // マップ情報の削除
-                if (File.Exists(mapSaveFilePath))
-                {
-                    // マップ進行データを破棄して、次回プレイ時に初めからゲームが開始される状態にする
-                    File.Delete(mapSaveFilePath);
-                }
-                // デッキ情報の削除
-                DeckManagerInstance.DeleteDeckData();
+                DeleteGameData();
 
                 // ゲームオーバーシーンに移動
                 SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);
@@ -476,17 +466,7 @@ public class BattleManager : MonoBehaviour
             //////////////////////////////
             case EndBattleFactor.GameClear:
                 // ゲームデータの破棄（はじめから）
-
-                // 進行情報削除
-                SaveDataHolderInstance?.DeleteSaveDataFile();
-                // マップ情報の削除
-                if (File.Exists(mapSaveFilePath))
-                {
-                    // マップ進行データを破棄して、次回プレイ時に初めからゲームが開始される状態にする
-                    File.Delete(mapSaveFilePath);
-                }
-                // デッキ情報の削除
-                DeckManagerInstance.DeleteDeckData();
+                DeleteGameData();
 
                 // ゲームクリアシーンに移動
                 SceneManager.LoadScene("GameClearScene", LoadSceneMode.Additive);
@@ -499,5 +479,28 @@ public class BattleManager : MonoBehaviour
                 SceneManager.LoadScene("GameOverScene", LoadSceneMode.Single);
                 break;
         }
+    }
+
+    /// <summary>
+    /// ゲームデータの削除
+    /// </summary>
+    private void DeleteGameData()
+    {
+        // プレイヤー情報の削除
+        SaveDataHolderInstance.DeleteSaveDataFile();
+        SaveDataHolderInstance.ClearSaveData();
+
+        // ダンジョンマップファイルのパスを取得
+        string mapSaveFilePath = Path.Combine(Application.persistentDataPath, $"{DungeonMapManager.saveDataFolderPath}/{DungeonMapManager.saveDataFileName}");
+
+        // マップ情報の削除
+        if (File.Exists(mapSaveFilePath))
+        {
+            // マップ進行データを破棄して、次回プレイ時に初めからゲームが開始される状態にする
+            File.Delete(mapSaveFilePath);
+        }
+        // デッキ情報の削除
+        DeckManagerInstance.DeleteDeckData();
+        DeckManagerInstance.ClearDeck();
     }
 }

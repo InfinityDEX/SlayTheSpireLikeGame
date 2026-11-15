@@ -15,10 +15,16 @@ public class SaveDataHolder : MonoBehaviour
     /// </summary>
     public SaveDataEntity SaveData { get; private set; }
 
-    public void Awake()
+    /// <summary>
+    /// セーブデータのロード
+    /// </summary>
+    public void LoadSaveData()
     {
-        // 特定のタイミングを除き破壊不能
-        DontDestroyOnLoad(this.gameObject);
+        // すでにセーブデータが存在する場合はロード処理をスキップする
+        if (SaveData != null)
+        {
+            return;
+        }
 
         // ゲームデータの読み込み
         string folderPath = Path.Combine(Application.persistentDataPath, "SaveData");
@@ -48,14 +54,18 @@ public class SaveDataHolder : MonoBehaviour
     /// <param name="maxHealth">最大体力値</param>
     public void SetMaxHealth(int maxHealth)
     {
-        // maxHealthが0以上であれば更新
-        if (maxHealth >= 0)
+        if (SaveData != null)
         {
-            SaveData.maxHealth = maxHealth;
+            // maxHealthが0以上であれば更新
+            if (maxHealth >= 0)
+            {
+                SaveData.maxHealth = maxHealth;
 
-            // もしも最大体力が現在の体力を下回ってしまった場合、現在の体力を最大体力に更新する
-            if (SaveData.maxHealth < SaveData.currentHealth)
-                SaveData.currentHealth = SaveData.maxHealth;
+                // もしも最大体力が現在の体力を下回ってしまった場合、現在の体力を最大体力に更新する
+                if (SaveData.maxHealth < SaveData.currentHealth)
+                    SaveData.currentHealth = SaveData.maxHealth;
+            }
+
         }
     }
 
@@ -152,5 +162,13 @@ public class SaveDataHolder : MonoBehaviour
         {
             File.Delete(saveFilePath);
         }
+    }
+
+    /// <summary>
+    /// セーブデータインスタンスの初期化
+    /// </summary>
+    public void ClearSaveData()
+    {
+        SaveData = null;
     }
 }

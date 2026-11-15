@@ -22,7 +22,7 @@ public class HUDHealthBarController : MonoBehaviour
     public void Update()
     {
         // 体力バーの更新
-        if (SaveDataHolderInstance != null)
+        if (SaveDataHolderInstance.SaveData != null)
         {
             var saveData = SaveDataHolderInstance.SaveData;
             if (healthBar != null)

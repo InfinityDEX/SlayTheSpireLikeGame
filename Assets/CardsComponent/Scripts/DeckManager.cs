@@ -179,6 +179,14 @@ public class DeckManager : MonoBehaviour
     }
 
     /// <summary>
+    /// デッキ情報の初期化
+    /// </summary>
+    public void ClearDeck()
+    {
+        deckInfo.ClearDeck();
+    }
+
+    /// <summary>
     /// カードを引く
     /// </summary>
     public void DrawCard()

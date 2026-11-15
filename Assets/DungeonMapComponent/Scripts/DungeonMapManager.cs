@@ -123,7 +123,8 @@ public class DungeonMapManager : MonoBehaviour
         }
 
         // セーブデータ読み込み
-        var loadedDungeonMapSaveData = SearchDungeonMapSaveData();
+        saveDataHolder.LoadSaveData(); // プレイヤー情報
+        var loadedDungeonMapSaveData = SearchDungeonMapSaveData(); // マップ情報
 
         // セーブデータの有無でマップ生成処理を分ける
         if (!isAlwaysMakeNewDungeonMap && loadedDungeonMapSaveData != null)

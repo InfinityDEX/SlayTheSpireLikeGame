@@ -18,10 +18,9 @@ public class HUDCoinCounter : MonoBehaviour
 
     private void Update()
     {
-        var saveDataHolder = SaveDataHolderInstance;
-        if (saveDataHolder != null && coinCountViewUGUI != null)
+        if (SaveDataHolderInstance.SaveData != null && coinCountViewUGUI != null)
         {
-            coinCountViewUGUI.text = $"X {saveDataHolder.SaveData.money.ToString("00000")}";
+            coinCountViewUGUI.text = $"X {SaveDataHolderInstance.SaveData.money.ToString("00000")}";
         }
     }
 }

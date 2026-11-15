@@ -222,5 +222,14 @@ public class DeckInfomation
         // ファイルに書き込む
         File.WriteAllText(filePath, json);
     }
-}
 
+    /// <summary>
+    /// デッキ情報のリセット
+    /// </summary>
+    public void ClearDeck()
+    {
+        DrawPile.Clear();
+        Hand.Clear();
+        DiscardPile.Clear();
+    }
+}

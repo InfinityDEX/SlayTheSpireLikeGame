@@ -18,10 +18,9 @@ public class HUDFloorNumberCounter : MonoBehaviour
 
     private void Update()
     {
-        var saveDataHolder = SaveDataHolderInstance;
-        if (saveDataHolder != null && floorNumViewUGUI != null)
+        if (SaveDataHolderInstance.SaveData != null && floorNumViewUGUI != null)
         {
-            floorNumViewUGUI.text = $"[{saveDataHolder.SaveData.currentFloor.ToString("00")}] F";
+            floorNumViewUGUI.text = $"[{SaveDataHolderInstance.SaveData.currentFloor.ToString("00")}] F";
         }
     }
 }
