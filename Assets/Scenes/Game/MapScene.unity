@@ -867,6 +867,7 @@ GameObject:
   - component: {fileID: 1293597186}
   - component: {fileID: 1293597185}
   - component: {fileID: 1293597187}
+  - component: {fileID: 1293597190}
   - component: {fileID: 1293597189}
   - component: {fileID: 1293597188}
   m_Layer: 0
@@ -1027,6 +1028,19 @@ MonoBehaviour:
   scalingFactor: 1
   m_posOffsetData: {fileID: 0}
   listenerMask: 1
+--- !u!114 &1293597190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293597183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 768caa74a390d2d4c8a87540bfc8f453, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomPostEffect
+  postEffectMaterial: {fileID: 2100000, guid: 66faedf4692cbfe408e32ce0a2e126bd, type: 2}
 --- !u!1001 &1299766302
 PrefabInstance:
   m_ObjectHideFlags: 0
