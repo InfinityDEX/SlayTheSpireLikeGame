@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
@@ -103,7 +102,7 @@ public class MapGrid : MonoBehaviour
                 continue;
 
             // routeLineCanvasを親として線インスタンスを生成
-            Object lineIns = Instantiate(pathLinePrefab, routeLineCanvas.transform);
+            GameObject lineIns = Instantiate(pathLinePrefab, routeLineCanvas.transform);
 
             // 頂点コネクタとラインレンダラを線オブジェクトのインスタンスから取得
             UILineConnector ulc = lineIns.GetComponent<UILineConnector>();

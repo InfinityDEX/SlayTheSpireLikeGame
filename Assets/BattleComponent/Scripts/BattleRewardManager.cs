@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;
@@ -80,7 +79,7 @@ public class BattleRewardManager : MonoBehaviour
     {
         Card rewardCard = Instantiate(cardPrefab, cardParentTransform);
         rewardCard.Setup(rewardCardData, -1);
-        rewardCard.AddComponent<UIMouseHoverChecker>();
+        rewardCard.gameObject.AddComponent<UIMouseHoverChecker>();
         if(rewardCardList == null)
         {
             rewardCardList = new();

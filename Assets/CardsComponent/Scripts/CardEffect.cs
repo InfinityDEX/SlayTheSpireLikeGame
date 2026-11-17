@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using OneOf;
 using Unity.Mathematics;
-using Unity.VisualScripting;
 
 namespace CardEffect
 {
