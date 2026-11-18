@@ -1,0 +1,25 @@
+{
+    "name": "DIScope",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:6e2bfa0ae7a02b347a33e201cd8a2d6e",
+        "GUID:e766e07104dbf1044bc758ff573d6c18",
+        "GUID:1d32faeae1006e54194b5e2b828a0a33",
+        "GUID:6907977ff9143bb40ac5e668e6390da6",
+        "GUID:794e5aa17411ab74dbbcba125ea4cc4a",
+        "GUID:2b8db4f877e1b314f9f64abd7f1fcd18",
+        "GUID:144d3fe5d90920e4cac262534f165aa8",
+        "GUID:71c32f6eaf982d949b3751e9c4717ddd",
+        "GUID:6fe35f665f9f5dc4e91e779837f22c17"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

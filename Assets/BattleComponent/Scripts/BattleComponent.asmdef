@@ -1,0 +1,24 @@
+{
+    "name": "BattleComponent",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:6e2bfa0ae7a02b347a33e201cd8a2d6e",
+        "GUID:794e5aa17411ab74dbbcba125ea4cc4a",
+        "GUID:6fe35f665f9f5dc4e91e779837f22c17",
+        "GUID:e766e07104dbf1044bc758ff573d6c18",
+        "GUID:144d3fe5d90920e4cac262534f165aa8",
+        "GUID:6907977ff9143bb40ac5e668e6390da6",
+        "GUID:1082730c1d7dd224d998a81038a050de"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

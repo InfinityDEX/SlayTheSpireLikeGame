@@ -28,17 +28,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VolumeScripts.ScanLineShader.ScanLineVolume
   active: 1
   intensity:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.518
   opacityScanLine:
-    m_OverrideState: 0
-    m_Value: 0.8
+    m_OverrideState: 1
+    m_Value: 0.92
   opacityNoise:
-    m_OverrideState: 0
-    m_Value: 0.1
+    m_OverrideState: 1
+    m_Value: 0.81
   flickeringSpeed:
-    m_OverrideState: 0
-    m_Value: 600
+    m_OverrideState: 1
+    m_Value: 375
   flickeringStrength:
-    m_OverrideState: 0
-    m_Value: 0.02
+    m_OverrideState: 1
+    m_Value: 0.0097

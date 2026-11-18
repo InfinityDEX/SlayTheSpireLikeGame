@@ -1,0 +1,24 @@
+{
+    "name": "DungeonMapComponent",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:cf414061cae3a954baf92763590f3127",
+        "GUID:e766e07104dbf1044bc758ff573d6c18",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:1082730c1d7dd224d998a81038a050de",
+        "GUID:794e5aa17411ab74dbbcba125ea4cc4a",
+        "GUID:144d3fe5d90920e4cac262534f165aa8",
+        "GUID:ff680d1f724b780409df82df4cd1900a",
+        "GUID:40f9a144ec917ec4fa7bd8854db5740c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
