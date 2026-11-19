@@ -34,11 +34,8 @@ namespace CardEffect.Expressions
         public override OneOf<float, string, CardActionComponent, ValueExpressionComponent> Evaluate()
         {
             float handCount = deckInfo.Hand.Count;
-            var ret = new Number();
-            ret.SetArgs(new List<OneOf<float, string, CardActionComponent, ValueExpressionComponent>>{
-                handCount
-            });
-            return ret;
+
+            return new Number(handCount);
         }
     }
 }
