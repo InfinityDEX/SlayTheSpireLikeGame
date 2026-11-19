@@ -9,12 +9,21 @@ namespace CardEffect.Expressions
     public class Number : PrimitiveValueExpressionComponent // プリミティブ型
     {
         /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="num">数値モジュールに登録する値</param>
+        public Number(float num)
+        {
+            SetArgs(new List<OneOf<float, string, CardActionComponent, ValueExpressionComponent>>{num});
+        }
+
+        /// <summary>
         /// 自己複製コンポーネント
         /// </summary>
         /// <returns>複製したコンポーネント</returns>
         public override ValueExpressionComponent Spawn()
         {
-            return new Number();
+            return new Number(Args[0].AsT0);
         }
 
         /// <summary>

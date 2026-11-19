@@ -119,7 +119,7 @@ public class CardActionDataFactory : ICardDataFactory
         SetAction(100, new DrawCard(deckInfomation));
 
         // カード式リスト初期化
-        SetValueExpression(0, new Number());
+        SetValueExpression(0, new Number(0));
         SetValueExpression(2, new Add());
         SetValueExpression(3, new Sub());
         SetValueExpression(4, new Mul());
