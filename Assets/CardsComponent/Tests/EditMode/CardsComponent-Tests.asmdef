@@ -4,7 +4,8 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Assembly-CSharp-Cards"
+        "Assembly-CSharp-Cards",
+        "CreaturesComponent"
     ],
     "includePlatforms": [
         "Editor"
@@ -13,7 +14,8 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "nunit.framework.dll"
+        "nunit.framework.dll",
+        "OneOf.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [
