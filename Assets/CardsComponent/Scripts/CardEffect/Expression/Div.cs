@@ -20,7 +20,7 @@ namespace CardEffect.Expressions
         /// <summary>
         /// 左項から右項の値を割った値を渡す
         /// </summary>
-        /// <returns>左項＋右項の結果</returns>
+        /// <returns>左項÷右項の結果</returns>
         public override OneOf<float, string, CardActionComponent, ValueExpressionComponent> Evaluate()
         {
             var left = Args[0];
