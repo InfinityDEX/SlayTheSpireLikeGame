@@ -41,7 +41,7 @@ namespace CardEffect.Expressions
             }
             if (right.IsT2)
             {
-                var tmp = left.AsT2.Execute(null)?.EvaluateToValue();
+                var tmp = right.AsT2.Execute(null)?.EvaluateToValue();
                 if (tmp?.IsT1 == true)
                 {
                     throw new System.InvalidOperationException("Add演算子では文字列型を受け付けません。");
