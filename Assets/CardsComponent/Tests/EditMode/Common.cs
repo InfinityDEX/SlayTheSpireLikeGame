@@ -79,6 +79,21 @@ namespace CardsComponent.Tests.EditMode
     }
 
     /// <summary>
+    /// 単純な数値を定義するカード効果式クラス（スタブ）
+    /// 
+    /// 重複チェック用に2つ目を定義（内容は上記に定義したものと同じ）
+    /// </summary>
+    public class SimpleNum2 : SimpleNum
+    {
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="num">値</param>
+        public SimpleNum2(float num)
+            : base(num) { }
+    }
+
+    /// <summary>
     /// SimpleNumを返すシンプルなカードアクションコンポーネントの実装クラス（スタブ）
     /// </summary>
     public class SimpleAction : CardActionComponent
@@ -109,6 +124,21 @@ namespace CardsComponent.Tests.EditMode
         {
             throw new System.NotImplementedException();
         }
+    }
+
+    /// <summary>
+    /// SimpleNumを返すシンプルなカードアクションコンポーネントの実装クラス（スタブ）
+    /// 
+    /// 重複チェック用に2つ目を定義（内容は上記に定義したものと同じ）
+    /// </summary>
+    public class SimpleAction2 : SimpleAction
+    {
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="num">Executeで返すSimpleNumに設定する値</param>
+        public SimpleAction2(float num)
+            : base(num){}
     }
 
     ////////////////////////////////////
