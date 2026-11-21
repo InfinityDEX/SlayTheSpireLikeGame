@@ -12,7 +12,7 @@ namespace CardEffect
     /// Prototype Patternで作成することで、ライブラリクラスに登録した
     /// インスタンスからパラメータを少ししたうえで自己複製できるようにする。
     /// </summary>
-    public abstract class CardActionComponent
+    public abstract class CardActionComponent : IPrototype<CardActionComponent>
     {
         /// <summary>
         /// 自己複製メソッド
@@ -46,7 +46,7 @@ namespace CardEffect
     /// <summary>
     /// ゲームの状態から「値」を計算して返すコンポーネントのインターフェース（例：手札の枚数、敵の数、かかっているバフデバフの値等）
     /// </summary>
-    public abstract class ValueExpressionComponent
+    public abstract class ValueExpressionComponent : IPrototype<ValueExpressionComponent>
     {
         /// <summary>
         /// 自己複製メソッド
