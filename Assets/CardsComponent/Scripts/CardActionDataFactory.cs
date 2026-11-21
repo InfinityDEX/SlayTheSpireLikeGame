@@ -19,32 +19,14 @@ public class CardActionDataFactory : ICardDataFactory
     private static string cardDataPath = "MetaData/CardData.json";
 
     /// <summary>
-    /// カード処理コンポーネントとIDの組
+    /// カード効果コンポーネントレジストリ
     /// </summary>
-    private struct CardActionWithID
-    {
-        public int ID ;
-        public CardActionComponent cardAction;
-    }
+    private CardEffectRegistry<CardActionComponent> cardActionRegistry = new();
 
     /// <summary>
-    /// カード式コンポーネントとIDの組
+    /// カード式コンポーネントレジストリ
     /// </summary>
-    private struct ValueExpressionWithID
-    {
-        public int ID;
-        public ValueExpressionComponent valueExpression;
-    }
-
-    /// <summary>
-    /// カード処理コンポーネントリスト
-    /// </summary>
-    private List<CardActionWithID> actionWithIDs = new();
-
-    /// <summary>
-    /// カード式コンポーネントリスト
-    /// </summary>
-    private List<ValueExpressionWithID> valueExpressionWithIDs = new();
+    private CardEffectRegistry<ValueExpressionComponent> valueExpressionRegistry = new();
 
     /// <summary>
     /// プレイヤーマネージャー
@@ -107,11 +89,11 @@ public class CardActionDataFactory : ICardDataFactory
     }
 
     /// <summary>
-    /// カード処理、カード式のリスト初期化
+    /// カード効果、カード式のリスト初期化
     /// </summary>
     private void CreateCardActionAndValueExpressionList()
     {
-        // カード処理リスト初期化
+        // カード効果リスト初期化
         SetAction(0, new Attack(playerManager));
         SetAction(1, new AddBlock());
         SetAction(2, new AddMuscle());
@@ -127,42 +109,52 @@ public class CardActionDataFactory : ICardDataFactory
         SetValueExpression(30, new HandCount(deckInfomation));
     }
 
-    private void SetAction(int _id, CardActionComponent _cardAction)
+    /// <summary>
+    /// カード効果コンポーネントの登録
+    /// </summary>
+    /// <param name="id">ID</param>
+    /// <param name="cardAction">登録するカード効果コンポーネント</param>
+    private void SetAction(int id, CardActionComponent cardAction)
     {
-        if (valueExpressionWithIDs.Exists( cardActionWithID => { return cardActionWithID.ID == _id; }))
-        {
-            Debug.LogError($"CardActionWithID(ID: {_id}) は既に登録されています。");
-
-            return;
-        }
-        actionWithIDs.Add(new CardActionWithID{
-            ID = _id,
-            cardAction = _cardAction
-        });
+        cardActionRegistry.Register(id, cardAction);
     }
 
-    private void SetValueExpression(int _id, ValueExpressionComponent _valueExpression)
+    /// <summary>
+    /// カード式コンポーネントの登録
+    /// </summary>
+    /// <param name="id">ID</param>
+    /// <param name="valueExpression">登録するカード式コンポーネント</param>
+    private void SetValueExpression(int id, ValueExpressionComponent valueExpression)
     {
-        if (valueExpressionWithIDs.Exists( valueExpressionWithID => { return valueExpressionWithID.ID == _id; }))
-        {
-            Debug.LogError($"ValueExpression(ID: {_id}) は既に登録されています。");
-
-            return;
-        }
-        valueExpressionWithIDs.Add(new ValueExpressionWithID{
-            ID = _id,
-            valueExpression = _valueExpression
-        });
+        valueExpressionRegistry.Register(id, valueExpression);
     }
 
+    /// <summary>
+    /// カード効果コンポーネントの取得
+    /// </summary>
+    /// <param name="id">ID</param>
+    /// <returns>IDに紐づけられたカード効果コンポーネント</returns>
     private CardActionComponent GetCardAction(int id)
     {
-        return actionWithIDs.Find( actionWithID => { return actionWithID.ID == id; }).cardAction.Spawn();
+        if (!cardActionRegistry.TryGet(id, out var ret))
+        {
+            throw new KeyNotFoundException($"ID:[{id}]を持つカード効果コンポーネントは実装・登録されていません");
+        }
+        return ret;
     }
 
+    /// <summary>
+    /// カード式コンポーネントの取得
+    /// </summary>
+    /// <param name="id">ID</param>
+    /// <returns>IDに紐づけられたカード式コンポーネント</returns>
     private ValueExpressionComponent GetValueExpression(int id)
     {
-        return valueExpressionWithIDs.Find( valueExpressionWithID => { return valueExpressionWithID.ID == id;}).valueExpression.Spawn();
+        if(!valueExpressionRegistry.TryGet(id, out var ret))
+        {
+            throw new KeyNotFoundException($"ID:[{id}]を持つカード式コンポーネントは実装・登録されていません");
+        }
+        return ret;
     }
 
     /// <summary>
