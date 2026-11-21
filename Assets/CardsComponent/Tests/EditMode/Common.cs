@@ -71,10 +71,13 @@ namespace CardsComponent.Tests.EditMode
             return Args[0];
         }
 
-        /// スポーンメソッドはテストで使用しないので中身は実装しない
+        /// <summary>
+        /// コンポーネント複製メソッド
+        /// </summary>
+        /// <returns>複製したコンポーネント</returns>
         public override ValueExpressionComponent Spawn()
         {
-            throw new System.NotImplementedException();
+            return new SimpleNum(Args[0].AsT0);
         }
     }
 
@@ -91,6 +94,16 @@ namespace CardsComponent.Tests.EditMode
         /// <param name="num">値</param>
         public SimpleNum2(float num)
             : base(num) { }
+
+
+        /// <summary>
+        /// コンポーネント複製メソッド
+        /// </summary>
+        /// <returns>複製したコンポーネント</returns>
+        public override ValueExpressionComponent Spawn()
+        {
+            return new SimpleNum2(Args[0].AsT0);
+        }
     }
 
     /// <summary>
@@ -98,7 +111,7 @@ namespace CardsComponent.Tests.EditMode
     /// </summary>
     public class SimpleAction : CardActionComponent
     {
-        private float num;
+        protected float num;
 
         /// <summary>
         /// コンストラクタ
@@ -119,10 +132,13 @@ namespace CardsComponent.Tests.EditMode
             return new SimpleNum(num);
         }
 
-        /// スポーンメソッドはテストで使用しないので中身は実装しない
+        /// <summary>
+        /// コンポーネント複製メソッド
+        /// </summary>
+        /// <returns>複製したコンポーネント</returns>
         public override CardActionComponent Spawn()
         {
-            throw new System.NotImplementedException();
+            return new SimpleAction(num);
         }
     }
 
@@ -139,6 +155,15 @@ namespace CardsComponent.Tests.EditMode
         /// <param name="num">Executeで返すSimpleNumに設定する値</param>
         public SimpleAction2(float num)
             : base(num){}
+
+        /// <summary>
+        /// コンポーネント複製メソッド
+        /// </summary>
+        /// <returns>複製したコンポーネント</returns>
+        public override CardActionComponent Spawn()
+        {
+            return new SimpleAction2(num);
+        }
     }
 
     ////////////////////////////////////
