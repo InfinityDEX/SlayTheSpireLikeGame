@@ -6,6 +6,9 @@ using UnityEngine.TestTools;
 
 namespace SaveDataComponent.Tests.EditMode
 {
+    /// <summary>
+    /// セーブデータIOのテスト定義
+    /// </summary>
     public class SaveDataIO_Test
     {
         /// <summary>
@@ -176,6 +179,70 @@ namespace SaveDataComponent.Tests.EditMode
 
             // 例外メッセージにファイルパスが記載されていることを確認する
             Assert.That(ex.Message, Does.Contain(Path.Combine(folderPath, fileName)));
+        }
+
+        /// <summary>
+        /// セーブデータファイルを削除できることを確認
+        /// </summary>
+        [Test]
+        public void SaveFileDelete()
+        {
+            SaveDataIO saveDataIOInstance = new(folderPath, fileName);
+
+            SaveDataEntity saveDataEntity = new();
+            // 一旦保存
+            saveDataIOInstance.SaveData(saveDataEntity);
+            // この時点ではファイルがあることを確認
+            Assert.That(File.Exists(Path.Combine(folderPath, fileName)), Is.True);
+            saveDataIOInstance.DeleteSaveData();
+
+            // ファイルがないことを確認
+            Assert.That(File.Exists(Path.Combine(folderPath, fileName)), Is.False);
+        }
+
+        /// <summary>
+        /// セーブデータファイル削除を行った際、ファイルが無かったら
+        /// 警告ログだけ出して何も起らないことを確認
+        /// </summary>
+        [Test]
+        public void NothingHappensOnSaveFileDeleteIfNotExistFilePath()
+        {
+            SaveDataIO saveDataIOInstance = new(folderPath, fileName);
+            Directory.CreateDirectory(folderPath); // フォルダは作成しておく
+
+            // セーブデータファイル削除を行った際、ファイルが無かったら
+            // 削除しようとしたファイルのパスが記載された警告ログが出ていることを確認する
+            // （LogAssert.Expectは実際にログが呼び出される前に定義するのでここに記載）
+            LogAssert.Expect(
+                UnityEngine.LogType.Warning,
+                new Regex(Regex.Escape($"ファイル[{Path.Combine(folderPath, fileName)}")));
+
+            saveDataIOInstance.DeleteSaveData();
+
+            // ファイルがないことを確認
+            Assert.That(File.Exists(Path.Combine(folderPath, fileName)), Is.False);
+        }
+
+        /// <summary>
+        /// セーブデータファイル削除を行った際、フォルダが無かったら
+        /// 警告ログだけ出して何も起らないことを確認
+        /// </summary>
+        [Test]
+        public void NothingHappensOnSaveFileDeleteIfNotExistFolderPath()
+        {
+            SaveDataIO saveDataIOInstance = new(folderPath, fileName);
+
+            // セーブデータファイル削除を行った際、フォルダが無かったら
+            // 削除しようとしたフォルダのパスが記載された警告ログが出ていることを確認する
+            // （LogAssert.Expectは実際にログが呼び出される前に定義するのでここに記載）
+            LogAssert.Expect(
+                UnityEngine.LogType.Warning,
+                new Regex(Regex.Escape($"フォルダ[{folderPath}")));
+
+            saveDataIOInstance.DeleteSaveData();
+
+            // フォルダがないことを確認
+            Assert.That(Directory.Exists(folderPath), Is.False);
         }
     }
 }

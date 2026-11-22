@@ -3,9 +3,33 @@ using System.IO;
 using UnityEngine;
 
 /// <summary>
+/// セーブデータ読み書きクラスのインターフェース
+/// </summary>
+public interface ISaveDataIO
+{
+    /// <summary>
+    /// セーブデータのロード
+    /// </summary>
+    /// <returns>セーブデータエンティティ</returns>
+    public SaveDataEntity LoadData();
+
+    /// <summary>
+    /// セーブデータ保存
+    /// </summary>
+    /// <param name="saveDataEntity">保存するセーブデータエンティティ</param>
+    public void SaveData(SaveDataEntity saveDataEntity);
+
+    /// <summary>
+    /// セーブデータ破棄
+    /// </summary>
+    public void DeleteSaveData();
+}
+
+
+/// <summary>
 /// セーブデータ読み書きクラス
 /// </summary>
-public class SaveDataIO
+public class SaveDataIO : ISaveDataIO
 {
     /// <summary>
     /// 保存先フォルダパス
@@ -42,7 +66,7 @@ public class SaveDataIO
             string jsonText = File.ReadAllText(saveFilePath);
             
             // ファイルの中身が空だった時も新規でセーブデータエンティティを作成する
-            if (jsonText == "" || string.IsNullOrWhiteSpace(jsonText))
+            if (string.IsNullOrWhiteSpace(jsonText))
             {
                 Debug.LogWarning($"ファイル[{saveFilePath}]の中身が空っぽです。新規セーブデータでゲームを開始します");
                 return new();
@@ -83,5 +107,27 @@ public class SaveDataIO
 
         // ファイルに書き込む
         File.WriteAllText(saveFilePath, json);
+    }
+
+    /// <summary>
+    /// セーブデータ破棄
+    /// </summary>
+    public void DeleteSaveData()
+    {
+        string saveFilePath = Path.Combine(folderPath, fileName);
+
+        // フォルダがないならそもそもセーブデータファイルもないので以降の処理をスキップする
+        if (!Directory.Exists(folderPath))
+        {
+            Debug.LogWarning($"フォルダ[{folderPath}]はありませんでした。セーブデータ削除処理は行われていません。");
+            return;
+        }
+
+        if (!File.Exists(saveFilePath))
+        {
+            Debug.LogWarning($"ファイル[{saveFilePath}]はありませんでした。セーブデータ削除処理は行われていません。");
+            return;
+        }
+        File.Delete(saveFilePath);
     }
 }
