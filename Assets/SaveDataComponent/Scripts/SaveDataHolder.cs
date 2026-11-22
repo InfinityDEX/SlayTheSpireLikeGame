@@ -1,5 +1,6 @@
-using System.IO;
+using System;
 using UnityEngine;
+using VContainer;
 
 /// <summary>
 /// セーブデータホルダー
@@ -16,6 +17,21 @@ public class SaveDataHolder : MonoBehaviour
     public SaveDataEntity SaveData { get; private set; }
 
     /// <summary>
+    /// セーブデータIO
+    /// </summary>
+    private ISaveDataIO saveDataIO;
+
+    /// <summary>
+    /// 依存性注入
+    /// </summary>
+    /// <param name="saveDataIO">セーブデータIO</param>
+    [Inject]
+    public void Init(ISaveDataIO saveDataIO)
+    {
+        this.saveDataIO = saveDataIO;
+    }
+
+    /// <summary>
     /// セーブデータのロード
     /// </summary>
     public void LoadSaveData()
@@ -26,26 +42,7 @@ public class SaveDataHolder : MonoBehaviour
             return;
         }
 
-        // ゲームデータの読み込み
-        string folderPath = Path.Combine(Application.persistentDataPath, "SaveData");
-        string saveFilePath = System.IO.Path.Combine(folderPath, "SaveData.json");
-
-        //  フォルダが存在しない場合は作成する
-        if (!Directory.Exists(folderPath))
-        {
-            Directory.CreateDirectory(folderPath);
-        }
-
-        // ファイルがあれば読み込み、無ければ新規でセーブデータオブジェクトを作成する。(ファイル作成はしない)
-        if (System.IO.File.Exists(saveFilePath))
-        {
-            string jsonText = System.IO.File.ReadAllText(saveFilePath);
-            SaveData = JsonUtility.FromJson<SaveDataEntity>(jsonText);
-        }
-        else
-        {
-            SaveData = new();
-        }
+        SaveData = saveDataIO.LoadData();
     }
 
     /// <summary>
@@ -97,27 +94,51 @@ public class SaveDataHolder : MonoBehaviour
     /// <summary>
     /// 所持金の追加
     /// </summary>
-    /// <param name="money">追加する金額</param>
-    public void AddMoney(int money)
+    /// <param name="amount">追加する金額</param>
+    public void AddMoney(int amount)
     {
-        SaveData.money += money;
+        if (amount < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(amount), $"追加したい金額として[{amount}]が指定されました。負の数は使用できません。");
+        }
+        SaveData.money += amount;
+    }
+
+    /// <summary>
+    /// 支払い可能か確認
+    /// </summary>
+    /// <param name="cost">支払いたい金額</param>
+    /// <returns>支払い可能か？</returns>
+    public bool CanAfford(int cost)
+    {
+        if (cost < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(cost), $"消費できるか確認したい金額として[{cost}]が指定されました。負の数は使用できません。");
+        }
+
+        return cost <= SaveData.money; // costが現在の所持金以下ならtrue
     }
 
     /// <summary>
     /// 所持金の使用
     /// </summary>
-    /// <param name="money">使用したい金額</param>
+    /// <param name="cost">使用したい金額</param>
     /// <returns>所持金を消費できたか？</returns>
-    public bool UseMoney(int money)
+    public bool UseMoney(int cost)
     {
-        if (money <= SaveData.money)
+        if (cost < 0)
         {
-            SaveData.money -= money;
+            throw new ArgumentOutOfRangeException(nameof(cost), $"消費したい金額として[{cost}]が指定されました。負の数は使用できません。");
+        }
+
+        if (CanAfford(cost))
+        {
+            SaveData.money -= cost;
             return true;
         }
         else
         {
-            return false;
+            throw new InvalidOperationException($"Moneyを[{cost}]消費しようとしました。現在の所持金は[{SaveData.money}]でした。");
         }
     }
 
@@ -135,19 +156,8 @@ public class SaveDataHolder : MonoBehaviour
     /// </summary>
     public void WriteSaveData()
     {
-        // ゲームデータの保存
-        string json = JsonUtility.ToJson(SaveData, true);
-        string folderPath = Path.Combine(Application.persistentDataPath, "SaveData");
-        string saveFilePath = Path.Combine(folderPath, "SaveData.json");
-
-        //  フォルダが存在しない場合は作成する
-        if (!Directory.Exists(folderPath))
-        {
-            Directory.CreateDirectory(folderPath);
-        }
-
-        // ファイルに書き込む
-        File.WriteAllText(saveFilePath, json);
+        // セーブデータの保存
+        saveDataIO.SaveData(SaveData);
     }
 
     /// <summary>
@@ -155,19 +165,8 @@ public class SaveDataHolder : MonoBehaviour
     /// </summary>
     public void DeleteSaveDataFile()
     {
-        string folderPath = Path.Combine(Application.persistentDataPath, "SaveData");
-        string saveFilePath = Path.Combine(folderPath, "SaveData.json");
-
-        // フォルダがないならそもそもセーブデータファイルもないので以降の処理をスキップする
-        if (!Directory.Exists(folderPath))
-        {
-            return;
-        }
-
-        if (File.Exists(saveFilePath))
-        {
-            File.Delete(saveFilePath);
-        }
+        // セーブデータの削除
+        saveDataIO.DeleteSaveData();
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
 using CardEffect;
+using System.IO;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -20,6 +21,11 @@ public class RootScope : LifetimeScope
     protected override void Configure(IContainerBuilder builder)
     {
         builder.Register<DeckInfomation>(Lifetime.Singleton);
+
+        string folderPath = Path.Combine(Application.persistentDataPath, "SaveData");
+        string saveFileName = "SaveData.json";
+        builder.RegisterInstance<SaveDataIO>(new (folderPath, saveFileName)).As<ISaveDataIO>();
+        
         builder.RegisterComponentInNewPrefab(saveDataHolder, Lifetime.Singleton)
            .DontDestroyOnLoad();
         builder.RegisterComponentInNewPrefab(temporaryMapData, Lifetime.Singleton)
