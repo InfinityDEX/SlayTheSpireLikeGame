@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 using VContainer;
 using static DeckInfomation;
@@ -127,8 +127,6 @@ public class DeckManager : MonoBehaviour
                 continue;
 
             var cardData = cardDataLibrary.SearchCardData(cardId);
-            if (cardData == null)
-                continue;
 
             for (int i = 0; i < cardEntry.count; i++)
             {
@@ -207,23 +205,45 @@ public class DeckManager : MonoBehaviour
     /// カードの削除
     /// </summary>
     /// <param name="cardData">削除したいカード</param>
+    /// <exception cref="ArgumentNullException">引数[cardData]にnullが渡された</exception>
+    /// <exception cref="InvalidOperationException">渡されたカードデータにある指定されたIDを持っているデータがデッキ内に無かった</exception>
     public void RemoveCard(CardData cardData)
     {
+        if (cardData == null)
+        {
+            throw new ArgumentNullException(nameof(cardData), "削除対象のカードの情報にnullが渡されました。カードは削除できません。");
+        }
         // 渡されたカードのカードIDと最初に一致したカードを除去する
-        // (選択したカードと直接紐づいているものを除去しないが、処理後のデッキ構成は変わらない為これで問題なし)
+        // 選択したカードと直接紐づいているものを除去するわけではないが、処理後のデッキ構成は変わらない為これで問題なし
         var idx = deckInfo.DrawPile.FindIndex(currentCardData => currentCardData.CardID == cardData.CardID);
-        deckInfo.DrawPile.Remove(deckInfo.DrawPile[idx]);
+        if (idx == -1)
+        {
+            throw new InvalidOperationException($"指定されたID[{cardData.CardID}]を持つカードはデッキに登録されていません。カードは削除できません。");
+        }
+        deckInfo.DrawPile.RemoveAt(idx);
     }
 
     /// <summary>
     /// カードの強化
     /// </summary>
     /// <param name="cardData">強化したいカード</param>
+    /// <exception cref="ArgumentNullException">引数[cardData]にnullが渡された</exception>
+    /// <exception cref="InvalidOperationException">渡されたカードデータにある指定されたIDを持っているデータがデッキ内に無かった</exception>
+    /// <exception cref="KeyNotFoundException">渡されたIDのカードデータがカードリストに無かった(CardDataLibrary.SearchCardDataメソッドから呼び出し)</exception>
     public void UpgradeCard(CardData cardData)
     {
+        if (cardData == null)
+        {
+            throw new ArgumentNullException(nameof(cardData), "強化対象のカードの情報にnullが渡されました。カードは強化できません。");
+        }
         // 渡されたカードのカードIDと最初に一致したカードをアップグレードする
-        // (選択したカードと直接紐づいているものをアップグレードしないが、処理後のデッキ構成は変わらない為これで問題なし)
+        // 選択したカードと直接紐づいているものをアップグレードするわけではないが、処理後のデッキ構成は変わらない為これで問題なし
         var idx = deckInfo.DrawPile.FindIndex(currentCardData => currentCardData.CardID == cardData.CardID);
+        if (idx == -1)
+        {
+            throw new InvalidOperationException($"指定されたID[{cardData.CardID}]を持つカードはデッキに登録されていません。カードは強化できません。");
+        }
+
         deckInfo.DrawPile[idx] = cardDataLibrary.SearchCardData(deckInfo.DrawPile[idx].UpgradedCardId);
     }
 

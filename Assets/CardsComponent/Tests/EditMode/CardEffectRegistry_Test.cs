@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace CardsComponent.Tests.EditMode
 {
+    /// <summary>
+    /// カードエフェクトレジストリのテスト定義
+    /// </summary>
     public class CardEffectRegistry_Test
     {
         /// <summary>

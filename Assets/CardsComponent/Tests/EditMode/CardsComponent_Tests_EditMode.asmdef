@@ -1,5 +1,5 @@
 {
-    "name": "Tests",
+    "name": "CardsComponent_Tests_EditMode",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",

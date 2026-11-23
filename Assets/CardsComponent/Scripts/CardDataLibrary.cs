@@ -29,9 +29,13 @@ public class CardDataLibrary : MonoBehaviour
     /// </summary>
     /// <param name="id">カードID</param>
     /// <returns>カードデータ</returns>
+    /// <exception cref="KeyNotFoundException">渡されたIDのカードデータがカードリストに無かった</exception>
     public CardData SearchCardData(int id)
     {
-        return cardList.Find( cardData => cardData.CardID == id );
+        var ret = cardList.Find(cardData => cardData.CardID == id);
+        if (ret == null)
+            throw new KeyNotFoundException($"指定されたカードID[{id}]を持つカード情報はカードリストに登録されていません。");
+        return ret;
     }
 
     /// <summary>

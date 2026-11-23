@@ -1,8 +1,15 @@
-﻿using CardEffect;
+﻿using System.Collections.Generic;
+using CardEffect;
 using OneOf;
 
 namespace CardsComponent.Tests.EditMode
 {
+    ////////////////////////////////////
+    //// モック
+    ////////////////////////////////////
+
+    ////////////////////////////////////
+
 
     ////////////////////////////////////
     //// ヘルパー                       
@@ -163,6 +170,56 @@ namespace CardsComponent.Tests.EditMode
         public override CardActionComponent Spawn()
         {
             return new SimpleAction2(num);
+        }
+    }
+
+    /// <summary>
+    /// テスト用のカードデータを生成するファクトリー（スタブ）
+    ///
+    /// Jsonファイルを読まずに、テストが前提とするカード構成を返す
+    /// </summary>
+    public class SimpleCardDataFactory : ICardDataFactory
+    {
+        /// <summary>
+        /// 未強化カードのID（強化先: UpgradedCardId）
+        /// </summary>
+        public const int CardId = 1;
+
+        /// <summary>
+        /// CardIdの強化後カードのID
+        /// </summary>
+        public const int UpgradedCardId = 101;
+
+        /// <summary>
+        /// 別の未強化カードのID（強化先: OtherUpgradedCardId）
+        /// </summary>
+        public const int OtherCardId = 2;
+
+        /// <summary>
+        /// OtherCardIdの強化後カードのID
+        /// </summary>
+        public const int OtherUpgradedCardId = 102;
+
+        /// <summary>
+        /// ライブラリに存在しないカードのID
+        /// </summary>
+        public const int MissingCardId = 999;
+
+        /// <summary>
+        /// カードデータリストを生成する
+        ///
+        /// CardDataは可変なので、テスト間で影響しないように毎回新しいインスタンスを返す
+        /// </summary>
+        /// <returns>カードデータリスト</returns>
+        public List<CardData> CreateCardDataList()
+        {
+            return new List<CardData>
+            {
+                new CardData { CardID = CardId, CardName = "Card", UpgradedCardId = UpgradedCardId, IsUpgraded = false },
+                new CardData { CardID = UpgradedCardId, CardName = "Card+", IsUpgraded = true },
+                new CardData { CardID = OtherCardId, CardName = "OtherCard", UpgradedCardId = OtherUpgradedCardId, IsUpgraded = false },
+                new CardData { CardID = OtherUpgradedCardId, CardName = "OtherCard+", IsUpgraded = true },
+            };
         }
     }
 
