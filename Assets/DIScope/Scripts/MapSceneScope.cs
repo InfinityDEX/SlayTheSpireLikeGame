@@ -5,31 +5,31 @@ using VContainer.Unity;
 
 public class MapSceneScope : LifetimeScope
 {
-    [field: SerializeField, Header("ƒ_ƒ“ƒWƒ‡ƒ“ƒ}ƒbƒvƒ}ƒl[ƒWƒƒ[")]
+    [field: SerializeField, Header("ãƒ€ãƒ³ã‚¸ãƒ§ãƒ³ãƒžãƒƒãƒ—ãƒžãƒãƒ¼ã‚¸ãƒ£ãƒ¼")]
     private DungeonMapManager mapManager;
     
-    [field: SerializeField, Header("ƒI[ƒfƒBƒIƒRƒ“ƒgƒ[ƒ‰[")]
+    [field: SerializeField, Header("ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼")]
     private AudioController audioController;
 
-    [field: SerializeField, Header("ƒJ[ƒhƒf[ƒ^ƒ‰ƒCƒuƒ‰ƒŠ")]
+    [field: SerializeField, Header("ã‚«ãƒ¼ãƒ‰ãƒ‡ãƒ¼ã‚¿ãƒ©ã‚¤ãƒ–ãƒ©ãƒª")]
     private CardDataLibrary cardDataLibrary;
 
-    [field: SerializeField, Header("ƒfƒbƒLƒ}ƒl[ƒWƒƒ[")]
+    [field: SerializeField, Header("ãƒ‡ãƒƒã‚­ãƒžãƒãƒ¼ã‚¸ãƒ£ãƒ¼")]
     private DeckManager deckManager;
 
-    [field: SerializeField, Header("ƒGƒlƒ~[‘g‚Ý‡‚í‚¹ƒf[ƒ^ƒWƒFƒlƒŒ[ƒ^[")]
+    [field: SerializeField, Header("ã‚¨ãƒãƒŸãƒ¼çµ„ã¿åˆã‚ã›ãƒ‡ãƒ¼ã‚¿ã‚¸ã‚§ãƒãƒ¬ãƒ¼ã‚¿ãƒ¼")]
     private EnemyCombinationsDataGenerator enemyCombinationsDataGenerator;
 
-    [field: SerializeField, Header("HUD ‘Ì—Íƒo[ƒRƒ“ƒgƒ[ƒ‰[")]
+    [field: SerializeField, Header("HUD ä½“åŠ›ãƒãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼")]
     private HUDHealthBarController hUDHealthBarController;
 
-    [field: SerializeField, Header("HUD ƒRƒCƒ“ƒJƒEƒ“ƒ^[")]
+    [field: SerializeField, Header("HUD ã‚³ã‚¤ãƒ³ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼")]
     private HUDCoinCounter hUDCoinCounter;
 
-    [field: SerializeField, Header("HUD ƒtƒƒAƒJƒEƒ“ƒ^[")]
+    [field: SerializeField, Header("HUD ãƒ•ãƒ­ã‚¢ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼")]
     private HUDFloorNumberCounter hUDFloorNumberCounter;
 
-    [field: SerializeField, Header("ŽRŽDƒJƒEƒ“ƒ^[")]
+    [field: SerializeField, Header("å±±æœ­ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼")]
     private DrawPailGUI drawCard;
 
     protected override void Configure(IContainerBuilder builder)
