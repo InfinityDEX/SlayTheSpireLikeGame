@@ -23,32 +23,49 @@ public class StoreManager : MonoBehaviour
     /// <summary>
     /// 販売カード管理クラス
     /// </summary>
-    [Inject]
     private SalesCardManager salesCardManager;
 
     /// <summary>
     /// カードビュワー
     /// </summary>
-    [Inject]
     private CardViewer cardViewer;
 
     /// <summary>
     /// 仮のマップデータ
     /// </summary>
-    [Inject]
     private TemporaryMapData temporaryMapData;
 
     /// <summary>
     /// カードデータライブラリ
     /// </summary>
-    [Inject]
     public CardDataLibrary CardDataLibraryInstance { get; private set; }
 
     /// <summary>
     /// デッキマネージャー
     /// </summary>
-    [Inject]
     public DeckManager DeckManagerInstance { get; private set; }
+
+    /// <summary>
+    /// 依存性注入
+    /// </summary>
+    /// <param name="salesCardManager">販売カードマネージャー</param>
+    /// <param name="cardViewer">カードビュワー</param>
+    /// <param name="temporaryMapData">仮のマップデータ</param>
+    /// <param name="CardDataLibraryInstance">カードデータライブラリ</param>
+    /// <param name="DeckManagerInstance">デッキマネージャー</param>
+    [Inject]
+    public void Init(SalesCardManager salesCardManager,
+        CardViewer cardViewer,
+        TemporaryMapData temporaryMapData,
+        CardDataLibrary CardDataLibraryInstance,
+        DeckManager DeckManagerInstance)
+    {
+        this.salesCardManager = salesCardManager;
+        this.cardViewer = cardViewer;
+        this.temporaryMapData = temporaryMapData;
+        this.CardDataLibraryInstance = CardDataLibraryInstance;
+        this.DeckManagerInstance = DeckManagerInstance;
+    }
 
     /// <summary>
     /// セーブデータホルダー
