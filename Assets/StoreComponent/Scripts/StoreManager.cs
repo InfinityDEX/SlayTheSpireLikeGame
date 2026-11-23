@@ -86,6 +86,10 @@ public class StoreManager : MonoBehaviour
             {
                 controller.EnableButton();
 
+                // RegisterOnClickListenerでもリセットはしているが、continueで呼び出されない可能性もあるので、
+                // 二重にはなるが先にリセットする
+                controller.ResetOnClickListener();
+
                 // アップグレード済みのカードは、オーバーレイボタンは表示するが、非活性状態で表示して選択できないことを明示する。
                 if (card.ThisCardData.IsUpgraded)
                 {

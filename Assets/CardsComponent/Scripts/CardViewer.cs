@@ -69,6 +69,12 @@ public class CardViewer : MonoBehaviour
         // 全てのカードインスタンスを非アクティブ化する(再表示時に再利用)
         foreach(Transform child in cardParentTransform.transform)
         {
+            // ボタンがあれば無効状態にする
+            if(child.TryGetComponent(out CardOverlayButtonController controller))
+            {
+                controller.DisableButton();
+            }
+
             child.gameObject.SetActive(false);
         }
         gameObject.SetActive(false);
