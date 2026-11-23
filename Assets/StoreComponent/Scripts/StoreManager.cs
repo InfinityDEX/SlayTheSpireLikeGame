@@ -130,16 +130,7 @@ public class StoreManager : MonoBehaviour
             {
                 controller.EnableButton();
 
-                // アップグレード済みのカードは、オーバーレイボタンは表示するが、非活性状態で表示して選択できないことを明示する。
-                if (card.ThisCardData.IsUpgraded)
-                {
-                    controller.InActiveButton();
-                    continue;
-                }
-                else
-                {
-                    controller.ActiveButton();
-                }
+                controller.ActiveButton();
 
                 controller.RegisterOnClickListener(() =>
                 {
