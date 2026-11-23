@@ -74,11 +74,17 @@ public class SalesCardManager : MonoBehaviour
     {
         if (selectedCard != null)
         {
-            if (SaveDataHolderInstance.UseMoney(selectedCard.SalesPrice) == true)
+            // 支払いが可能か確認して、問題がなければ購入処理
+            if (SaveDataHolderInstance.CanAfford(selectedCard.SalesPrice))
             {
+                // カード追加処理
                 DeckManagerInstance.AddCard(selectedCard.CardData);
                 DeckManagerInstance.WriteDeckData();
 
+                // 追加が終わったら所持金を消費する
+                SaveDataHolderInstance.UseMoney(selectedCard.SalesPrice);
+
+                // ストア画面から選択したカードを削除
                 salesCards.Remove(selectedCard);
                 Destroy(selectedCard.gameObject);
             }

@@ -123,8 +123,7 @@ public class SaveDataHolder : MonoBehaviour
     /// 所持金の使用
     /// </summary>
     /// <param name="cost">使用したい金額</param>
-    /// <returns>所持金を消費できたか？</returns>
-    public bool UseMoney(int cost)
+    public void UseMoney(int cost)
     {
         if (cost < 0)
         {
@@ -134,7 +133,6 @@ public class SaveDataHolder : MonoBehaviour
         if (CanAfford(cost))
         {
             SaveData.money -= cost;
-            return true;
         }
         else
         {

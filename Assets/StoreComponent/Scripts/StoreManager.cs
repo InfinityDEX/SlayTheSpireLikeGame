@@ -61,12 +61,14 @@ public class StoreManager : MonoBehaviour
     /// </summary>
     public void FullRecovery()
     {
-        if (SaveDataHolderInstance != null)
+        // 支払いが可能か確認
+        if (SaveDataHolderInstance.CanAfford(recoveryPrice))
         {
-            if (SaveDataHolderInstance.UseMoney(recoveryPrice) == true)
-            {
-                SaveDataHolderInstance.FullRecovery();
-            }
+            // 体力回復
+            SaveDataHolderInstance.FullRecovery();
+
+            // 支払処理
+            SaveDataHolderInstance.UseMoney(recoveryPrice);
         }
     }
 
@@ -75,43 +77,41 @@ public class StoreManager : MonoBehaviour
     /// </summary>
     public void CardUpgradeMenuOpen()
     {
-        if (SaveDataHolderInstance != null && DeckManagerInstance != null && CardDataLibraryInstance != null && cardViewer != null)
+        DeckManagerInstance.OpenDrawPileView();
+        var cardList = cardViewer.GetActiveCards();
+        foreach (var card in cardList)
         {
-            DeckManagerInstance.OpenDrawPileView();
-            var cardList = cardViewer.GetActiveCards();
-            foreach (var card in cardList)
+            var controller = card.GetComponent<CardOverlayButtonController>();
+            if (controller != null)
             {
-                var controller = card.GetComponent<CardOverlayButtonController>();
-                if (controller != null)
+                controller.EnableButton();
+
+                // アップグレード済みのカードは、オーバーレイボタンは表示するが、非活性状態で表示して選択できないことを明示する。
+                if (card.ThisCardData.IsUpgraded)
                 {
-                    controller.EnableButton();
+                    controller.InActiveButton();
+                    continue;
+                }
+                else
+                {
+                    controller.ActiveButton();
+                }
 
-                    // アップグレード済みのカードは、オーバーレイボタンは表示するが、非活性状態で表示して選択できないことを明示する。
-                    if (card.ThisCardData.IsUpgraded)
+                controller.RegisterOnClickListener(() =>
+                {
+                    // 強化料金が支払えるか確認する
+                    if (SaveDataHolderInstance.CanAfford(cardUpgradePrice))
                     {
-                        controller.InActiveButton();
-                        continue;
-                    }
-                    else
-                    {
-                        controller.ActiveButton();
-                    }
-
-                    controller.RegisterOnClickListener(() =>
-                    {
-                        // 強化料金が支払えるか確認する。
-                        if (SaveDataHolderInstance.UseMoney(cardUpgradePrice) == false)
-                        {
-                            // 払えないのであれば何もしない。
-                            return;
-                        }
                         // 選択したカードのカードIDと最初に一致したカードをアップグレードする
                         DeckManagerInstance.UpgradeCard(card.ThisCardData);
 
                         // 強化が済んだらビュワーを非表示にする
                         cardViewer.DisableViewer();
-                    });
-                }
+
+                        // 全て終わったら支払処理
+                        SaveDataHolderInstance.UseMoney(cardUpgradePrice);
+                    }
+                });
             }
         }
     }
@@ -121,44 +121,41 @@ public class StoreManager : MonoBehaviour
     /// </summary>
     public void CardDeleteMenuOpen()
     {
-        if (SaveDataHolderInstance != null && DeckManagerInstance != null && CardDataLibraryInstance != null && cardViewer != null)
+        DeckManagerInstance.OpenDrawPileView();
+        var cardList = cardViewer.GetActiveCards();
+        foreach (var card in cardList)
         {
-            DeckManagerInstance.OpenDrawPileView();
-            var cardList = cardViewer.GetActiveCards();
-            foreach (var card in cardList)
+            var controller = card.GetComponent<CardOverlayButtonController>();
+            if (controller != null)
             {
-                var controller = card.GetComponent<CardOverlayButtonController>();
-                if (controller != null)
+                controller.EnableButton();
+
+                // アップグレード済みのカードは、オーバーレイボタンは表示するが、非活性状態で表示して選択できないことを明示する。
+                if (card.ThisCardData.IsUpgraded)
                 {
-                    controller.EnableButton();
+                    controller.InActiveButton();
+                    continue;
+                }
+                else
+                {
+                    controller.ActiveButton();
+                }
 
-                    // アップグレード済みのカードは、オーバーレイボタンは表示するが、非活性状態で表示して選択できないことを明示する。
-                    if (card.ThisCardData.IsUpgraded)
+                controller.RegisterOnClickListener(() =>
+                {
+                    // カード除去料金が支払えるか確認する。
+                    if (SaveDataHolderInstance.CanAfford(cardDeletePrice))
                     {
-                        controller.InActiveButton();
-                        continue;
-                    }
-                    else
-                    {
-                        controller.ActiveButton();
-                    }
-
-                    controller.RegisterOnClickListener(() =>
-                    {
-                        // カード除去料金が支払えるか確認する。
-                        if (SaveDataHolderInstance.UseMoney(cardDeletePrice) == false)
-                        {
-                            // 払えないのであれば何もしない。
-                            return;
-                        }
-
                         // 選択したカードを除去する
                         DeckManagerInstance.RemoveCard(card.ThisCardData);
 
                         // 除去が済んだらビュワーを非表示にする
                         cardViewer.DisableViewer();
-                    });
-                }
+
+                        // 全て終わったら支払処理
+                        SaveDataHolderInstance.UseMoney(cardDeletePrice);
+                    }
+                });
             }
         }
     }
@@ -170,10 +167,7 @@ public class StoreManager : MonoBehaviour
     /// </summary>
     public void BuySelectedCard()
     {
-        if (salesCardManager != null)
-        {
-            salesCardManager.BuySelectedCard();
-        }
+        salesCardManager.BuySelectedCard();
     }
 
     /// <summary>
@@ -181,9 +175,10 @@ public class StoreManager : MonoBehaviour
     /// </summary>
     public void ChangeShowcaseLineup()
     {
-        if (salesCardManager != null && SaveDataHolderInstance != null && SaveDataHolderInstance.UseMoney(changeCardLineupPrice) == true)
+        if (SaveDataHolderInstance.CanAfford(changeCardLineupPrice))
         {
             salesCardManager.ChangeShowcaseLineup();
+            SaveDataHolderInstance.UseMoney(changeCardLineupPrice);
         }
     }
 
