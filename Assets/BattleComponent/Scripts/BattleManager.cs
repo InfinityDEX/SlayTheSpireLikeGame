@@ -65,7 +65,7 @@ namespace BattleComponent
         /// デッキマネージャー
         /// </summary>
         [Inject]
-        public DeckManager DeckManagerInstance { get; private set; }
+        public DeckManager DeckManager { get; private set; }
 
         /// <summary>
         /// エネミーマネージャー
@@ -118,15 +118,19 @@ namespace BattleComponent
 
         private void Update()
         {
-            // プレイヤーの体力値をセーブデータの値で更新する際、
-            // PlayerインスタンスのStart処理の完了を待たないといけない為、
-            // ここで一回だけＨＰの書き換え処理を行う。
             if (isFirstUpdate)
             {
+                // プレイヤーの体力値をセーブデータの値で更新する際、
+                // PlayerインスタンスのStart処理の完了を待たないといけない為、
+                // ここで一回だけＨＰの書き換え処理を行う。
+
                 // プレイヤーの体力値をセーブデータから取得
                 if (SaveDataHolderInstance != null)
                     Player.SetHealth(SaveDataHolderInstance.SaveData.currentHealth);
                 isFirstUpdate = false;
+
+                // デッキデータのクリーンナップ(シャッフルも行う)
+                DeckManager.ClearDeck();
             }
 
             // セーブデータエンティティの更新
@@ -192,7 +196,7 @@ namespace BattleComponent
 
                 case BattlePhase.PlayerEndPhase:
                     // プレイヤーエンドフェーズ
-                    DeckManagerInstance.DiscardHandCardAll(); // 手札全捨て処理関数
+                    DeckManager.DiscardHandCardAll(); // 手札全捨て処理関数
                     // 敵の行動フェーズへ
                     currentPhase = BattlePhase.EnemyBuffRefreshPhase;
                     break;
@@ -267,11 +271,8 @@ namespace BattleComponent
         private void StartPlayerTurn()
         {
             // プレイヤーターン開始時の処理: カードを5枚引く
-            if (DeckManagerInstance != null)
-            {
-                for (int i = 0; i < 5; i++)
-                    DeckManagerInstance.DrawCard();
-            }
+            for (int i = 0; i < 5; i++)
+                DeckManager.DrawCard();
 
             // 手札の見た目を修整
             ResetHandCardView();
@@ -294,7 +295,7 @@ namespace BattleComponent
                 }
 
                 // 手札の配置（アーチ状）のパラメータ
-                int cardCount = DeckManagerInstance.HandCount;
+                int cardCount = DeckManager.HandCount;
                 float archRadius = 10f; // 弧の大きさ（調整可。単位はローカル座標）
                 float archAngle = 50f; // 全体で使う角度の最大値(度)。180より小
                 float angleStep = cardCount > 1 ? archAngle / (cardCount - 1) : 0;
@@ -304,7 +305,7 @@ namespace BattleComponent
                 for (int i = 0; i < cardCount; i++)
                 {
                     int reverseIndex = cardCount - 1 - i; // handの先頭が右端
-                    var handCard = DeckManagerInstance.Hand[reverseIndex];
+                    var handCard = DeckManager.Hand[reverseIndex];
 
                     // プレハブの複製
                     GameObject cardObj = Instantiate(cardTemplatePrefab, handArea);
@@ -451,8 +452,8 @@ namespace BattleComponent
 
                     battleRewardManager?.EnableRewardView(cardDatas);
 
-                    // 全てのカードをデッキに戻す（マップシーンで表示可能なデッキビューがデッキマネージャーの山札(DrawPile)を参照しているため）
-                    DeckManagerInstance.ReturnAllCardsToDrawPile();
+                    // デッキをリセット（全てのカードをデッキに戻す）
+                    DeckManager.ClearDeck();
 
                     // 一時的な情報としていたダンジョンマップデータを保存する
                     temporaryMapData.SaveDungeonMapData();
@@ -506,9 +507,8 @@ namespace BattleComponent
                 // マップ進行データを破棄して、次回プレイ時に初めからゲームが開始される状態にする
                 File.Delete(mapSaveFilePath);
             }
-            // デッキ情報の削除
-            DeckManagerInstance.DeleteDeckData();
-            DeckManagerInstance.ClearDeck();
+            // デッキデータファイルの削除
+            DeckManager.DeleteDeckData();
         }
     }
 }

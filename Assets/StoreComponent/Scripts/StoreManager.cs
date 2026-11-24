@@ -99,7 +99,7 @@ namespace StoreComponent
         /// </summary>
         public void CardUpgradeMenuOpen()
         {
-            DeckManagerInstance.OpenDrawPileView();
+            DeckManagerInstance.OpenUnUpgradeDeckListView();
             var cardList = cardViewer.GetActiveCards();
             foreach (var card in cardList)
             {
@@ -147,7 +147,7 @@ namespace StoreComponent
         /// </summary>
         public void CardDeleteMenuOpen()
         {
-            DeckManagerInstance.OpenDrawPileView();
+            DeckManagerInstance.OpenDeckListView();
             var cardList = cardViewer.GetActiveCards();
             foreach (var card in cardList)
             {
@@ -207,7 +207,6 @@ namespace StoreComponent
             // 一時的な情報としていたダンジョンマップデータを保存する
             temporaryMapData.SaveDungeonMapData();
 
-            DeckManagerInstance.ReturnAllCardsToDrawPile(); // デッキのリセット
             DeckManagerInstance.WriteDeckData(); // デッキの保存
             SaveDataHolderInstance.WriteSaveData(); // セーブデータのJson保存
             SceneManager.LoadScene("MapScene", LoadSceneMode.Single);

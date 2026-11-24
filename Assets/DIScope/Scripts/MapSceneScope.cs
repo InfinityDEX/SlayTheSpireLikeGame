@@ -36,15 +36,15 @@ namespace DIScope
         [field: SerializeField, Header("HUD フロアカウンター")]
         private HUDFloorNumberCounter hUDFloorNumberCounter;
 
-        [field: SerializeField, Header("山札カウンター")]
-        private DrawPailGUI drawCard;
+        [field: SerializeField, Header("デッキカードビュワー")]
+        private DeckPailGUI deckCard;
 
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<CardViewDataFactory>(Lifetime.Singleton).As<ICardDataFactory>();
             builder.RegisterComponent<DungeonMapManager>(mapManager);
             builder.RegisterComponent<AudioController>(audioController);
-            builder.RegisterComponent<DrawPailGUI>(drawCard);
+            builder.RegisterComponent<DeckPailGUI>(deckCard);
             builder.RegisterComponent<CardDataLibrary>(cardDataLibrary);
             builder.RegisterComponent<DeckManager>(deckManager);
             builder.RegisterComponent<EnemyCombinationsDataGenerator>(enemyCombinationsDataGenerator);

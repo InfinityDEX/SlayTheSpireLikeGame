@@ -33,7 +33,7 @@ namespace CardsComponent
 
         private void Start()
         {
-            cardViewerEnableButton.onClick.AddListener(() => deckManager.OpenDiscardPileView());
+            cardViewerEnableButton.onClick.AddListener(() => deckManager.OpenDiscardPileListView());
         }
 
         private void Update()

@@ -29,9 +29,8 @@ namespace DIScope
             builder.Register<DeckInfomation>(Lifetime.Singleton);
 
             string folderPath = Path.Combine(Application.persistentDataPath, "SaveData");
-            string saveFileName = "SaveData.json";
-            builder.RegisterInstance<SaveDataIO>(new (folderPath, saveFileName)).As<ISaveDataIO>();
-
+            builder.RegisterInstance<SaveDataIO>(new (folderPath, "SaveData.json")).As<ISaveDataIO>();
+            builder.RegisterInstance<DeckDataIO>(new(folderPath, "DeckData.json")).As<IDeckDataIO>();
             builder.RegisterComponentInNewPrefab(saveDataHolder, Lifetime.Singleton)
                .DontDestroyOnLoad();
             builder.RegisterComponentInNewPrefab(temporaryMapData, Lifetime.Singleton)

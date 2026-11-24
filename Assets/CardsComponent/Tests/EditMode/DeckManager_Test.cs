@@ -23,7 +23,7 @@ namespace CardsComponent.Tests.EditMode
         /// <summary>
         /// DeckManagerに注入するデッキ情報
         ///
-        /// DeckManagerは山札の中身を公開していないので、テスト側で参照を持って中身を確認する
+        /// テスト側でも参照を持ち、デッキの準備と中身の確認に使う
         /// </summary>
         private DeckInfomation deckInfo;
 
@@ -58,7 +58,7 @@ namespace CardsComponent.Tests.EditMode
             // EditModeではStartが呼ばれないので、DeckData.jsonの読み込みは行われない
             // カードビュワーはテストで使用しないのでnullを渡す
             deckManagerInstance = go.AddComponent<DeckManager>();
-            deckManagerInstance.Init(cardDataLibrary, deckInfo, null);
+            deckManagerInstance.Init(cardDataLibrary, deckInfo, null, null);
         }
 
         /// <summary>
@@ -83,118 +83,58 @@ namespace CardsComponent.Tests.EditMode
         }
 
         /// <summary>
-        /// 指定したIDのカードを順番に山札へ追加する
+        /// 指定したIDのカードでデッキを作る
         /// </summary>
-        /// <param name="cardIds">追加するカードIDの並び</param>
-        private void SetUpDrawPile(params int[] cardIds)
+        /// <param name="cardIds">デッキに入れるカードIDの並び</param>
+        private void SetUpDeck(params int[] cardIds)
         {
-            foreach (var cardId in cardIds)
-            {
-                deckManagerInstance.AddCard(cardDataLibrary.SearchCardData(cardId));
-            }
+            deckInfo.SetDeckData(cardIds.Select(cardDataLibrary.SearchCardData).ToList());
         }
 
         /// <summary>
-        /// 山札のカードIDを並び順のまま取得する
+        /// デッキのカードIDを取得する（IDの昇順）
         /// </summary>
-        /// <returns>山札のカードID配列</returns>
-        private int[] DrawPileCardIds()
+        /// <returns>デッキのカードID配列</returns>
+        private int[] DeckCardIds()
         {
-            return deckInfo.DrawPile.Select(cardData => cardData.CardID).ToArray();
+            return deckInfo.DeckList.Select(cardData => cardData.CardID).ToArray();
         }
 
+        // ※カードの追加・削除や、デッキに無いカードを指定したときの例外は
+        //   DeckInfomationの責任なので、DeckInfomation_Testで確認する。
+        //   ここではDeckManagerが担当する「強化先のカードをライブラリから探してデッキに反映する」処理だけを確認する
+
         /// <summary>
-        /// カードを山札に追加できることを確認
+        /// ライブラリから強化先のカードを探して、デッキのカードが強化されることを確認
+        ///
+        /// 同じIDのカードが複数あっても、強化されるのは1枚だけ
         /// </summary>
         [Test]
-        public void AddCard()
+        public void UpgradeCardOnlyOne()
         {
-            deckManagerInstance.AddCard(cardDataLibrary.SearchCardData(SimpleCardDataFactory.CardId));
-
-            Assert.That(DrawPileCardIds(), Is.EqualTo(new[] { SimpleCardDataFactory.CardId }));
-        }
-
-        /// <summary>
-        /// 同じIDのカードが複数あっても、除去されるのは1枚だけであることを確認
-        /// </summary>
-        [Test]
-        public void RemoveCardOnlyOne()
-        {
-            SetUpDrawPile(SimpleCardDataFactory.CardId, SimpleCardDataFactory.CardId, SimpleCardDataFactory.OtherCardId);
-
-            deckManagerInstance.RemoveCard(cardDataLibrary.SearchCardData(SimpleCardDataFactory.CardId));
-
-            Assert.That(DrawPileCardIds(), Is.EqualTo(new[] { SimpleCardDataFactory.CardId, SimpleCardDataFactory.OtherCardId }));
-        }
-
-        /// <summary>
-        /// 山札に無いカードを除去しようとしたら例外が出て、山札が変化しないことを確認
-        /// </summary>
-        [Test]
-        public void RemoveCardNotInDrawPile()
-        {
-            SetUpDrawPile(SimpleCardDataFactory.CardId);
-
-            Assert.Throws<InvalidOperationException>(
-                () => deckManagerInstance.RemoveCard(cardDataLibrary.SearchCardData(SimpleCardDataFactory.OtherCardId)));
-
-            Assert.That(DrawPileCardIds(), Is.EqualTo(new[] { SimpleCardDataFactory.CardId }));
-        }
-
-        /// <summary>
-        /// nullを除去しようとしたら例外が出ることを確認
-        /// </summary>
-        [Test]
-        public void RemoveNullCard()
-        {
-            SetUpDrawPile(SimpleCardDataFactory.CardId);
-
-            Assert.Throws<ArgumentNullException>(() => deckManagerInstance.RemoveCard(null));
-
-            Assert.That(DrawPileCardIds(), Is.EqualTo(new[] { SimpleCardDataFactory.CardId }));
-        }
-
-        /// <summary>
-        /// 同じIDのカードが複数あっても、強化されるのは最初の1枚だけで、位置も変わらないことを確認
-        /// </summary>
-        [Test]
-        public void UpgradeCardOnlyFirstOne()
-        {
-            SetUpDrawPile(SimpleCardDataFactory.OtherCardId, SimpleCardDataFactory.CardId, SimpleCardDataFactory.CardId);
+            SetUpDeck(SimpleCardDataFactory.OtherCardId, SimpleCardDataFactory.CardId, SimpleCardDataFactory.CardId);
 
             deckManagerInstance.UpgradeCard(cardDataLibrary.SearchCardData(SimpleCardDataFactory.CardId));
 
-            Assert.That(DrawPileCardIds(), Is.EqualTo(new[] {
+            Assert.That(DeckCardIds(), Is.EqualTo(new[] {
+                SimpleCardDataFactory.CardId,
                 SimpleCardDataFactory.OtherCardId,
-                SimpleCardDataFactory.UpgradedCardId,
-                SimpleCardDataFactory.CardId }));
+                SimpleCardDataFactory.UpgradedCardId }));
         }
 
         /// <summary>
-        /// 山札に無いカードを強化しようとしたら例外が出て、山札が変化しないことを確認
-        /// </summary>
-        [Test]
-        public void UpgradeCardNotInDrawPile()
-        {
-            SetUpDrawPile(SimpleCardDataFactory.CardId);
-
-            Assert.Throws<InvalidOperationException>(
-                () => deckManagerInstance.UpgradeCard(cardDataLibrary.SearchCardData(SimpleCardDataFactory.OtherCardId)));
-
-            Assert.That(DrawPileCardIds(), Is.EqualTo(new[] { SimpleCardDataFactory.CardId }));
-        }
-
-        /// <summary>
-        /// nullを強化しようとしたら例外が出ることを確認
+        /// nullを強化しようとしたら例外が出て、デッキが変化しないことを確認
+        ///
+        /// DeckManagerは強化先を探すために引数のカードデータを読むので、DeckManager側でもnullを弾く
         /// </summary>
         [Test]
         public void UpgradeNullCard()
         {
-            SetUpDrawPile(SimpleCardDataFactory.CardId);
+            SetUpDeck(SimpleCardDataFactory.CardId);
 
             Assert.Throws<ArgumentNullException>(() => deckManagerInstance.UpgradeCard(null));
 
-            Assert.That(DrawPileCardIds(), Is.EqualTo(new[] { SimpleCardDataFactory.CardId }));
+            Assert.That(DeckCardIds(), Is.EqualTo(new[] { SimpleCardDataFactory.CardId }));
         }
     }
 }

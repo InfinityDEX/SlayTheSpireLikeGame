@@ -22,23 +22,29 @@ namespace CardsComponent
         private DeckManager deckManager;
 
         /// <summary>
+        /// デッキ情報
+        /// </summary>
+        private DeckInfomation deckInfomation;
+
+        /// <summary>
         /// 依存性注入
         /// </summary>
         /// <param name="deckManager">デッキマネージャー</param>
         [Inject]
-        public void Init(DeckManager deckManager)
+        public void Init(DeckManager deckManager, DeckInfomation deckInfomation)
         {
             this.deckManager = deckManager;
+            this.deckInfomation = deckInfomation;
         }
 
         private void Start()
         {
-            cardViewerEnableButton.onClick.AddListener(() => deckManager.OpenDrawPileView());
+            cardViewerEnableButton.onClick.AddListener(() => deckManager.OpenDrawPileListView());
         }
 
         private void Update()
         {
-            counter.text = $"{deckManager.DrawPileCount}";
+            counter.text = $"{deckInfomation.DrawPileCount}";
         }
     }
 }

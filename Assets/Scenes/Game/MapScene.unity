@@ -235,7 +235,7 @@ MonoBehaviour:
   hUDHealthBarController: {fileID: 1668335369}
   hUDCoinCounter: {fileID: 1668335368}
   hUDFloorNumberCounter: {fileID: 1668335367}
-  drawCard: {fileID: 1671657554}
+  deckCard: {fileID: 1164009955}
 --- !u!4 &296294117
 Transform:
   m_ObjectHideFlags: 0
@@ -745,16 +745,61 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 50
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 383469562933527707, guid: 00875a83a0852f24499f977fd20b80f5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8141841004835662731, guid: 00875a83a0852f24499f977fd20b80f5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1164009955}
   m_SourcePrefab: {fileID: 100100000, guid: 00875a83a0852f24499f977fd20b80f5, type: 3}
 --- !u!224 &1164009951 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6689157132211197542, guid: 00875a83a0852f24499f977fd20b80f5, type: 3}
   m_PrefabInstance: {fileID: 1164009950}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1164009952 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3348696556071273259, guid: 00875a83a0852f24499f977fd20b80f5, type: 3}
+  m_PrefabInstance: {fileID: 1164009950}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1164009953 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2636003143847485981, guid: 00875a83a0852f24499f977fd20b80f5, type: 3}
+  m_PrefabInstance: {fileID: 1164009950}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!1 &1164009954 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8141841004835662731, guid: 00875a83a0852f24499f977fd20b80f5, type: 3}
+  m_PrefabInstance: {fileID: 1164009950}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1164009955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164009954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f0ae67924a51664c849b4d0f45e05ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CardsComponent::CardsComponent.DeckPailGUI
+  counter: {fileID: 1164009952}
+  cardViewerEnableButton: {fileID: 1164009953}
 --- !u!1 &1198360608
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,6 +837,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -1418,17 +1464,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 798d9c35e74e77a4fa8724511ff34a7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HUDHealthBarController
---- !u!114 &1671657554 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 383469562933527707, guid: 00875a83a0852f24499f977fd20b80f5, type: 3}
-  m_PrefabInstance: {fileID: 1164009950}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbe200dd4107b4c48b713dae52fb6fda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1755077063
 GameObject:
   m_ObjectHideFlags: 0
@@ -1448,7 +1483,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &1755077064
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1505,6 +1540,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!4 &1755077065
 Transform:
   m_ObjectHideFlags: 0
@@ -1557,6 +1593,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -1660,7 +1697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b377842e581b024093949cdb5a13cd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: AK.Wwise.Unity.MonoBehaviour::AkEvent
-  triggerList: f7e1664c
+  triggerList: f7e1664ci
   useOtherObject: 0
   actionOnEventType: 0
   curveInterpolation: 4
