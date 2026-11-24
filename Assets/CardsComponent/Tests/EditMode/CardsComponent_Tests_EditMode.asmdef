@@ -1,10 +1,10 @@
 {
     "name": "CardsComponent_Tests_EditMode",
-    "rootNamespace": "",
+    "rootNamespace": "CardsComponent.Tests.EditMode",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Assembly-CSharp-Cards",
+        "CardsComponent",
         "CreaturesComponent",
         "CommonComponent"
     ],

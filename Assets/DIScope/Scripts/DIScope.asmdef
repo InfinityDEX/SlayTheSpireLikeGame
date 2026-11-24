@@ -1,6 +1,6 @@
 {
     "name": "DIScope",
-    "rootNamespace": "",
+    "rootNamespace": "DIScope",
     "references": [
         "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
         "GUID:6e2bfa0ae7a02b347a33e201cd8a2d6e",

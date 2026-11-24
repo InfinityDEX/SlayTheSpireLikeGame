@@ -1,6 +1,6 @@
 {
     "name": "StoreComponent_Tests_EditMode",
-    "rootNamespace": "",
+    "rootNamespace": "StoreComponent.Tests.EditMode",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",

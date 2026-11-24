@@ -1,6 +1,6 @@
 {
     "name": "DungeonMapComponent",
-    "rootNamespace": "",
+    "rootNamespace": "DungeonMapComponent",
     "references": [
         "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
         "GUID:cf414061cae3a954baf92763590f3127",

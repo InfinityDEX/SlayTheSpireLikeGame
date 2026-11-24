@@ -1,6 +1,6 @@
 {
     "name": "CommonComponent",
-    "rootNamespace": "",
+    "rootNamespace": "CommonComponent",
     "references": [
         "GUID:cf414061cae3a954baf92763590f3127"
     ],

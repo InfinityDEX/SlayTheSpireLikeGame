@@ -1,3 +1,4 @@
 {
-	"name": "SceneTransitionComponent"
+	"name": "SceneTransitionComponent",
+	"rootNamespace": "SceneTransitionComponent"
 }

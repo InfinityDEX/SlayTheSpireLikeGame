@@ -1,6 +1,6 @@
 {
-    "name": "SaveDataComponent_Test_EditMode",
-    "rootNamespace": "",
+    "name": "SaveDataComponent_Tests_EditMode",
+    "rootNamespace": "SaveDataComponent.Tests.EditMode",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
