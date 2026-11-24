@@ -1,20 +1,29 @@
-using System.Collections.Generic;
 using OneOf;
+using System.Collections.Generic;
 
 namespace CardEffect.Expressions
 {
     /// <summary>
-    /// 数値モジュール
+    /// 文字列モジュール
     /// </summary>
     public class String : PrimitiveValueExpressionComponent // プリミティブ型
     {
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="str">Stringに登録する値</param>
+        public String(string str)
+        {
+            SetArgs(new List<OneOf<float, string, CardActionComponent, ValueExpressionComponent>> { str });
+        }
+
         /// <summary>
         /// 自己複製コンポーネント
         /// </summary>
         /// <returns>複製したコンポーネント</returns>
         public override ValueExpressionComponent Spawn()
         {
-            return new String();
+            return new String(Args[0].AsT1);
         }
 
         /// <summary>
