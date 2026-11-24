@@ -1,206 +1,213 @@
 using UnityEngine;
 using VContainer;
+using AudioComponent;
+using CardsComponent;
+using CreaturesComponent;
+using VisualEffectsComponent;
 
-public class CardDragHandler : MonoBehaviour
+namespace BattleComponent
 {
-    [SerializeField, Header("ドラッグ先のレイヤー")]
-    private LayerMask targetLayers = ~0; // 必要なら Layer を絞る
-
-    [SerializeField, Header("カードプレイ判定とする為にカードを動かす必要のある最短距離")]
-    private float cardPlayDragDistance = 2;
-
-    /// <summary>
-    /// 現在ホールド中のカード実体
-    /// </summary>
-    private Card holdCard = null;
-
-    /// <summary>
-    /// マウスをホールド開始した位置
-    /// </summary>
-    private Vector3 holdPos;
-
-    /// <summary>
-    /// マウスホールド開始位置から掴んでいるカードの中心位置とのオフセット
-    /// </summary>
-    private Vector3 dragOffset;
-
-    /// <summary>
-    /// バトルマネージャー
-    /// </summary>
-    [Inject]
-    private BattleManager battleManager;
-
-    /// <summary>
-    /// オーディオコントローラー
-    /// </summary>
-    [Inject]
-    private AudioController audioController;
-
-    /// <summary>
-    /// デッキマネージャー
-    /// </summary>
-    [Inject]
-    public DeckManager DeckManagerInstance { get; private set; }
-
-    private void Update()
+    public class CardDragHandler : MonoBehaviour
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log("Mouse button down");
+        [SerializeField, Header("ドラッグ先のレイヤー")]
+        private LayerMask targetLayers = ~0; // 必要なら Layer を絞る
 
-            Vector3 world = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 point = new Vector2(world.x, world.y);
-            Collider2D hit = Physics2D.OverlapPoint(point, targetLayers);
-            holdCard = hit?.GetComponent<Card>();
-            if (holdCard == null) return;
-            holdPos = holdCard.transform.position;
-            // クリックした位置とのズレを保持（カード中心がマウスに吸い付かない）
-            dragOffset = holdPos - world;
-        }
+        [SerializeField, Header("カードプレイ判定とする為にカードを動かす必要のある最短距離")]
+        private float cardPlayDragDistance = 2;
 
-        if (Input.GetMouseButton(0) && holdCard != null)
+        /// <summary>
+        /// 現在ホールド中のカード実体
+        /// </summary>
+        private Card holdCard = null;
+
+        /// <summary>
+        /// マウスをホールド開始した位置
+        /// </summary>
+        private Vector3 holdPos;
+
+        /// <summary>
+        /// マウスホールド開始位置から掴んでいるカードの中心位置とのオフセット
+        /// </summary>
+        private Vector3 dragOffset;
+
+        /// <summary>
+        /// バトルマネージャー
+        /// </summary>
+        [Inject]
+        private BattleManager battleManager;
+
+        /// <summary>
+        /// オーディオコントローラー
+        /// </summary>
+        [Inject]
+        private AudioController audioController;
+
+        /// <summary>
+        /// デッキマネージャー
+        /// </summary>
+        [Inject]
+        public DeckManager DeckManagerInstance { get; private set; }
+
+        private void Update()
         {
-            Vector3 world = GetMouseWorldPosition();
-            world.z = 0; // z座標は変更する必要がないのでそのまま
-            holdCard.transform.position = world + dragOffset;
-        }
-        if (Input.GetMouseButtonUp(0) && holdCard != null)
-        {
-            // コストが支払えるか確認して、払えたらカードの効果を適用する。
-            if(battleManager.EnergyManager.UseEnergy(holdCard.ThisCardData.Cost))
+            if (Input.GetMouseButtonDown(0))
             {
+                Debug.Log("Mouse button down");
+
                 Vector3 world = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector2 point = new Vector2(world.x, world.y);
+                Collider2D hit = Physics2D.OverlapPoint(point, targetLayers);
+                holdCard = hit?.GetComponent<Card>();
+                if (holdCard == null) return;
+                holdPos = holdCard.transform.position;
+                // クリックした位置とのズレを保持（カード中心がマウスに吸い付かない）
+                dragOffset = holdPos - world;
+            }
 
-                switch(holdCard.ThisCardData.TargetType)
+            if (Input.GetMouseButton(0) && holdCard != null)
+            {
+                Vector3 world = GetMouseWorldPosition();
+                world.z = 0; // z座標は変更する必要がないのでそのまま
+                holdCard.transform.position = world + dragOffset;
+            }
+            if (Input.GetMouseButtonUp(0) && holdCard != null)
+            {
+                // コストが支払えるか確認して、払えたらカードの効果を適用する。
+                if(battleManager.EnergyManager.UseEnergy(holdCard.ThisCardData.Cost))
                 {
-                    case CardData.Target.OneEnemy:
-                        Collider2D hit = Physics2D.OverlapPoint(point, targetLayers);
-                        var selectCreature = hit?.GetComponent<Creature>();
-                        if (selectCreature != null && selectCreature.gameObject.tag == "Enemy")
-                        {
-                            holdCard.Play(selectCreature);
-                            audioController.PlaySE(holdCard.ThisCardData.CastCardSE);
-                            GameObject visualEffectPrefab = battleManager.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
-                            // ビジュアルエフェクトを生成
-                            if (visualEffectPrefab != null)
-                            {
-                                GameObject ve = Instantiate(visualEffectPrefab);
-                                ve.transform.position = selectCreature.transform.position;
-                            }
-                            // カードを捨て札に置く
-                            DeckManager deckManager = DeckManagerInstance;
-                            if (deckManager != null)
-                            {
-                                deckManager.DiscardCardById(holdCard.HandIdx);
-                            }
-                            else
-                            {
-                                Debug.LogError("DeckManager が見つかりません。カードを捨て札にできませんでした。");
-                            }
-                            Destroy(holdCard.gameObject); // カードをゲーム空間から削除
+                    Vector3 world = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Vector2 point = new Vector2(world.x, world.y);
 
-                            battleManager.ResetHandCardView(); // 手札の配置リセット
-                        }
-                        else
-                        {
-                            // 敵をターゲットに取らなかった場合は使用したコストをもとに戻す
-                            battleManager.EnergyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
-                        }
-                        break;
-                    case CardData.Target.AllEnemy:
-                        if(Vector3.Distance(holdPos, point) >= cardPlayDragDistance)
-                        {
-                            Debug.Log($"クリックしてからマウスを離すまでのマウスの移動距離：{Vector3.Distance(holdPos, point)}");
-                            // 全てのエネミーに対してカードの効果を適用する。
-                            foreach (var enemy in battleManager.EnemyManagerInstance.Enemies)
+                    switch(holdCard.ThisCardData.TargetType)
+                    {
+                        case CardData.Target.OneEnemy:
+                            Collider2D hit = Physics2D.OverlapPoint(point, targetLayers);
+                            var selectCreature = hit?.GetComponent<Creature>();
+                            if (selectCreature != null && selectCreature.gameObject.tag == "Enemy")
                             {
-                                holdCard.Play(enemy);
-                            }
-                            audioController.PlaySE(holdCard.ThisCardData.CastCardSE);
-
-                            GameObject visualEffectPrefab = battleManager.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
-                            // ビジュアルエフェクトを生成
-                            if (visualEffectPrefab != null)
-                            {
-                                foreach (var enemy in battleManager.EnemyManagerInstance.Enemies)
+                                holdCard.Play(selectCreature);
+                                audioController.PlaySE(holdCard.ThisCardData.CastCardSE);
+                                GameObject visualEffectPrefab = battleManager.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
+                                // ビジュアルエフェクトを生成
+                                if (visualEffectPrefab != null)
                                 {
                                     GameObject ve = Instantiate(visualEffectPrefab);
-                                    ve.transform.position = enemy.transform.position;
+                                    ve.transform.position = selectCreature.transform.position;
                                 }
-                            }
-                            DeckManager deckManager = DeckManagerInstance;
-                            if (deckManager != null)
-                            {
-                                deckManager.DiscardCardById(holdCard.HandIdx);
-                            }
-                            else
-                            {
-                                Debug.LogError("DeckManager が見つかりません。カードを捨て札にできませんでした。");
-                            }
-                            Destroy(holdCard.gameObject); // カードをゲーム空間から削除
-                            battleManager.ResetHandCardView(); // 手札の配置リセット
-                        }
-                        else
-                        {
-                            // カードを選択した状態で、指定した長さだけマウスホバーしなかった場合は、カードを使用しなかったものとして
-                            // 消費したコストをもとに戻す
-                            battleManager.EnergyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
-                        }
-                        break;
-                    case CardData.Target.OnePlayer:
-                        if(Vector3.Distance(holdPos, point) >= cardPlayDragDistance)
-                        {
-                            Debug.Log($"クリックしてからマウスを離すまでのマウスの移動距離：{Vector3.Distance(holdPos, point)}");
-                            Creature player = battleManager.Player;
-                            holdCard.Play(player);
-                            audioController.PlaySE(holdCard.ThisCardData.CastCardSE);
+                                // カードを捨て札に置く
+                                DeckManager deckManager = DeckManagerInstance;
+                                if (deckManager != null)
+                                {
+                                    deckManager.DiscardCardById(holdCard.HandIdx);
+                                }
+                                else
+                                {
+                                    Debug.LogError("DeckManager が見つかりません。カードを捨て札にできませんでした。");
+                                }
+                                Destroy(holdCard.gameObject); // カードをゲーム空間から削除
 
-                            GameObject visualEffectPrefab = battleManager.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
-                            // ビジュアルエフェクトを生成
-                            if (visualEffectPrefab != null)
-                            {
-                                GameObject ve = Instantiate(visualEffectPrefab);
-                                ve.transform.position = player.transform.position;
-                            }
-                            DeckManager deckManager = DeckManagerInstance;
-                            if (deckManager != null)
-                            {
-                                deckManager.DiscardCardById(holdCard.HandIdx);
+                                battleManager.ResetHandCardView(); // 手札の配置リセット
                             }
                             else
                             {
-                                Debug.LogError("DeckManager が見つかりません。カードを捨て札にできませんでした。");
+                                // 敵をターゲットに取らなかった場合は使用したコストをもとに戻す
+                                battleManager.EnergyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
                             }
-                            Destroy(holdCard.gameObject); // カードをゲーム空間から削除
-                            battleManager.ResetHandCardView(); // 手札の配置リセット
-                        }
-                        else
-                        {
-                            // カードを選択した状態で、指定した長さだけマウスホバーしなかった場合は、カードを使用しなかったものとして
-                            // 消費したコストをもとに戻す
-                            battleManager.EnergyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
-                        }
-                        break;
+                            break;
+                        case CardData.Target.AllEnemy:
+                            if(Vector3.Distance(holdPos, point) >= cardPlayDragDistance)
+                            {
+                                Debug.Log($"クリックしてからマウスを離すまでのマウスの移動距離：{Vector3.Distance(holdPos, point)}");
+                                // 全てのエネミーに対してカードの効果を適用する。
+                                foreach (var enemy in battleManager.EnemyManagerInstance.Enemies)
+                                {
+                                    holdCard.Play(enemy);
+                                }
+                                audioController.PlaySE(holdCard.ThisCardData.CastCardSE);
+
+                                GameObject visualEffectPrefab = battleManager.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
+                                // ビジュアルエフェクトを生成
+                                if (visualEffectPrefab != null)
+                                {
+                                    foreach (var enemy in battleManager.EnemyManagerInstance.Enemies)
+                                    {
+                                        GameObject ve = Instantiate(visualEffectPrefab);
+                                        ve.transform.position = enemy.transform.position;
+                                    }
+                                }
+                                DeckManager deckManager = DeckManagerInstance;
+                                if (deckManager != null)
+                                {
+                                    deckManager.DiscardCardById(holdCard.HandIdx);
+                                }
+                                else
+                                {
+                                    Debug.LogError("DeckManager が見つかりません。カードを捨て札にできませんでした。");
+                                }
+                                Destroy(holdCard.gameObject); // カードをゲーム空間から削除
+                                battleManager.ResetHandCardView(); // 手札の配置リセット
+                            }
+                            else
+                            {
+                                // カードを選択した状態で、指定した長さだけマウスホバーしなかった場合は、カードを使用しなかったものとして
+                                // 消費したコストをもとに戻す
+                                battleManager.EnergyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
+                            }
+                            break;
+                        case CardData.Target.OnePlayer:
+                            if(Vector3.Distance(holdPos, point) >= cardPlayDragDistance)
+                            {
+                                Debug.Log($"クリックしてからマウスを離すまでのマウスの移動距離：{Vector3.Distance(holdPos, point)}");
+                                Creature player = battleManager.Player;
+                                holdCard.Play(player);
+                                audioController.PlaySE(holdCard.ThisCardData.CastCardSE);
+
+                                GameObject visualEffectPrefab = battleManager.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
+                                // ビジュアルエフェクトを生成
+                                if (visualEffectPrefab != null)
+                                {
+                                    GameObject ve = Instantiate(visualEffectPrefab);
+                                    ve.transform.position = player.transform.position;
+                                }
+                                DeckManager deckManager = DeckManagerInstance;
+                                if (deckManager != null)
+                                {
+                                    deckManager.DiscardCardById(holdCard.HandIdx);
+                                }
+                                else
+                                {
+                                    Debug.LogError("DeckManager が見つかりません。カードを捨て札にできませんでした。");
+                                }
+                                Destroy(holdCard.gameObject); // カードをゲーム空間から削除
+                                battleManager.ResetHandCardView(); // 手札の配置リセット
+                            }
+                            else
+                            {
+                                // カードを選択した状態で、指定した長さだけマウスホバーしなかった場合は、カードを使用しなかったものとして
+                                // 消費したコストをもとに戻す
+                                battleManager.EnergyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
+                            }
+                            break;
+                    }
                 }
+                holdCard.transform.position = holdPos; // 元の位置に戻す
+                holdCard = null;
             }
-            holdCard.transform.position = holdPos; // 元の位置に戻す
-            holdCard = null;
         }
-    }
 
-    /// <summary>
-    /// ゲーム内のワールド座標系で見たときのマウス座標を取得する
-    /// </summary>
-    /// <returns>ワールド座標系上のマウス座標</returns>
-    private Vector3 GetMouseWorldPosition()
-    {
-        Vector3 screenPos = Input.mousePosition;
-        // カードのZ深度を使うと、2Dでも正確に変換できる
-        if (holdCard != null)
-            screenPos.z = Camera.main.WorldToScreenPoint(holdCard.transform.position).z;
-        else
-            screenPos.z = -Camera.main.transform.position.z;
-        return Camera.main.ScreenToWorldPoint(screenPos);
+        /// <summary>
+        /// ゲーム内のワールド座標系で見たときのマウス座標を取得する
+        /// </summary>
+        /// <returns>ワールド座標系上のマウス座標</returns>
+        private Vector3 GetMouseWorldPosition()
+        {
+            Vector3 screenPos = Input.mousePosition;
+            // カードのZ深度を使うと、2Dでも正確に変換できる
+            if (holdCard != null)
+                screenPos.z = Camera.main.WorldToScreenPoint(holdCard.transform.position).z;
+            else
+                screenPos.z = -Camera.main.transform.position.z;
+            return Camera.main.ScreenToWorldPoint(screenPos);
+        }
     }
 }

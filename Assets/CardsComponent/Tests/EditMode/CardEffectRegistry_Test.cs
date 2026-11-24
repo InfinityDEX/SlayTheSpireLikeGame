@@ -2,6 +2,7 @@ using CardEffect;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using CommonComponent;
 
 namespace CardsComponent.Tests.EditMode
 {

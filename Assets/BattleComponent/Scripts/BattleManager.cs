@@ -4,503 +4,511 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;
+using CardsComponent;
+using CreaturesComponent;
+using DungeonMapComponent;
+using SaveDataComponent;
+using VisualEffectsComponent;
 
-/// <summary>
-/// バトルマネージャクラス
-///
-/// バトルの進行や、プレイヤーおよびエネミーの死亡判定を行う。
-/// </summary>
-public class BattleManager : MonoBehaviour
+namespace BattleComponent
 {
-    [field:SerializeField, Header("手札表示エリア(親オブジェクト)")]
-    private Transform handArea;
-
-    [field:SerializeField, Header("カードプレハブ")]
-    private GameObject cardTemplatePrefab;
-
-    [field:SerializeField, Header("プレイヤー")]
-    public Creature Player { get; private set;}
-
-    [field:SerializeField, Header("エナジー管理オブジェクト")]
-    public EnergyManager EnergyManager { get; private set;}
-
-    [field:SerializeField, Header("リワード画面マネージャ")]
-    public BattleRewardManager battleRewardManager { get; private set;}
-
-    [SerializeField, Header("現在のフェーズ")]
-    private BattlePhase currentPhase = BattlePhase.Idle;
-
     /// <summary>
-    /// 一時的なダンジョンデータ
+    /// バトルマネージャクラス
+    ///
+    /// バトルの進行や、プレイヤーおよびエネミーの死亡判定を行う。
     /// </summary>
-    [Inject]
-    private TemporaryMapData temporaryMapData;
-
-    /// <summary>
-    /// ビジュアルエフェクトライブラリ
-    /// </summary>
-    [Inject]
-    public VisualEffectLibrary VisualEffectLibrary { get; private set; }
-
-    /// <summary>
-    /// ダメージポップジェネレーター
-    /// </summary>
-    [Inject]
-    public DamagePopupGenerator DamagePopupGenerator { get; private set; }
-
-    /// <summary>
-    /// カードデータライブラリ
-    /// </summary>
-    [Inject]
-    public CardDataLibrary CardDataLibraryInstance { get; private set; }
-
-    /// <summary>
-    /// デッキマネージャー
-    /// </summary>
-    [Inject]
-    public DeckManager DeckManagerInstance { get; private set; }
-
-    /// <summary>
-    /// エネミーマネージャー
-    /// </summary>
-    [Inject]
-    public EnemyManager EnemyManagerInstance { get; private set; }
-
-    /// <summary>
-    /// プレイヤーマネージャー
-    /// </summary>
-    [Inject]
-    public PlayerManager PlayerManagerInstance { get; private set; }
-
-    /// <summary>
-    /// セーブデータホルダー
-    /// </summary>
-    [Inject]
-    public SaveDataHolder SaveDataHolderInstance { get; private set; }
-
-    /// <summary>
-    /// エネミー組み合わせデータマネージャー
-    /// </summary>
-    [Inject]
-    public EnemyCombinationsDataManager EnemyCombinationsDataManagerInstance { get; private set; }
-
-    /// <summary>
-    /// バトル中かどうか
-    /// </summary>
-    private bool isBattleActive = true;
-
-    /// <summary>
-    /// 最初のアップデート処理か？
-    /// </summary>
-    private bool isFirstUpdate = true;
-
-    private void Start()
+    public class BattleManager : MonoBehaviour
     {
-        // プレイヤーマネージャーにプレイヤーをセット(カード効果モジュールに渡す用)
-        PlayerManagerInstance.SetPlayer(Player);
+        [field:SerializeField, Header("手札表示エリア(親オブジェクト)")]
+        private Transform handArea;
 
-        // エナジーの初期化（回復）
-        EnergyManager.RefreshEnergy();
+        [field:SerializeField, Header("カードプレハブ")]
+        private GameObject cardTemplatePrefab;
 
-        // EnemyCombinationDataManagerから今回生成するエネミー群データを取得してEnemyManagerもセットする
-        EnemyManagerInstance.SetEnemy(EnemyCombinationsDataManagerInstance.GetData());
+        [field:SerializeField, Header("プレイヤー")]
+        public Creature Player { get; private set;}
 
-        // バトルフェーズを初期化フェーズにする
-        currentPhase = BattlePhase.InitializePhase;
-    }
+        [field:SerializeField, Header("エナジー管理オブジェクト")]
+        public EnergyManager EnergyManager { get; private set;}
 
-    private void Update()
-    {
-        // プレイヤーの体力値をセーブデータの値で更新する際、
-        // PlayerインスタンスのStart処理の完了を待たないといけない為、
-        // ここで一回だけＨＰの書き換え処理を行う。
-        if (isFirstUpdate)
+        [field:SerializeField, Header("リワード画面マネージャ")]
+        public BattleRewardManager battleRewardManager { get; private set;}
+
+        [SerializeField, Header("現在のフェーズ")]
+        private BattlePhase currentPhase = BattlePhase.Idle;
+
+        /// <summary>
+        /// 一時的なダンジョンデータ
+        /// </summary>
+        [Inject]
+        private TemporaryMapData temporaryMapData;
+
+        /// <summary>
+        /// ビジュアルエフェクトライブラリ
+        /// </summary>
+        [Inject]
+        public VisualEffectLibrary VisualEffectLibrary { get; private set; }
+
+        /// <summary>
+        /// ダメージポップジェネレーター
+        /// </summary>
+        [Inject]
+        public DamagePopupGenerator DamagePopupGenerator { get; private set; }
+
+        /// <summary>
+        /// カードデータライブラリ
+        /// </summary>
+        [Inject]
+        public CardDataLibrary CardDataLibraryInstance { get; private set; }
+
+        /// <summary>
+        /// デッキマネージャー
+        /// </summary>
+        [Inject]
+        public DeckManager DeckManagerInstance { get; private set; }
+
+        /// <summary>
+        /// エネミーマネージャー
+        /// </summary>
+        [Inject]
+        public EnemyManager EnemyManagerInstance { get; private set; }
+
+        /// <summary>
+        /// プレイヤーマネージャー
+        /// </summary>
+        [Inject]
+        public PlayerManager PlayerManagerInstance { get; private set; }
+
+        /// <summary>
+        /// セーブデータホルダー
+        /// </summary>
+        [Inject]
+        public SaveDataHolder SaveDataHolderInstance { get; private set; }
+
+        /// <summary>
+        /// エネミー組み合わせデータマネージャー
+        /// </summary>
+        [Inject]
+        public EnemyCombinationsDataManager EnemyCombinationsDataManagerInstance { get; private set; }
+
+        /// <summary>
+        /// バトル中かどうか
+        /// </summary>
+        private bool isBattleActive = true;
+
+        /// <summary>
+        /// 最初のアップデート処理か？
+        /// </summary>
+        private bool isFirstUpdate = true;
+
+        private void Start()
         {
-            // プレイヤーの体力値をセーブデータから取得
-            if (SaveDataHolderInstance != null)
-                Player.SetHealth(SaveDataHolderInstance.SaveData.currentHealth);
-            isFirstUpdate = false;
+            // プレイヤーマネージャーにプレイヤーをセット(カード効果モジュールに渡す用)
+            PlayerManagerInstance.SetPlayer(Player);
+
+            // エナジーの初期化（回復）
+            EnergyManager.RefreshEnergy();
+
+            // EnemyCombinationDataManagerから今回生成するエネミー群データを取得してEnemyManagerもセットする
+            EnemyManagerInstance.SetEnemy(EnemyCombinationsDataManagerInstance.GetData());
+
+            // バトルフェーズを初期化フェーズにする
+            currentPhase = BattlePhase.InitializePhase;
         }
 
-        // セーブデータエンティティの更新
-        SaveDataHolderInstance?.SetMaxHealth(Player.MaxHealth);
-        SaveDataHolderInstance?.SetCurrentHealth(Player.Hp);
-
-        // バトルループ
-        if (isBattleActive)
+        private void Update()
         {
-            BattleLoop();
+            // プレイヤーの体力値をセーブデータの値で更新する際、
+            // PlayerインスタンスのStart処理の完了を待たないといけない為、
+            // ここで一回だけＨＰの書き換え処理を行う。
+            if (isFirstUpdate)
+            {
+                // プレイヤーの体力値をセーブデータから取得
+                if (SaveDataHolderInstance != null)
+                    Player.SetHealth(SaveDataHolderInstance.SaveData.currentHealth);
+                isFirstUpdate = false;
+            }
+
+            // セーブデータエンティティの更新
+            SaveDataHolderInstance?.SetMaxHealth(Player.MaxHealth);
+            SaveDataHolderInstance?.SetCurrentHealth(Player.Hp);
+
+            // バトルループ
+            if (isBattleActive)
+            {
+                BattleLoop();
+            }
         }
-    }
 
-    // バトルのフローチャートに基づき、バトル進行用の状態管理・更新
-    // ターン管理や進行をUpdate内から管理（例：状態遷移やループ）
+        // バトルのフローチャートに基づき、バトル進行用の状態管理・更新
+        // ターン管理や進行をUpdate内から管理（例：状態遷移やループ）
 
-    // 簡易的なバトルステート列挙体
-    enum BattlePhase
-    {
-        InitializePhase,
-        DrawPhase,
-        UseCardPhase,
-        PlayerEndPhase,
-        PlayerBuffRefreshPhase,
-        EnemyBuffRefreshPhase,
-        EnemyActionPhase,
-        EndBattle,
-        Idle
-    }
-
-    /// <summary>
-    /// バトルループ
-    /// </summary>
-    private void BattleLoop()
-    {
-        switch (currentPhase)
+        // 簡易的なバトルステート列挙体
+        enum BattlePhase
         {
-            case BattlePhase.InitializePhase:
-                // 全ての敵クリーチャーがStart処理を終えるまで待つ
-                if(EnemyManagerInstance.Enemies.All(e => e.IsEndStartFunc()))
-                {
+            InitializePhase,
+            DrawPhase,
+            UseCardPhase,
+            PlayerEndPhase,
+            PlayerBuffRefreshPhase,
+            EnemyBuffRefreshPhase,
+            EnemyActionPhase,
+            EndBattle,
+            Idle
+        }
+
+        /// <summary>
+        /// バトルループ
+        /// </summary>
+        private void BattleLoop()
+        {
+            switch (currentPhase)
+            {
+                case BattlePhase.InitializePhase:
+                    // 全ての敵クリーチャーがStart処理を終えるまで待つ
+                    if(EnemyManagerInstance.Enemies.All(e => e.IsEndStartFunc()))
+                    {
+                        // 敵の次の行動を示す
+                        EnemyManagerInstance.Enemies.ForEach(e => e.RefreshActionIcon());
+                        // ドローフェーズへ
+                        currentPhase = BattlePhase.DrawPhase;
+                    }
+                    break;
+
+                case BattlePhase.DrawPhase:
+                    // ドローフェーズ開始処理
+                    StartPlayerTurn();
+                    // プレイヤーカード使用フェーズへ
+                    currentPhase = BattlePhase.UseCardPhase;
+                    break;
+
+                case BattlePhase.UseCardPhase:
+                    // プレイヤーor敵の死亡チェック例（具体的な判定は実装に応じて）
+                    if (IsPlayerDead() || AreEnemiesDefeated())
+                    {
+                        currentPhase = BattlePhase.EndBattle;
+                    }
+                    break;
+
+                case BattlePhase.PlayerEndPhase:
+                    // プレイヤーエンドフェーズ
+                    DeckManagerInstance.DiscardHandCardAll(); // 手札全捨て処理関数
+                    // 敵の行動フェーズへ
+                    currentPhase = BattlePhase.EnemyBuffRefreshPhase;
+                    break;
+
+                case BattlePhase.EnemyBuffRefreshPhase:
+                    RefreshEnemiesBuffs();
+                    // 敵の行動フェーズへ
+                    currentPhase = BattlePhase.EnemyActionPhase;
+                    break;
+
+                case BattlePhase.EnemyActionPhase:
+
+                    // プレイヤーor敵の死亡チェック
+                    if (IsPlayerDead() || AreEnemiesDefeated())
+                    {
+                        currentPhase = BattlePhase.EndBattle;
+                    }
+                    // 敵の行動処理
+                    else if(EnemyAction())
+                    {
+                        // もう1ターン続行
+                        currentPhase = BattlePhase.PlayerBuffRefreshPhase;
+                    }
+                    break;
+
+                case BattlePhase.PlayerBuffRefreshPhase:
+                    // バフや状態異常のリフレッシュ処理
+                    RefreshPlayerBuffs();
+                    EnergyManager.RefreshEnergy();
+
                     // 敵の次の行動を示す
                     EnemyManagerInstance.Enemies.ForEach(e => e.RefreshActionIcon());
-                    // ドローフェーズへ
+
                     currentPhase = BattlePhase.DrawPhase;
-                }
-                break;
+                    break;
 
-            case BattlePhase.DrawPhase:
-                // ドローフェーズ開始処理
-                StartPlayerTurn();
-                // プレイヤーカード使用フェーズへ
-                currentPhase = BattlePhase.UseCardPhase;
-                break;
-
-            case BattlePhase.UseCardPhase:
-                // プレイヤーor敵の死亡チェック例（具体的な判定は実装に応じて）
-                if (IsPlayerDead() || AreEnemiesDefeated())
-                {
-                    currentPhase = BattlePhase.EndBattle;
-                }
-                break;
-
-            case BattlePhase.PlayerEndPhase:
-                // プレイヤーエンドフェーズ
-                DeckManagerInstance.DiscardHandCardAll(); // 手札全捨て処理関数
-                // 敵の行動フェーズへ
-                currentPhase = BattlePhase.EnemyBuffRefreshPhase;
-                break;
-
-            case BattlePhase.EnemyBuffRefreshPhase:
-                RefreshEnemiesBuffs();
-                // 敵の行動フェーズへ
-                currentPhase = BattlePhase.EnemyActionPhase;
-                break;
-
-            case BattlePhase.EnemyActionPhase:
-
-                // プレイヤーor敵の死亡チェック
-                if (IsPlayerDead() || AreEnemiesDefeated())
-                {
-                    currentPhase = BattlePhase.EndBattle;
-                }
-                // 敵の行動処理
-                else if(EnemyAction())
-                {
-                    // もう1ターン続行
-                    currentPhase = BattlePhase.PlayerBuffRefreshPhase;
-                }
-                break;
-
-            case BattlePhase.PlayerBuffRefreshPhase:
-                // バフや状態異常のリフレッシュ処理
-                RefreshPlayerBuffs();
-                EnergyManager.RefreshEnergy();
-
-                // 敵の次の行動を示す
-                EnemyManagerInstance.Enemies.ForEach(e => e.RefreshActionIcon());
-
-                currentPhase = BattlePhase.DrawPhase;
-                break;
-
-            case BattlePhase.EndBattle:
-                // バトル終了処理
-                isBattleActive = false;
-                EndBattleFactor result = EndBattleFactor.ERROR;
-                bool playerDead = IsPlayerDead();
-                bool enemiesDefeated = AreEnemiesDefeated();
-                if (enemiesDefeated && !playerDead)
-                {
-                    if (temporaryMapData.CurrentFloorIsFinal)
+                case BattlePhase.EndBattle:
+                    // バトル終了処理
+                    isBattleActive = false;
+                    EndBattleFactor result = EndBattleFactor.ERROR;
+                    bool playerDead = IsPlayerDead();
+                    bool enemiesDefeated = AreEnemiesDefeated();
+                    if (enemiesDefeated && !playerDead)
                     {
-                        result = EndBattleFactor.GameClear;
+                        if (temporaryMapData.CurrentFloorIsFinal)
+                        {
+                            result = EndBattleFactor.GameClear;
+                        }
+                        else
+                        {
+                            result = EndBattleFactor.PlayerWin;
+                        }
                     }
-                    else
+                    else if (playerDead)
                     {
-                        result = EndBattleFactor.PlayerWin;
+                        result = EndBattleFactor.PlayerLoss;
+                    }
+                    EndBattle(result);
+                    currentPhase = BattlePhase.Idle;
+                    break;
+
+                case BattlePhase.Idle:
+                default:
+                    // 何もしない
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// プレイヤーターンの開始時処理
+        /// </summary>
+        private void StartPlayerTurn()
+        {
+            // プレイヤーターン開始時の処理: カードを5枚引く
+            if (DeckManagerInstance != null)
+            {
+                for (int i = 0; i < 5; i++)
+                    DeckManagerInstance.DrawCard();
+            }
+
+            // 手札の見た目を修整
+            ResetHandCardView();
+
+            // TODO：今後、他のプレイヤーターン開始処理をここに追加予定
+        }
+
+        /// <summary>
+        /// 手札の見た目をリセットする
+        /// </summary>
+        public void ResetHandCardView()
+        {
+            // 手札のカードをすべて表示（現状全消し→再生成方式）
+            if (handArea != null && cardTemplatePrefab != null)
+            {
+                // 既存の子オブジェクトを全削除
+                foreach (Transform child in handArea)
+                {
+                    Destroy(child.gameObject);
+                }
+
+                // 手札の配置（アーチ状）のパラメータ
+                int cardCount = DeckManagerInstance.HandCount;
+                float archRadius = 10f; // 弧の大きさ（調整可。単位はローカル座標）
+                float archAngle = 50f; // 全体で使う角度の最大値(度)。180より小
+                float angleStep = cardCount > 1 ? archAngle / (cardCount - 1) : 0;
+                float startAngle = -archAngle / 2f;
+
+                // 右から順に配置（handの先頭が右端に来る）
+                for (int i = 0; i < cardCount; i++)
+                {
+                    int reverseIndex = cardCount - 1 - i; // handの先頭が右端
+                    var handCard = DeckManagerInstance.Hand[reverseIndex];
+
+                    // プレハブの複製
+                    GameObject cardObj = Instantiate(cardTemplatePrefab, handArea);
+
+                    // アーチ上の位置決定
+                    float angle = startAngle + angleStep * i;
+                    float radians = angle * Mathf.Deg2Rad;
+                    Vector3 localPos = new Vector3(
+                        Mathf.Sin(radians) * archRadius,
+                        Mathf.Cos(radians) * archRadius - archRadius, // 0を中心とするため
+                        0f
+                    );
+
+                    // カード配置
+                    cardObj.transform.localScale = new Vector3(1.5f, 1.5f, 1);
+                    cardObj.transform.localPosition = localPos;
+                    cardObj.transform.localRotation = Quaternion.Euler(0f, 0f, angle * -0.5f); // カードをアーチの接線方向に少し傾け、自然なファンに
+
+                    // Cardスクリプトの取得
+                    Card cardScript = cardObj.GetComponent<Card>();
+
+                    // カード情報を渡す
+                    if (cardScript != null)
+                    {
+                        cardScript.Setup(handCard.cardData, handCard.cardIdx);
                     }
                 }
-                else if (playerDead)
-                {
-                    result = EndBattleFactor.PlayerLoss;
-                }
-                EndBattle(result);
-                currentPhase = BattlePhase.Idle;
-                break;
-
-            case BattlePhase.Idle:
-            default:
-                // 何もしない
-                break;
-        }
-    }
-
-    /// <summary>
-    /// プレイヤーターンの開始時処理
-    /// </summary>
-    private void StartPlayerTurn()
-    {
-        // プレイヤーターン開始時の処理: カードを5枚引く
-        if (DeckManagerInstance != null)
-        {
-            for (int i = 0; i < 5; i++)
-                DeckManagerInstance.DrawCard();
-        }
-
-        // 手札の見た目を修整
-        ResetHandCardView();
-
-        // TODO：今後、他のプレイヤーターン開始処理をここに追加予定
-    }
-
-    /// <summary>
-    /// 手札の見た目をリセットする
-    /// </summary>
-    public void ResetHandCardView()
-    {
-        // 手札のカードをすべて表示（現状全消し→再生成方式）
-        if (handArea != null && cardTemplatePrefab != null)
-        {
-            // 既存の子オブジェクトを全削除
-            foreach (Transform child in handArea)
-            {
-                Destroy(child.gameObject);
             }
+        }
 
-            // 手札の配置（アーチ状）のパラメータ
-            int cardCount = DeckManagerInstance.HandCount;
-            float archRadius = 10f; // 弧の大きさ（調整可。単位はローカル座標）
-            float archAngle = 50f; // 全体で使う角度の最大値(度)。180より小
-            float angleStep = cardCount > 1 ? archAngle / (cardCount - 1) : 0;
-            float startAngle = -archAngle / 2f;
-
-            // 右から順に配置（handの先頭が右端に来る）
-            for (int i = 0; i < cardCount; i++)
+        /// <summary>
+        /// プレイヤーターン終了処理
+        /// </summary>
+        public void EndPlayerTurn(){
+            Debug.Log("ターン終了");
+            if(currentPhase == BattlePhase.UseCardPhase)
             {
-                int reverseIndex = cardCount - 1 - i; // handの先頭が右端
-                var handCard = DeckManagerInstance.Hand[reverseIndex];
+                currentPhase = BattlePhase.PlayerEndPhase;
+            }
+        }
 
-                // プレハブの複製
-                GameObject cardObj = Instantiate(cardTemplatePrefab, handArea);
+        /// <summary>
+        /// バトル終了判定／敵全滅判定など
+        /// </summary>
+        /// <returns></returns>
+        private bool IsPlayerDead()
+        {
+            Debug.Log($"プレイヤーのHP：{Player.Hp}");
+            return Player.Hp <= 0;
+        }
 
-                // アーチ上の位置決定
-                float angle = startAngle + angleStep * i;
-                float radians = angle * Mathf.Deg2Rad;
-                Vector3 localPos = new Vector3(
-                    Mathf.Sin(radians) * archRadius,
-                    Mathf.Cos(radians) * archRadius - archRadius, // 0を中心とするため
-                    0f
-                );
+        /// <summary>
+        /// エネミーの生存チェック
+        /// </summary>
+        /// <returns>全てのエネミーが死んでいるか？</returns>
+        private bool AreEnemiesDefeated()
+        {
+            EnemyManagerInstance.Enemies.RemoveAll(enemy => enemy == null);
 
-                // カード配置
-                cardObj.transform.localScale = new Vector3(1.5f, 1.5f, 1);
-                cardObj.transform.localPosition = localPos;
-                cardObj.transform.localRotation = Quaternion.Euler(0f, 0f, angle * -0.5f); // カードをアーチの接線方向に少し傾け、自然なファンに
-
-                // Cardスクリプトの取得
-                Card cardScript = cardObj.GetComponent<Card>();
-
-                // カード情報を渡す
-                if (cardScript != null)
+            // 体力が0ならクリーチャを破壊する
+            foreach (var enemy in EnemyManagerInstance.Enemies)
+            {
+                if (enemy.Hp <= 0)
                 {
-                    cardScript.Setup(handCard.cardData, handCard.cardIdx);
+                    // EnemyManager.Enemies.Remove(enemy);
+                    // 所持金追加
+                    var enemyData = enemy.CreatureData;
+                    if (enemyData is EnemyData)
+                    {
+                        SaveDataHolderInstance.AddMoney(((EnemyData)enemyData).gold);
+                    }
+                    Destroy(enemy.gameObject);
                 }
             }
+
+
+            return EnemyManagerInstance.Enemies.Count == 0;
         }
-    }
 
-    /// <summary>
-    /// プレイヤーターン終了処理
-    /// </summary>
-    public void EndPlayerTurn(){
-        Debug.Log("ターン終了");
-        if(currentPhase == BattlePhase.UseCardPhase)
+        /// <summary>
+        /// プレイヤーにかかっているバフのリフレッシュ
+        /// </summary>
+        private void RefreshPlayerBuffs()
         {
-            currentPhase = BattlePhase.PlayerEndPhase;
+            Player.ResetBlock();
         }
-    }
 
-    /// <summary>
-    /// バトル終了判定／敵全滅判定など
-    /// </summary>
-    /// <returns></returns>
-    private bool IsPlayerDead()
-    {
-        Debug.Log($"プレイヤーのHP：{Player.Hp}");
-        return Player.Hp <= 0;
-    }
-
-    /// <summary>
-    /// エネミーの生存チェック
-    /// </summary>
-    /// <returns>全てのエネミーが死んでいるか？</returns>
-    private bool AreEnemiesDefeated()
-    {
-        EnemyManagerInstance.Enemies.RemoveAll(enemy => enemy == null);
-
-        // 体力が0ならクリーチャを破壊する
-        foreach (var enemy in EnemyManagerInstance.Enemies)
+        /// <summary>
+        /// エネミーにかかっているバフのリフレッシュ
+        /// </summary>
+        private void RefreshEnemiesBuffs()
         {
-            if (enemy.Hp <= 0)
+            EnemyManagerInstance.Enemies.ForEach(e => e.ResetBlock());
+        }
+
+        private int currentActionEnemy = 0;
+
+        /// <summary>
+        /// エネミーの行動処理
+        /// </summary>
+        /// <returns>エネミーの行動がすべて終わったか？</returns>
+        private bool EnemyAction()
+        {
+            if (EnemyManagerInstance.Enemies[currentActionEnemy].Hp == 0 || EnemyManagerInstance.Enemies[currentActionEnemy].Action())
             {
-                // EnemyManager.Enemies.Remove(enemy);
-                // 所持金追加
-                var enemyData = enemy.CreatureData;
-                if (enemyData is EnemyData)
+                currentActionEnemy++;
+                if (EnemyManagerInstance.Enemies.Count <= currentActionEnemy)
                 {
-                    SaveDataHolderInstance.AddMoney(((EnemyData)enemyData).gold);
+                    currentActionEnemy = 0;
+                    return true;
                 }
-                Destroy(enemy.gameObject);
             }
+            return false;
         }
 
-
-        return EnemyManagerInstance.Enemies.Count == 0;
-    }
-
-    /// <summary>
-    /// プレイヤーにかかっているバフのリフレッシュ
-    /// </summary>
-    private void RefreshPlayerBuffs()
-    {
-        Player.ResetBlock();
-    }
-
-    /// <summary>
-    /// エネミーにかかっているバフのリフレッシュ
-    /// </summary>
-    private void RefreshEnemiesBuffs()
-    {
-        EnemyManagerInstance.Enemies.ForEach(e => e.ResetBlock());
-    }
-
-    private int currentActionEnemy = 0;
-
-    /// <summary>
-    /// エネミーの行動処理
-    /// </summary>
-    /// <returns>エネミーの行動がすべて終わったか？</returns>
-    private bool EnemyAction()
-    {
-        if (EnemyManagerInstance.Enemies[currentActionEnemy].Hp == 0 || EnemyManagerInstance.Enemies[currentActionEnemy].Action())
+        // ゲーム終了要因
+        private enum EndBattleFactor
         {
-            currentActionEnemy++;
-            if (EnemyManagerInstance.Enemies.Count <= currentActionEnemy)
+            PlayerWin,
+            PlayerLoss,
+            GameClear,
+            ERROR,
+        }
+        /// <summary>
+        /// バトル終了処理
+        /// </summary>
+        /// <param name="clearFlag">バトル終了要因</param>
+        private void EndBattle(EndBattleFactor clearFlag)
+        {
+            // ダンジョンマップファイルのパスを取得
+            string mapSaveFilePath = Path.Combine(Application.persistentDataPath, $"{DungeonMapManager.saveDataFolderPath}/{DungeonMapManager.saveDataFileName}");
+
+            // バトル終了要因によって分岐
+            switch (clearFlag)
             {
-                currentActionEnemy = 0;
-                return true;
+                //////////////////////////////
+                /// プレイヤーが勝利した時
+                //////////////////////////////
+                case EndBattleFactor.PlayerWin:
+                    // ゲームデータの保存
+                    SaveDataHolderInstance.WriteSaveData();
+
+                    List<CardData> cardDatas = CardDataLibraryInstance.GetRandomCards(3);
+
+                    battleRewardManager?.EnableRewardView(cardDatas);
+
+                    // 全てのカードをデッキに戻す（マップシーンで表示可能なデッキビューがデッキマネージャーの山札(DrawPile)を参照しているため）
+                    DeckManagerInstance.ReturnAllCardsToDrawPile();
+
+                    // 一時的な情報としていたダンジョンマップデータを保存する
+                    temporaryMapData.SaveDungeonMapData();
+
+                    break;
+                //////////////////////////////
+                /// プレイヤーが敗北した時
+                //////////////////////////////
+                case EndBattleFactor.PlayerLoss:
+                    // ゲームデータの破棄（はじめから）
+                    DeleteGameData();
+
+                    // ゲームオーバーシーンに移動
+                    SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);
+                    break;
+                //////////////////////////////
+                /// プレイヤーが最終階層のボスを倒してクリアした時
+                //////////////////////////////
+                case EndBattleFactor.GameClear:
+                    // ゲームデータの破棄（はじめから）
+                    DeleteGameData();
+
+                    // ゲームクリアシーンに移動
+                    SceneManager.LoadScene("GameClearScene", LoadSceneMode.Additive);
+                    break;
+                //////////////////////////////
+                /// エラー。適切なバトル終了フラグが割り振られていない
+                //////////////////////////////
+                case EndBattleFactor.ERROR:
+                    Debug.LogError("想定外の理由によるゲームオーバーが発生しました。clearFlag: " + clearFlag);
+                    SceneManager.LoadScene("GameOverScene", LoadSceneMode.Single);
+                    break;
             }
         }
-        return false;
-    }
 
-    // ゲーム終了要因
-    private enum EndBattleFactor
-    {
-        PlayerWin,
-        PlayerLoss,
-        GameClear,
-        ERROR,
-    }
-    /// <summary>
-    /// バトル終了処理
-    /// </summary>
-    /// <param name="clearFlag">バトル終了要因</param>
-    private void EndBattle(EndBattleFactor clearFlag)
-    {
-        // ダンジョンマップファイルのパスを取得
-        string mapSaveFilePath = Path.Combine(Application.persistentDataPath, $"{DungeonMapManager.saveDataFolderPath}/{DungeonMapManager.saveDataFileName}");
-
-        // バトル終了要因によって分岐
-        switch (clearFlag)
+        /// <summary>
+        /// ゲームデータの削除
+        /// </summary>
+        private void DeleteGameData()
         {
-            //////////////////////////////
-            /// プレイヤーが勝利した時
-            //////////////////////////////
-            case EndBattleFactor.PlayerWin:
-                // ゲームデータの保存
-                SaveDataHolderInstance.WriteSaveData();
+            // プレイヤー情報の削除
+            SaveDataHolderInstance.DeleteSaveDataFile();
+            SaveDataHolderInstance.ClearSaveData();
 
-                List<CardData> cardDatas = CardDataLibraryInstance.GetRandomCards(3);
+            // ダンジョンマップファイルのパスを取得
+            string mapSaveFilePath = Path.Combine(Application.persistentDataPath, $"{DungeonMapManager.saveDataFolderPath}/{DungeonMapManager.saveDataFileName}");
 
-                battleRewardManager?.EnableRewardView(cardDatas);
-
-                // 全てのカードをデッキに戻す（マップシーンで表示可能なデッキビューがデッキマネージャーの山札(DrawPile)を参照しているため）
-                DeckManagerInstance.ReturnAllCardsToDrawPile();
-
-                // 一時的な情報としていたダンジョンマップデータを保存する
-                temporaryMapData.SaveDungeonMapData();
-
-                break;
-            //////////////////////////////
-            /// プレイヤーが敗北した時
-            //////////////////////////////
-            case EndBattleFactor.PlayerLoss:
-                // ゲームデータの破棄（はじめから）
-                DeleteGameData();
-
-                // ゲームオーバーシーンに移動
-                SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);
-                break;
-            //////////////////////////////
-            /// プレイヤーが最終階層のボスを倒してクリアした時
-            //////////////////////////////
-            case EndBattleFactor.GameClear:
-                // ゲームデータの破棄（はじめから）
-                DeleteGameData();
-
-                // ゲームクリアシーンに移動
-                SceneManager.LoadScene("GameClearScene", LoadSceneMode.Additive);
-                break;
-            //////////////////////////////
-            /// エラー。適切なバトル終了フラグが割り振られていない
-            //////////////////////////////
-            case EndBattleFactor.ERROR:
-                Debug.LogError("想定外の理由によるゲームオーバーが発生しました。clearFlag: " + clearFlag);
-                SceneManager.LoadScene("GameOverScene", LoadSceneMode.Single);
-                break;
+            // マップ情報の削除
+            if (File.Exists(mapSaveFilePath))
+            {
+                // マップ進行データを破棄して、次回プレイ時に初めからゲームが開始される状態にする
+                File.Delete(mapSaveFilePath);
+            }
+            // デッキ情報の削除
+            DeckManagerInstance.DeleteDeckData();
+            DeckManagerInstance.ClearDeck();
         }
-    }
-
-    /// <summary>
-    /// ゲームデータの削除
-    /// </summary>
-    private void DeleteGameData()
-    {
-        // プレイヤー情報の削除
-        SaveDataHolderInstance.DeleteSaveDataFile();
-        SaveDataHolderInstance.ClearSaveData();
-
-        // ダンジョンマップファイルのパスを取得
-        string mapSaveFilePath = Path.Combine(Application.persistentDataPath, $"{DungeonMapManager.saveDataFolderPath}/{DungeonMapManager.saveDataFileName}");
-
-        // マップ情報の削除
-        if (File.Exists(mapSaveFilePath))
-        {
-            // マップ進行データを破棄して、次回プレイ時に初めからゲームが開始される状態にする
-            File.Delete(mapSaveFilePath);
-        }
-        // デッキ情報の削除
-        DeckManagerInstance.DeleteDeckData();
-        DeckManagerInstance.ClearDeck();
     }
 }

@@ -2,39 +2,43 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
+using SaveDataComponent;
 
-/// <summary>
-/// HUD上の体力バーの操作クラス
-/// </summary>
-public class HUDHealthBarController : MonoBehaviour
+namespace GameHUDComponent
 {
-    [field: SerializeField, Header("HUD上の体力バー")]
-    private Slider healthBar;
-    [field: SerializeField, Header("HUD上の体力バーテキスト")]
-    private TextMeshProUGUI healthText;
-
     /// <summary>
-    /// セーブデータホルダー
+    /// HUD上の体力バーの操作クラス
     /// </summary>
-    [Inject]
-    public SaveDataHolder SaveDataHolderInstance { get; private set; }
-
-    public void Update()
+    public class HUDHealthBarController : MonoBehaviour
     {
-        // 体力バーの更新
-        if (SaveDataHolderInstance.SaveData != null)
-        {
-            var saveData = SaveDataHolderInstance.SaveData;
-            if (healthBar != null)
-            {
-                healthBar.maxValue = saveData.maxHealth;
-                healthBar.value = saveData.currentHealth;
-            }
-            if (healthText != null)
-            {
-                healthText.text = $"{saveData.currentHealth}/{saveData.maxHealth}";
-            }
-        }
+        [field: SerializeField, Header("HUD上の体力バー")]
+        private Slider healthBar;
+        [field: SerializeField, Header("HUD上の体力バーテキスト")]
+        private TextMeshProUGUI healthText;
 
+        /// <summary>
+        /// セーブデータホルダー
+        /// </summary>
+        [Inject]
+        public SaveDataHolder SaveDataHolderInstance { get; private set; }
+
+        public void Update()
+        {
+            // 体力バーの更新
+            if (SaveDataHolderInstance.SaveData != null)
+            {
+                var saveData = SaveDataHolderInstance.SaveData;
+                if (healthBar != null)
+                {
+                    healthBar.maxValue = saveData.maxHealth;
+                    healthBar.value = saveData.currentHealth;
+                }
+                if (healthText != null)
+                {
+                    healthText.text = $"{saveData.currentHealth}/{saveData.maxHealth}";
+                }
+            }
+
+        }
     }
 }

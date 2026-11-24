@@ -4,165 +4,168 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-/// <summary>
-/// 視覚エフェクトの一覧クラス
-/// 
-/// IDを指定して渡すことで、そのIDに紐づけられたエフェクトの
-/// インスタンスを生成してくれる
-/// </summary>
-public class VisualEffectLibrary : MonoBehaviour
+namespace VisualEffectsComponent
 {
-    // エフェクトプレハブとIDを組み合わせた構造体
-    [System.Serializable]
-    public struct EffectWithID
-    {
-        public int effectId;
-        public GameObject effectPrefab;
-    }
-
     /// <summary>
-    /// エフェクトリスト
+    /// 視覚エフェクトの一覧クラス
+    /// 
+    /// IDを指定して渡すことで、そのIDに紐づけられたエフェクトの
+    /// インスタンスを生成してくれる
     /// </summary>
-    public List<EffectWithID> effects;
-
-    /// <summary>
-    /// 指定したeffectIdを持つエフェクトPrefabを返す。存在しない場合はnull。
-    /// </summary>
-    public GameObject GetEffectById(int effectId)
+    public class VisualEffectLibrary : MonoBehaviour
     {
-        foreach (var effect in effects)
+        // エフェクトプレハブとIDを組み合わせた構造体
+        [System.Serializable]
+        public struct EffectWithID
         {
-            if (effect.effectId == effectId)
-            {
-                return effect.effectPrefab;
-            }
+            public int effectId;
+            public GameObject effectPrefab;
         }
-        return null;
-    }
 
-// 以下EffectLibraryのエディタ拡張
+        /// <summary>
+        /// エフェクトリスト
+        /// </summary>
+        public List<EffectWithID> effects;
+
+        /// <summary>
+        /// 指定したeffectIdを持つエフェクトPrefabを返す。存在しない場合はnull。
+        /// </summary>
+        public GameObject GetEffectById(int effectId)
+        {
+            foreach (var effect in effects)
+            {
+                if (effect.effectId == effectId)
+                {
+                    return effect.effectPrefab;
+                }
+            }
+            return null;
+        }
+
+    // 以下EffectLibraryのエディタ拡張
 #if UNITY_EDITOR
-    [CustomEditor(typeof(VisualEffectLibrary))]
-    public class VisualEffectLibraryEditor : Editor
-    {
-        private SerializedProperty effectsProp;
-
-        private void OnEnable()
+        [CustomEditor(typeof(VisualEffectLibrary))]
+        public class VisualEffectLibraryEditor : Editor
         {
-            effectsProp = serializedObject.FindProperty("effects");
-        }
+            private SerializedProperty effectsProp;
 
-        public override void OnInspectorGUI()
-        {
-            serializedObject.Update();
-
-            EditorGUILayout.LabelField("エフェクト一覧", EditorStyles.boldLabel);
-
-            // ヘッダー
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("ID", GUILayout.Width(40));
-            GUILayout.Label("Effect Prefab", GUILayout.ExpandWidth(true));
-            GUILayout.Label("", GUILayout.Width(60)); // for 上に追加
-            GUILayout.Label("", GUILayout.Width(60)); // for 下に追加
-            GUILayout.Label("", GUILayout.Width(40)); // for 削除
-            EditorGUILayout.EndHorizontal();
-
-            int insertIndexAbove = -1;
-            int insertIndexBelow = -1;
-            int deleteIndex = -1;
-
-            for (int i = 0; i < effectsProp.arraySize; i++)
+            private void OnEnable()
             {
-                SerializedProperty effectWithIDProp = effectsProp.GetArrayElementAtIndex(i);
-                SerializedProperty effectIdProp = effectWithIDProp.FindPropertyRelative("effectId");
-                SerializedProperty effectPrefabProp = effectWithIDProp.FindPropertyRelative("effectPrefab");
+                effectsProp = serializedObject.FindProperty("effects");
+            }
 
+            public override void OnInspectorGUI()
+            {
+                serializedObject.Update();
+
+                EditorGUILayout.LabelField("エフェクト一覧", EditorStyles.boldLabel);
+
+                // ヘッダー
                 EditorGUILayout.BeginHorizontal();
-
-                // IDをラベルで表示(変更不可)
-                EditorGUILayout.LabelField(effectIdProp.intValue.ToString(), GUILayout.Width(40));
-
-                effectPrefabProp.objectReferenceValue = EditorGUILayout.ObjectField(
-                    effectPrefabProp.objectReferenceValue,
-                    typeof(GameObject),
-                    false,
-                    GUILayout.ExpandWidth(true)
-                );
-
-                if (GUILayout.Button("上に追加", GUILayout.Width(60)))
-                {
-                    insertIndexAbove = i;
-                }
-                if (GUILayout.Button("下に追加", GUILayout.Width(60)))
-                {
-                    insertIndexBelow = i;
-                }
-                if (GUILayout.Button("削除", GUILayout.Width(40)))
-                {
-                    deleteIndex = i;
-                }
-
+                GUILayout.Label("ID", GUILayout.Width(40));
+                GUILayout.Label("Effect Prefab", GUILayout.ExpandWidth(true));
+                GUILayout.Label("", GUILayout.Width(60)); // for 上に追加
+                GUILayout.Label("", GUILayout.Width(60)); // for 下に追加
+                GUILayout.Label("", GUILayout.Width(40)); // for 削除
                 EditorGUILayout.EndHorizontal();
-            }
 
-            // 末尾に追加ボタン
-            if (GUILayout.Button("Add Effect At End"))
-            {
-                // Insert new element at the end of the array
-                effectsProp.InsertArrayElementAtIndex(effectsProp.arraySize);
-                // 新しい要素の値を初期化
-                if (effectsProp.arraySize > 0)
+                int insertIndexAbove = -1;
+                int insertIndexBelow = -1;
+                int deleteIndex = -1;
+
+                for (int i = 0; i < effectsProp.arraySize; i++)
                 {
-                    SerializedProperty newElement = effectsProp.GetArrayElementAtIndex(effectsProp.arraySize - 1);
+                    SerializedProperty effectWithIDProp = effectsProp.GetArrayElementAtIndex(i);
+                    SerializedProperty effectIdProp = effectWithIDProp.FindPropertyRelative("effectId");
+                    SerializedProperty effectPrefabProp = effectWithIDProp.FindPropertyRelative("effectPrefab");
+
+                    EditorGUILayout.BeginHorizontal();
+
+                    // IDをラベルで表示(変更不可)
+                    EditorGUILayout.LabelField(effectIdProp.intValue.ToString(), GUILayout.Width(40));
+
+                    effectPrefabProp.objectReferenceValue = EditorGUILayout.ObjectField(
+                        effectPrefabProp.objectReferenceValue,
+                        typeof(GameObject),
+                        false,
+                        GUILayout.ExpandWidth(true)
+                    );
+
+                    if (GUILayout.Button("上に追加", GUILayout.Width(60)))
+                    {
+                        insertIndexAbove = i;
+                    }
+                    if (GUILayout.Button("下に追加", GUILayout.Width(60)))
+                    {
+                        insertIndexBelow = i;
+                    }
+                    if (GUILayout.Button("削除", GUILayout.Width(40)))
+                    {
+                        deleteIndex = i;
+                    }
+
+                    EditorGUILayout.EndHorizontal();
+                }
+
+                // 末尾に追加ボタン
+                if (GUILayout.Button("Add Effect At End"))
+                {
+                    // Insert new element at the end of the array
+                    effectsProp.InsertArrayElementAtIndex(effectsProp.arraySize);
+                    // 新しい要素の値を初期化
+                    if (effectsProp.arraySize > 0)
+                    {
+                        SerializedProperty newElement = effectsProp.GetArrayElementAtIndex(effectsProp.arraySize - 1);
+                        newElement.FindPropertyRelative("effectPrefab").objectReferenceValue = null;
+                        newElement.FindPropertyRelative("effectId").intValue = effectsProp.arraySize - 1;
+                    }
+                }
+
+                // 行削除処理
+                if (deleteIndex != -1)
+                {
+                    effectsProp.DeleteArrayElementAtIndex(deleteIndex);
+                    // IDを振り直し
+                    for (int j = 0; j < effectsProp.arraySize; j++)
+                    {
+                        SerializedProperty effectWithID = effectsProp.GetArrayElementAtIndex(j);
+                        effectWithID.FindPropertyRelative("effectId").intValue = j;
+                    }
+                }
+
+                // 上に挿入処理
+                if (insertIndexAbove != -1)
+                {
+                    effectsProp.InsertArrayElementAtIndex(insertIndexAbove);
+                    SerializedProperty newElement = effectsProp.GetArrayElementAtIndex(insertIndexAbove);
                     newElement.FindPropertyRelative("effectPrefab").objectReferenceValue = null;
-                    newElement.FindPropertyRelative("effectId").intValue = effectsProp.arraySize - 1;
-                }
-            }
 
-            // 行削除処理
-            if (deleteIndex != -1)
-            {
-                effectsProp.DeleteArrayElementAtIndex(deleteIndex);
-                // IDを振り直し
-                for (int j = 0; j < effectsProp.arraySize; j++)
+                    // IDを振り直し
+                    for (int j = 0; j < effectsProp.arraySize; j++)
+                    {
+                        SerializedProperty effectWithID = effectsProp.GetArrayElementAtIndex(j);
+                        effectWithID.FindPropertyRelative("effectId").intValue = j;
+                    }
+                }
+
+                // 下に挿入処理
+                if (insertIndexBelow != -1)
                 {
-                    SerializedProperty effectWithID = effectsProp.GetArrayElementAtIndex(j);
-                    effectWithID.FindPropertyRelative("effectId").intValue = j;
+                    effectsProp.InsertArrayElementAtIndex(insertIndexBelow + 1);
+                    SerializedProperty newElement = effectsProp.GetArrayElementAtIndex(insertIndexBelow + 1);
+                    newElement.FindPropertyRelative("effectPrefab").objectReferenceValue = null;
+
+                    // IDを振り直し
+                    for (int j = 0; j < effectsProp.arraySize; j++)
+                    {
+                        SerializedProperty effectWithID = effectsProp.GetArrayElementAtIndex(j);
+                        effectWithID.FindPropertyRelative("effectId").intValue = j;
+                    }
                 }
+
+                serializedObject.ApplyModifiedProperties();
             }
-
-            // 上に挿入処理
-            if (insertIndexAbove != -1)
-            {
-                effectsProp.InsertArrayElementAtIndex(insertIndexAbove);
-                SerializedProperty newElement = effectsProp.GetArrayElementAtIndex(insertIndexAbove);
-                newElement.FindPropertyRelative("effectPrefab").objectReferenceValue = null;
-
-                // IDを振り直し
-                for (int j = 0; j < effectsProp.arraySize; j++)
-                {
-                    SerializedProperty effectWithID = effectsProp.GetArrayElementAtIndex(j);
-                    effectWithID.FindPropertyRelative("effectId").intValue = j;
-                }
-            }
-
-            // 下に挿入処理
-            if (insertIndexBelow != -1)
-            {
-                effectsProp.InsertArrayElementAtIndex(insertIndexBelow + 1);
-                SerializedProperty newElement = effectsProp.GetArrayElementAtIndex(insertIndexBelow + 1);
-                newElement.FindPropertyRelative("effectPrefab").objectReferenceValue = null;
-
-                // IDを振り直し
-                for (int j = 0; j < effectsProp.arraySize; j++)
-                {
-                    SerializedProperty effectWithID = effectsProp.GetArrayElementAtIndex(j);
-                    effectWithID.FindPropertyRelative("effectId").intValue = j;
-                }
-            }
-
-            serializedObject.ApplyModifiedProperties();
         }
-    }
 #endif
+    }
 }

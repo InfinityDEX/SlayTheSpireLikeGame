@@ -1,41 +1,44 @@
 using UnityEngine;
 
-/// <summary>
-/// エネミースポーンデータ
-/// </summary>
-[System.Serializable]
-public class EnemySpawnData
+namespace CreaturesComponent
 {
     /// <summary>
-    /// 敵キャラのプレハブ
+    /// エネミースポーンデータ
     /// </summary>
-    public Enemy enemyPrefab; 
-
-    /// <summary>
-    /// 生成位置
-    /// </summary>
-    public Vector3 spawnPosition;
-
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    /// <param name="enemyPrefab">エネミープレハブ</param>
-    /// <param name="spawnPosition">生成位置</param>
-    public EnemySpawnData(Enemy enemyPrefab, Vector3 spawnPosition)
+    [System.Serializable]
+    public class EnemySpawnData
     {
-        this.enemyPrefab = enemyPrefab;
-        this.spawnPosition = spawnPosition;
-    }
-}
+        /// <summary>
+        /// 敵キャラのプレハブ
+        /// </summary>
+        public Enemy enemyPrefab; 
 
-/// <summary>
-/// ステージに生成するエネミーの組み合わせデータクラス
-/// </summary>
-[CreateAssetMenu(fileName = "EnemyCombinationData", menuName = "Game/EnemyCombinationData", order = 1)]
-public class EnemyCombinationData : ScriptableObject
-{
+        /// <summary>
+        /// 生成位置
+        /// </summary>
+        public Vector3 spawnPosition;
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="enemyPrefab">エネミープレハブ</param>
+        /// <param name="spawnPosition">生成位置</param>
+        public EnemySpawnData(Enemy enemyPrefab, Vector3 spawnPosition)
+        {
+            this.enemyPrefab = enemyPrefab;
+            this.spawnPosition = spawnPosition;
+        }
+    }
+
     /// <summary>
-    /// スポーンさせたいエネミーのリスト
+    /// ステージに生成するエネミーの組み合わせデータクラス
     /// </summary>
-    public EnemySpawnData[] enemyCombinations;
+    [CreateAssetMenu(fileName = "EnemyCombinationData", menuName = "Game/EnemyCombinationData", order = 1)]
+    public class EnemyCombinationData : ScriptableObject
+    {
+        /// <summary>
+        /// スポーンさせたいエネミーのリスト
+        /// </summary>
+        public EnemySpawnData[] enemyCombinations;
+    }
 }

@@ -1,22 +1,26 @@
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using CardsComponent;
 
-public class StoreSceneLifetimeScope : LifetimeScope
+namespace StoreComponent
 {
-    [field: SerializeField, Header("カード販売マネージャー")]
-    private SalesCardManager _salesCardManager;
-
-    [field: SerializeField, Header("カードライブラリ")]
-    private CardDataLibrary _scardDataLibrary;
-
-    [field: SerializeField, Header("デッキマネージャー")]
-    private DeckManager _deckManager;
-    protected override void Configure(IContainerBuilder builder)
+    public class StoreSceneLifetimeScope : LifetimeScope
     {
-        // Monobehaviourの登録
-        builder.RegisterComponent(_salesCardManager);
-        builder.RegisterComponent(_scardDataLibrary);
-        builder.RegisterComponent(_deckManager);
+        [field: SerializeField, Header("カード販売マネージャー")]
+        private SalesCardManager _salesCardManager;
+
+        [field: SerializeField, Header("カードライブラリ")]
+        private CardDataLibrary _scardDataLibrary;
+
+        [field: SerializeField, Header("デッキマネージャー")]
+        private DeckManager _deckManager;
+        protected override void Configure(IContainerBuilder builder)
+        {
+            // Monobehaviourの登録
+            builder.RegisterComponent(_salesCardManager);
+            builder.RegisterComponent(_scardDataLibrary);
+            builder.RegisterComponent(_deckManager);
+        }
     }
 }

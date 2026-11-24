@@ -1,27 +1,30 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// シーン移動クラス
-///
-/// UnityのUI（Button）で画面遷移したい場合にGameObjectに本コンポーネントを
-/// アタッチしてシーン移動のメソッドを呼び出す。
-/// </summary>
-public class TransitionScene : MonoBehaviour
+namespace SceneTransitionComponent
 {
     /// <summary>
-    /// タイトルシーンに移動
+    /// シーン移動クラス
+    ///
+    /// UnityのUI（Button）で画面遷移したい場合にGameObjectに本コンポーネントを
+    /// アタッチしてシーン移動のメソッドを呼び出す。
     /// </summary>
-    public void GoToTitleScene()
+    public class TransitionScene : MonoBehaviour
     {
-        SceneManager.LoadScene("TitleScene", LoadSceneMode.Single);
-    }
+        /// <summary>
+        /// タイトルシーンに移動
+        /// </summary>
+        public void GoToTitleScene()
+        {
+            SceneManager.LoadScene("TitleScene", LoadSceneMode.Single);
+        }
 
-    /// <summary>
-    /// マップシーンに移動
-    /// </summary>
-    public void GoToMapScene()
-    {
-        SceneManager.LoadScene("MapScene", LoadSceneMode.Single);
+        /// <summary>
+        /// マップシーンに移動
+        /// </summary>
+        public void GoToMapScene()
+        {
+            SceneManager.LoadScene("MapScene", LoadSceneMode.Single);
+        }
     }
 }

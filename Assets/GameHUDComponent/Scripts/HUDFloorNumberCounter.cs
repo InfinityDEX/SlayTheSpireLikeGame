@@ -1,26 +1,30 @@
 using TMPro;
 using UnityEngine;
 using VContainer;
+using SaveDataComponent;
 
-/// <summary>
-/// 現在何階層目にいるかを画面上に表示するクラス
-/// </summary>
-public class HUDFloorNumberCounter : MonoBehaviour
+namespace GameHUDComponent
 {
-    [field:SerializeField, Header("階層情報を表示するTextMeshProインスタンス")]
-    private TextMeshProUGUI floorNumViewUGUI;
-
     /// <summary>
-    /// セーブデータホルダー
+    /// 現在何階層目にいるかを画面上に表示するクラス
     /// </summary>
-    [Inject]
-    public SaveDataHolder SaveDataHolderInstance { get; private set; }
-
-    private void Update()
+    public class HUDFloorNumberCounter : MonoBehaviour
     {
-        if (SaveDataHolderInstance.SaveData != null && floorNumViewUGUI != null)
+        [field:SerializeField, Header("階層情報を表示するTextMeshProインスタンス")]
+        private TextMeshProUGUI floorNumViewUGUI;
+
+        /// <summary>
+        /// セーブデータホルダー
+        /// </summary>
+        [Inject]
+        public SaveDataHolder SaveDataHolderInstance { get; private set; }
+
+        private void Update()
         {
-            floorNumViewUGUI.text = $"[{SaveDataHolderInstance.SaveData.currentFloor.ToString("00")}] F";
+            if (SaveDataHolderInstance.SaveData != null && floorNumViewUGUI != null)
+            {
+                floorNumViewUGUI.text = $"[{SaveDataHolderInstance.SaveData.currentFloor.ToString("00")}] F";
+            }
         }
     }
 }

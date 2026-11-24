@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CardEffect;
 using OneOf;
+using CreaturesComponent;
 
 namespace CardsComponent.Tests.EditMode
 {

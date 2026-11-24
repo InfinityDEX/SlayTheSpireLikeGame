@@ -2,48 +2,51 @@ using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
 
-/// <summary>
-/// エネミーの組み合わせデータジェネレータクラス
-/// 
-/// 指定したエネミー種別に応じて、
-/// 対応するエネミー組み合わせデータからランダムにピックアップし、
-/// 上記の組み合わせデータを管理するEnemyCombinationDataManagerの実体を生成する。
-/// （バトルシーン移行後にこのマネージャの持つデータを基にエネミーを生成する）
-/// </summary>
-public class EnemyCombinationsDataGenerator : MonoBehaviour
+namespace CreaturesComponent
 {
-    [Inject]
-    private EnemyCombinationsDataManager enemyCombinationsDataManager;
-
-    public enum EnemyType
-    {
-        Enemy,
-        EliteEnemy,
-        Boss
-    }
-
     /// <summary>
-    /// エネミー組み合わせデータマネージャの生成
+    /// エネミーの組み合わせデータジェネレータクラス
+    /// 
+    /// 指定したエネミー種別に応じて、
+    /// 対応するエネミー組み合わせデータからランダムにピックアップし、
+    /// 上記の組み合わせデータを管理するEnemyCombinationDataManagerの実体を生成する。
+    /// （バトルシーン移行後にこのマネージャの持つデータを基にエネミーを生成する）
     /// </summary>
-    /// <param name="enemyType">エネミーの種別</param>
-    /// <param name="stageData">ステージデータ</param>
-    public void GenerateData(EnemyType enemyType, StageData stageData)
+    public class EnemyCombinationsDataGenerator : MonoBehaviour
     {
-        List<EnemyCombinationData> enemyCombinationDatas = null;
-        switch (enemyType)
+        [Inject]
+        private EnemyCombinationsDataManager enemyCombinationsDataManager;
+
+        public enum EnemyType
         {
-            case EnemyType.Enemy:
-                enemyCombinationDatas = stageData.normalEnemies;
-                break;
-            case EnemyType.EliteEnemy:
-                enemyCombinationDatas = stageData.eliteEnemies;
-                break;
-            case EnemyType.Boss:
-                enemyCombinationDatas = new List<EnemyCombinationData> { stageData.bossEnemy }; // コード簡略化の為、stageData.bossEnemyもList化して以降の処理を共通化する。
-                break;
+            Enemy,
+            EliteEnemy,
+            Boss
         }
-   
-        var selectedCombination = enemyCombinationDatas[Random.Range(0, enemyCombinationDatas.Count)];
-        enemyCombinationsDataManager.SetData(selectedCombination);
+
+        /// <summary>
+        /// エネミー組み合わせデータマネージャの生成
+        /// </summary>
+        /// <param name="enemyType">エネミーの種別</param>
+        /// <param name="stageData">ステージデータ</param>
+        public void GenerateData(EnemyType enemyType, StageData stageData)
+        {
+            List<EnemyCombinationData> enemyCombinationDatas = null;
+            switch (enemyType)
+            {
+                case EnemyType.Enemy:
+                    enemyCombinationDatas = stageData.normalEnemies;
+                    break;
+                case EnemyType.EliteEnemy:
+                    enemyCombinationDatas = stageData.eliteEnemies;
+                    break;
+                case EnemyType.Boss:
+                    enemyCombinationDatas = new List<EnemyCombinationData> { stageData.bossEnemy }; // コード簡略化の為、stageData.bossEnemyもList化して以降の処理を共通化する。
+                    break;
+            }
+
+            var selectedCombination = enemyCombinationDatas[Random.Range(0, enemyCombinationDatas.Count)];
+            enemyCombinationsDataManager.SetData(selectedCombination);
+        }
     }
 }

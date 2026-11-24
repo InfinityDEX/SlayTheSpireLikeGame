@@ -2,209 +2,215 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using VContainer;
+using CardsComponent;
+using DungeonMapComponent;
+using SaveDataComponent;
 
-/// <summary>
-/// ストア内で実行できるアクションを管理するクラス
-/// </summary>
-public class StoreManager : MonoBehaviour
+namespace StoreComponent
 {
-    [field: SerializeField, Header("体力回復料金")]
-    private int recoveryPrice;
-
-    [field: SerializeField, Header("カードアップグレード料金")]
-    private int cardUpgradePrice;
-
-    [field: SerializeField, Header("カード除去料金")]
-    private int cardDeletePrice;
-
-    [field: SerializeField, Header("販売カード入れ替え料金")]
-    private int changeCardLineupPrice;
-
     /// <summary>
-    /// 販売カード管理クラス
+    /// ストア内で実行できるアクションを管理するクラス
     /// </summary>
-    private SalesCardManager salesCardManager;
-
-    /// <summary>
-    /// カードビュワー
-    /// </summary>
-    private CardViewer cardViewer;
-
-    /// <summary>
-    /// 仮のマップデータ
-    /// </summary>
-    private TemporaryMapData temporaryMapData;
-
-    /// <summary>
-    /// カードデータライブラリ
-    /// </summary>
-    public CardDataLibrary CardDataLibraryInstance { get; private set; }
-
-    /// <summary>
-    /// デッキマネージャー
-    /// </summary>
-    public DeckManager DeckManagerInstance { get; private set; }
-
-    /// <summary>
-    /// 依存性注入
-    /// </summary>
-    /// <param name="salesCardManager">販売カードマネージャー</param>
-    /// <param name="cardViewer">カードビュワー</param>
-    /// <param name="temporaryMapData">仮のマップデータ</param>
-    /// <param name="CardDataLibraryInstance">カードデータライブラリ</param>
-    /// <param name="DeckManagerInstance">デッキマネージャー</param>
-    [Inject]
-    public void Init(SalesCardManager salesCardManager,
-        CardViewer cardViewer,
-        TemporaryMapData temporaryMapData,
-        CardDataLibrary CardDataLibraryInstance,
-        DeckManager DeckManagerInstance)
+    public class StoreManager : MonoBehaviour
     {
-        this.salesCardManager = salesCardManager;
-        this.cardViewer = cardViewer;
-        this.temporaryMapData = temporaryMapData;
-        this.CardDataLibraryInstance = CardDataLibraryInstance;
-        this.DeckManagerInstance = DeckManagerInstance;
-    }
+        [field: SerializeField, Header("体力回復料金")]
+        private int recoveryPrice;
 
-    /// <summary>
-    /// セーブデータホルダー
-    /// </summary>
-    [Inject]
-    public SaveDataHolder SaveDataHolderInstance { get; private set; }
+        [field: SerializeField, Header("カードアップグレード料金")]
+        private int cardUpgradePrice;
 
-    /// <summary>
-    /// 体力全回復
-    /// </summary>
-    public void FullRecovery()
-    {
-        // 支払いが可能か確認
-        if (SaveDataHolderInstance.CanAfford(recoveryPrice))
+        [field: SerializeField, Header("カード除去料金")]
+        private int cardDeletePrice;
+
+        [field: SerializeField, Header("販売カード入れ替え料金")]
+        private int changeCardLineupPrice;
+
+        /// <summary>
+        /// 販売カード管理クラス
+        /// </summary>
+        private SalesCardManager salesCardManager;
+
+        /// <summary>
+        /// カードビュワー
+        /// </summary>
+        private CardViewer cardViewer;
+
+        /// <summary>
+        /// 仮のマップデータ
+        /// </summary>
+        private TemporaryMapData temporaryMapData;
+
+        /// <summary>
+        /// カードデータライブラリ
+        /// </summary>
+        public CardDataLibrary CardDataLibraryInstance { get; private set; }
+
+        /// <summary>
+        /// デッキマネージャー
+        /// </summary>
+        public DeckManager DeckManagerInstance { get; private set; }
+
+        /// <summary>
+        /// 依存性注入
+        /// </summary>
+        /// <param name="salesCardManager">販売カードマネージャー</param>
+        /// <param name="cardViewer">カードビュワー</param>
+        /// <param name="temporaryMapData">仮のマップデータ</param>
+        /// <param name="CardDataLibraryInstance">カードデータライブラリ</param>
+        /// <param name="DeckManagerInstance">デッキマネージャー</param>
+        [Inject]
+        public void Init(SalesCardManager salesCardManager,
+            CardViewer cardViewer,
+            TemporaryMapData temporaryMapData,
+            CardDataLibrary CardDataLibraryInstance,
+            DeckManager DeckManagerInstance)
         {
-            // 体力回復
-            SaveDataHolderInstance.FullRecovery();
-
-            // 支払処理
-            SaveDataHolderInstance.UseMoney(recoveryPrice);
+            this.salesCardManager = salesCardManager;
+            this.cardViewer = cardViewer;
+            this.temporaryMapData = temporaryMapData;
+            this.CardDataLibraryInstance = CardDataLibraryInstance;
+            this.DeckManagerInstance = DeckManagerInstance;
         }
-    }
 
-    /// <summary>
-    /// カード強化メニューを開く
-    /// </summary>
-    public void CardUpgradeMenuOpen()
-    {
-        DeckManagerInstance.OpenDrawPileView();
-        var cardList = cardViewer.GetActiveCards();
-        foreach (var card in cardList)
+        /// <summary>
+        /// セーブデータホルダー
+        /// </summary>
+        [Inject]
+        public SaveDataHolder SaveDataHolderInstance { get; private set; }
+
+        /// <summary>
+        /// 体力全回復
+        /// </summary>
+        public void FullRecovery()
         {
-            var controller = card.GetComponent<CardOverlayButtonController>();
-            if (controller != null)
+            // 支払いが可能か確認
+            if (SaveDataHolderInstance.CanAfford(recoveryPrice))
             {
-                controller.EnableButton();
+                // 体力回復
+                SaveDataHolderInstance.FullRecovery();
 
-                // RegisterOnClickListenerでもリセットはしているが、continueで呼び出されない可能性もあるので、
-                // 二重にはなるが先にリセットする
-                controller.ResetOnClickListener();
+                // 支払処理
+                SaveDataHolderInstance.UseMoney(recoveryPrice);
+            }
+        }
 
-                // アップグレード済みのカードは、オーバーレイボタンは表示するが、非活性状態で表示して選択できないことを明示する。
-                if (card.ThisCardData.IsUpgraded)
+        /// <summary>
+        /// カード強化メニューを開く
+        /// </summary>
+        public void CardUpgradeMenuOpen()
+        {
+            DeckManagerInstance.OpenDrawPileView();
+            var cardList = cardViewer.GetActiveCards();
+            foreach (var card in cardList)
+            {
+                var controller = card.GetComponent<CardOverlayButtonController>();
+                if (controller != null)
                 {
-                    controller.InActiveButton();
-                    continue;
+                    controller.EnableButton();
+
+                    // RegisterOnClickListenerでもリセットはしているが、continueで呼び出されない可能性もあるので、
+                    // 二重にはなるが先にリセットする
+                    controller.ResetOnClickListener();
+
+                    // アップグレード済みのカードは、オーバーレイボタンは表示するが、非活性状態で表示して選択できないことを明示する。
+                    if (card.ThisCardData.IsUpgraded)
+                    {
+                        controller.InActiveButton();
+                        continue;
+                    }
+                    else
+                    {
+                        controller.ActiveButton();
+                    }
+
+                    controller.RegisterOnClickListener(() =>
+                    {
+                        // 強化料金が支払えるか確認する
+                        if (SaveDataHolderInstance.CanAfford(cardUpgradePrice))
+                        {
+                            // 選択したカードのカードIDと最初に一致したカードをアップグレードする
+                            DeckManagerInstance.UpgradeCard(card.ThisCardData);
+
+                            // 強化が済んだらビュワーを非表示にする
+                            cardViewer.DisableViewer();
+
+                            // 全て終わったら支払処理
+                            SaveDataHolderInstance.UseMoney(cardUpgradePrice);
+                        }
+                    });
                 }
-                else
+            }
+        }
+
+        /// <summary>
+        /// カード除去メニューを開く
+        /// </summary>
+        public void CardDeleteMenuOpen()
+        {
+            DeckManagerInstance.OpenDrawPileView();
+            var cardList = cardViewer.GetActiveCards();
+            foreach (var card in cardList)
+            {
+                var controller = card.GetComponent<CardOverlayButtonController>();
+                if (controller != null)
                 {
+                    controller.EnableButton();
+
                     controller.ActiveButton();
+
+                    controller.RegisterOnClickListener(() =>
+                    {
+                        // カード除去料金が支払えるか確認する。
+                        if (SaveDataHolderInstance.CanAfford(cardDeletePrice))
+                        {
+                            // 選択したカードを除去する
+                            DeckManagerInstance.RemoveCard(card.ThisCardData);
+
+                            // 除去が済んだらビュワーを非表示にする
+                            cardViewer.DisableViewer();
+
+                            // 全て終わったら支払処理
+                            SaveDataHolderInstance.UseMoney(cardDeletePrice);
+                        }
+                    });
                 }
-
-                controller.RegisterOnClickListener(() =>
-                {
-                    // 強化料金が支払えるか確認する
-                    if (SaveDataHolderInstance.CanAfford(cardUpgradePrice))
-                    {
-                        // 選択したカードのカードIDと最初に一致したカードをアップグレードする
-                        DeckManagerInstance.UpgradeCard(card.ThisCardData);
-
-                        // 強化が済んだらビュワーを非表示にする
-                        cardViewer.DisableViewer();
-
-                        // 全て終わったら支払処理
-                        SaveDataHolderInstance.UseMoney(cardUpgradePrice);
-                    }
-                });
             }
         }
-    }
 
-    /// <summary>
-    /// カード除去メニューを開く
-    /// </summary>
-    public void CardDeleteMenuOpen()
-    {
-        DeckManagerInstance.OpenDrawPileView();
-        var cardList = cardViewer.GetActiveCards();
-        foreach (var card in cardList)
+        /// <summary>
+        /// カードの購入を試す(SalesCardManagerにある関数のラッパー)
+        ///
+        /// 購入ができない場合は何も行わない
+        /// </summary>
+        public void BuySelectedCard()
         {
-            var controller = card.GetComponent<CardOverlayButtonController>();
-            if (controller != null)
+            salesCardManager.BuySelectedCard();
+        }
+
+        /// <summary>
+        /// 店に展示されているカードのラインナップを変更する(SalesCardManagerにある関数のラッパー)
+        /// </summary>
+        public void ChangeShowcaseLineup()
+        {
+            if (SaveDataHolderInstance.CanAfford(changeCardLineupPrice))
             {
-                controller.EnableButton();
-
-                controller.ActiveButton();
-
-                controller.RegisterOnClickListener(() =>
-                {
-                    // カード除去料金が支払えるか確認する。
-                    if (SaveDataHolderInstance.CanAfford(cardDeletePrice))
-                    {
-                        // 選択したカードを除去する
-                        DeckManagerInstance.RemoveCard(card.ThisCardData);
-
-                        // 除去が済んだらビュワーを非表示にする
-                        cardViewer.DisableViewer();
-
-                        // 全て終わったら支払処理
-                        SaveDataHolderInstance.UseMoney(cardDeletePrice);
-                    }
-                });
+                salesCardManager.ChangeShowcaseLineup();
+                SaveDataHolderInstance.UseMoney(changeCardLineupPrice);
             }
         }
-    }
 
-    /// <summary>
-    /// カードの購入を試す(SalesCardManagerにある関数のラッパー)
-    ///
-    /// 購入ができない場合は何も行わない
-    /// </summary>
-    public void BuySelectedCard()
-    {
-        salesCardManager.BuySelectedCard();
-    }
-
-    /// <summary>
-    /// 店に展示されているカードのラインナップを変更する(SalesCardManagerにある関数のラッパー)
-    /// </summary>
-    public void ChangeShowcaseLineup()
-    {
-        if (SaveDataHolderInstance.CanAfford(changeCardLineupPrice))
+        /// <summary>
+        /// ショップを退店する
+        /// </summary>
+        public void LeavingStore()
         {
-            salesCardManager.ChangeShowcaseLineup();
-            SaveDataHolderInstance.UseMoney(changeCardLineupPrice);
+            // 一時的な情報としていたダンジョンマップデータを保存する
+            temporaryMapData.SaveDungeonMapData();
+
+            DeckManagerInstance.ReturnAllCardsToDrawPile(); // デッキのリセット
+            DeckManagerInstance.WriteDeckData(); // デッキの保存
+            SaveDataHolderInstance.WriteSaveData(); // セーブデータのJson保存
+            SceneManager.LoadScene("MapScene", LoadSceneMode.Single);
         }
-    }
-
-    /// <summary>
-    /// ショップを退店する
-    /// </summary>
-    public void LeavingStore()
-    {
-        // 一時的な情報としていたダンジョンマップデータを保存する
-        temporaryMapData.SaveDungeonMapData();
-
-        DeckManagerInstance.ReturnAllCardsToDrawPile(); // デッキのリセット
-        DeckManagerInstance.WriteDeckData(); // デッキの保存
-        SaveDataHolderInstance.WriteSaveData(); // セーブデータのJson保存
-        SceneManager.LoadScene("MapScene", LoadSceneMode.Single);
     }
 }

@@ -1,29 +1,32 @@
-/// <summary>
-/// セーブデータエンティティクラス
-/// 
-/// ダンジョンマップは別に保存
-/// それ以外は基本的にこのエンティティを使う
-/// </summary>
-[System.Serializable]
-public class SaveDataEntity
+namespace SaveDataComponent
 {
     /// <summary>
-    /// 最大体力
+    /// セーブデータエンティティクラス
+    /// 
+    /// ダンジョンマップは別に保存
+    /// それ以外は基本的にこのエンティティを使う
     /// </summary>
-    public int maxHealth = 100;
+    [System.Serializable]
+    public class SaveDataEntity
+    {
+        /// <summary>
+        /// 最大体力
+        /// </summary>
+        public int maxHealth = 100;
 
-    /// <summary>
-    /// 現在の残り体力
-    /// </summary>
-    public int currentHealth = 100;
+        /// <summary>
+        /// 現在の残り体力
+        /// </summary>
+        public int currentHealth = 100;
 
-    /// <summary>
-    /// 所持金
-    /// </summary>
-    public int money = 100;
+        /// <summary>
+        /// 所持金
+        /// </summary>
+        public int money = 100;
 
-    /// <summary>
-    /// 現在の階層
-    /// </summary>
-    public int currentFloor = 0;
+        /// <summary>
+        /// 現在の階層
+        /// </summary>
+        public int currentFloor = 0;
+    }
 }

@@ -1,19 +1,22 @@
 using UnityEngine;
 using VContainer;
 
-public class SoundTrigger : MonoBehaviour
+namespace AudioComponent
 {
-    [field: SerializeField, Header("再生したい音声ソース")]
-    private AudioClip audioClip;
-
-    [Inject]
-    private AudioController audioController;
-
-    public void Play()
+    public class SoundTrigger : MonoBehaviour
     {
-        if (audioController != null && audioClip != null)
+        [field: SerializeField, Header("再生したい音声ソース")]
+        private AudioClip audioClip;
+
+        [Inject]
+        private AudioController audioController;
+
+        public void Play()
         {
-            audioController.PlaySE(audioClip);
+            if (audioController != null && audioClip != null)
+            {
+                audioController.PlaySE(audioClip);
+            }
         }
     }
 }

@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
 
-/// <summary>
-/// カードデータファクトリーインターフェース
-/// </summary>
-/// <returns></returns>
-public interface ICardDataFactory
+namespace CardsComponent
 {
     /// <summary>
-    /// カードデータを生成する
+    /// カードデータファクトリーインターフェース
     /// </summary>
-    /// <returns>カードデータ</returns>
-    List<CardData> CreateCardDataList();
+    /// <returns></returns>
+    public interface ICardDataFactory
+    {
+        /// <summary>
+        /// カードデータを生成する
+        /// </summary>
+        /// <returns>カードデータ</returns>
+        List<CardData> CreateCardDataList();
+    }
 }

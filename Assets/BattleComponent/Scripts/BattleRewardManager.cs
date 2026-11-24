@@ -3,117 +3,122 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;
+using CardsComponent;
+using CommonComponent;
 
-public class BattleRewardManager : MonoBehaviour
+namespace BattleComponent
 {
-    [field: Header("カードプレハブ"), SerializeField]
-    private Card cardPrefab;
-
-    [field: Header("カード選択カーソル"), SerializeField]
-    private GameObject cardSelectingCursor;
-
-    [field: Header("カードを配置するRectTransform"), SerializeField]
-    private Transform cardParentTransform;
-
-    /// <summary>
-    /// リワードカード一覧
-    /// </summary>
-    private List<Card> rewardCardList;
-
-    /// <summary>
-    /// リワードカードのセレクターカーソル
-    /// </summary>
-    private int selectingRewardCardIdx = 0;
-
-    /// <summary>
-    /// デッキマネージャー
-    /// </summary>
-    [Inject]
-    public DeckManager DeckManagerInstance { get; private set; }
-
-    private void Awake()
+    public class BattleRewardManager : MonoBehaviour
     {
-        if(rewardCardList == null)
-        {
-            rewardCardList = new();
-        }
-    }
+        [field: Header("カードプレハブ"), SerializeField]
+        private Card cardPrefab;
 
-    private void Update()
-    {
-        // カーソルの座標更新
-        if (rewardCardList.Count > 0)
+        [field: Header("カード選択カーソル"), SerializeField]
+        private GameObject cardSelectingCursor;
+
+        [field: Header("カードを配置するRectTransform"), SerializeField]
+        private Transform cardParentTransform;
+
+        /// <summary>
+        /// リワードカード一覧
+        /// </summary>
+        private List<Card> rewardCardList;
+
+        /// <summary>
+        /// リワードカードのセレクターカーソル
+        /// </summary>
+        private int selectingRewardCardIdx = 0;
+
+        /// <summary>
+        /// デッキマネージャー
+        /// </summary>
+        [Inject]
+        public DeckManager DeckManagerInstance { get; private set; }
+
+        private void Awake()
         {
-            for (int i = 0; i < rewardCardList.Count; i++)
+            if(rewardCardList == null)
             {
-                var mouseHoverChecker = rewardCardList[i].GetComponent<UIMouseHoverChecker>();
-                if (mouseHoverChecker.IsHovered)
-                {
-                    selectingRewardCardIdx = i;
-                }
+                rewardCardList = new();
             }
-
-            Vector2 cursorPos = rewardCardList[selectingRewardCardIdx].transform.position;
-            cardSelectingCursor.transform.position = cursorPos;
         }
-    }
 
-    /// <summary>
-    /// リワード画面の表示
-    /// </summary>
-    /// <param name="cardDatas"></param>
-    public void EnableRewardView(List<CardData> rewaeds)
-    {
-        gameObject.SetActive(true);
-        foreach (var rewardCard in rewaeds)
+        private void Update()
         {
-            AddRewardCard(rewardCard);
-        }
-    }
+            // カーソルの座標更新
+            if (rewardCardList.Count > 0)
+            {
+                for (int i = 0; i < rewardCardList.Count; i++)
+                {
+                    var mouseHoverChecker = rewardCardList[i].GetComponent<UIMouseHoverChecker>();
+                    if (mouseHoverChecker.IsHovered)
+                    {
+                        selectingRewardCardIdx = i;
+                    }
+                }
 
-    /// <summary>
-    /// 報酬カード追加
-    /// </summary>
-    /// <param name="rewardCardData">報酬となるカード</param>
-    public void AddRewardCard(CardData rewardCardData)
-    {
-        Card rewardCard = Instantiate(cardPrefab, cardParentTransform);
-        rewardCard.Setup(rewardCardData, -1);
-        rewardCard.gameObject.AddComponent<UIMouseHoverChecker>();
-        if(rewardCardList == null)
+                Vector2 cursorPos = rewardCardList[selectingRewardCardIdx].transform.position;
+                cardSelectingCursor.transform.position = cursorPos;
+            }
+        }
+
+        /// <summary>
+        /// リワード画面の表示
+        /// </summary>
+        /// <param name="cardDatas"></param>
+        public void EnableRewardView(List<CardData> rewaeds)
         {
-            rewardCardList = new();
+            gameObject.SetActive(true);
+            foreach (var rewardCard in rewaeds)
+            {
+                AddRewardCard(rewardCard);
+            }
         }
-        rewardCardList.Add(rewardCard);
-    }
 
-    /// <summary>
-    /// 「カード取得ボタン」を押したときに行う処理(Buttonから呼び出し)
-    /// </summary>
-    public void OnPushCardGetButton()
-    {
-        var deckManager = DeckManagerInstance;
-        deckManager.AddCard(rewardCardList[selectingRewardCardIdx].ThisCardData);
-        deckManager.WriteDeckData();
-        StartCoroutine(LoadMapSceneAfterDelay(2.0f));
-    }
+        /// <summary>
+        /// 報酬カード追加
+        /// </summary>
+        /// <param name="rewardCardData">報酬となるカード</param>
+        public void AddRewardCard(CardData rewardCardData)
+        {
+            Card rewardCard = Instantiate(cardPrefab, cardParentTransform);
+            rewardCard.Setup(rewardCardData, -1);
+            rewardCard.gameObject.AddComponent<UIMouseHoverChecker>();
+            if(rewardCardList == null)
+            {
+                rewardCardList = new();
+            }
+            rewardCardList.Add(rewardCard);
+        }
 
-    /// <summary>
-    /// 「カードを取得しないボタン」を押したときに行う処理(Buttonから呼び出し)
-    /// </summary>
-    public void OnPushCardNotSelectButton()
-    {
-        StartCoroutine(LoadMapSceneAfterDelay(2.0f));
-    }
+        /// <summary>
+        /// 「カード取得ボタン」を押したときに行う処理(Buttonから呼び出し)
+        /// </summary>
+        public void OnPushCardGetButton()
+        {
+            var deckManager = DeckManagerInstance;
+            deckManager.AddCard(rewardCardList[selectingRewardCardIdx].ThisCardData);
+            deckManager.WriteDeckData();
+            StartCoroutine(LoadMapSceneAfterDelay(2.0f));
+        }
 
-    /// <summary>
-    /// マップシーンをディレイで呼び出すメソッド
-    /// </summary>
-    /// <param name="delay">ディレイ秒数</param>
-    /// <returns></returns>
-    private IEnumerator LoadMapSceneAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        SceneManager.LoadScene("MapScene", LoadSceneMode.Single);
+        /// <summary>
+        /// 「カードを取得しないボタン」を押したときに行う処理(Buttonから呼び出し)
+        /// </summary>
+        public void OnPushCardNotSelectButton()
+        {
+            StartCoroutine(LoadMapSceneAfterDelay(2.0f));
+        }
+
+        /// <summary>
+        /// マップシーンをディレイで呼び出すメソッド
+        /// </summary>
+        /// <param name="delay">ディレイ秒数</param>
+        /// <returns></returns>
+        private IEnumerator LoadMapSceneAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            SceneManager.LoadScene("MapScene", LoadSceneMode.Single);
+        }
     }
 }
