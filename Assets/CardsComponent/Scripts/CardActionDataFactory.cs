@@ -105,6 +105,7 @@ namespace CardsComponent
 
             // カード式リスト初期化
             SetValueExpression(0, new Number(0));
+            SetValueExpression(1, new String(""));
             SetValueExpression(2, new Add());
             SetValueExpression(3, new Sub());
             SetValueExpression(4, new Mul());
