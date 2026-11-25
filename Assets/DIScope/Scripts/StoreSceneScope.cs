@@ -32,6 +32,7 @@ namespace DIScope
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<CardViewDataFactory>(Lifetime.Singleton).As<ICardDataFactory>();
+            builder.Register<DeckInfomation>(Lifetime.Singleton);
             builder.RegisterComponent<StoreManager>(storeManager);
             builder.RegisterComponent<SalesCardManager>(saleCardManager);
             builder.RegisterComponent<CardDataLibrary>(cardDataLibrary);

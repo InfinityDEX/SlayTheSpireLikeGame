@@ -42,6 +42,7 @@ namespace DIScope
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<CardViewDataFactory>(Lifetime.Singleton).As<ICardDataFactory>();
+            builder.Register<DeckInfomation>(Lifetime.Singleton);
             builder.RegisterComponent<DungeonMapManager>(mapManager);
             builder.RegisterComponent<AudioController>(audioController);
             builder.RegisterComponent<DeckPailGUI>(deckCard);
