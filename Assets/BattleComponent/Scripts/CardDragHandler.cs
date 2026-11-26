@@ -7,6 +7,9 @@ using VisualEffectsComponent;
 
 namespace BattleComponent
 {
+    /// <summary>
+    /// カードをマウスで掴んで使用する機能を提供するクラス
+    /// </summary>
     public class CardDragHandler : MonoBehaviour
     {
         [SerializeField, Header("ドラッグ先のレイヤー")]
@@ -33,20 +36,66 @@ namespace BattleComponent
         /// <summary>
         /// バトルマネージャー
         /// </summary>
-        [Inject]
         private BattleManager battleManager;
+
+        /// <summary>
+        /// エナジーマネージャー
+        /// </summary>
+        private EnergyManager energyManager;
+
+        /// <summary>
+        /// プレイヤーマネージャー
+        /// </summary>
+        private PlayerManager playerManager;
+
+        /// <summary>
+        /// エネミーマネージャー
+        /// </summary>
+        private EnemyManager enemyManager;
+
+        /// <summary>
+        /// ビジュアルエフェクトライブラリ
+        /// </summary>
+        private VisualEffectLibrary visualEffectLibrary;
 
         /// <summary>
         /// オーディオコントローラー
         /// </summary>
-        [Inject]
         private AudioController audioController;
 
         /// <summary>
         /// デッキマネージャー
         /// </summary>
+        private DeckManager deckManager;
+
+        /// <summary>
+        /// 依存性注入
+        /// </summary>
+        /// <param name="battleManager">バトルマネージャー</param>
+        /// <param name="energyManager">エナジーマネージャー</param>
+        /// <param name="visualEffectLibrary">ビジュアルエフェクトライブラリ</param>
+        /// <param name="playerManager">プレイヤーマネージャー</param>
+        /// <param name="enemyManager">エネミーマネージャー</param>
+        /// <param name="audioController">オーディオコントローラー</param>
+        /// <param name="deckManager">デッキマネージャー</param>
         [Inject]
-        public DeckManager DeckManagerInstance { get; private set; }
+        public void Init(
+            BattleManager battleManager,
+            EnergyManager energyManager,
+            VisualEffectLibrary visualEffectLibrary,
+            PlayerManager playerManager,
+            EnemyManager enemyManager,
+            AudioController audioController,
+            DeckManager deckManager)
+        {
+            this.battleManager = battleManager;
+            this.energyManager = energyManager;
+            this.visualEffectLibrary = visualEffectLibrary;
+            this.enemyManager = enemyManager;
+            this.playerManager = playerManager;
+            this.audioController = audioController;
+            this.deckManager = deckManager;
+        }
 
         private void Update()
         {
@@ -73,7 +122,7 @@ namespace BattleComponent
             if (Input.GetMouseButtonUp(0) && holdCard != null)
             {
                 // コストが支払えるか確認して、払えたらカードの効果を適用する。
-                if(battleManager.EnergyManager.UseEnergy(holdCard.ThisCardData.Cost))
+                if(energyManager.UseEnergy(holdCard.ThisCardData.Cost))
                 {
                     Vector3 world = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     Vector2 point = new Vector2(world.x, world.y);
@@ -85,107 +134,111 @@ namespace BattleComponent
                             var selectCreature = hit?.GetComponent<Creature>();
                             if (selectCreature != null && selectCreature.gameObject.tag == "Enemy")
                             {
+                                // 掴んでいるカードを実行する
                                 holdCard.Play(selectCreature);
+                                
+                                // 音声の再生
                                 audioController.PlaySE(holdCard.ThisCardData.CastCardSE);
-                                GameObject visualEffectPrefab = battleManager.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
+
                                 // ビジュアルエフェクトを生成
+                                GameObject visualEffectPrefab = visualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
                                 if (visualEffectPrefab != null)
                                 {
                                     GameObject ve = Instantiate(visualEffectPrefab);
                                     ve.transform.position = selectCreature.transform.position;
                                 }
-                                // カードを捨て札に置く
-                                DeckManager deckManager = DeckManagerInstance;
-                                if (deckManager != null)
-                                {
-                                    deckManager.DiscardCardById(holdCard.HandIdx);
-                                }
-                                else
-                                {
-                                    Debug.LogError("DeckManager が見つかりません。カードを捨て札にできませんでした。");
-                                }
-                                Destroy(holdCard.gameObject); // カードをゲーム空間から削除
 
-                                battleManager.ResetHandCardView(); // 手札の配置リセット
+                                // カードを捨て札に置く
+                                deckManager.DiscardCardById(holdCard.HandIdx);
+                                
+                                // カードをゲーム空間から削除
+                                Destroy(holdCard.gameObject);
+
+                                // 手札の配置リセット
+                                battleManager.ResetHandCardView();
                             }
                             else
                             {
                                 // 敵をターゲットに取らなかった場合は使用したコストをもとに戻す
-                                battleManager.EnergyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
+                                energyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
                             }
                             break;
                         case CardData.Target.AllEnemy:
                             if(Vector3.Distance(holdPos, point) >= cardPlayDragDistance)
                             {
                                 Debug.Log($"クリックしてからマウスを離すまでのマウスの移動距離：{Vector3.Distance(holdPos, point)}");
+                                
                                 // 全てのエネミーに対してカードの効果を適用する。
-                                foreach (var enemy in battleManager.EnemyManagerInstance.Enemies)
+                                foreach (var enemy in enemyManager.Enemies)
                                 {
+                                    // 掴んでいるカードを実行する
                                     holdCard.Play(enemy);
                                 }
+
+                                // 音声の再生
                                 audioController.PlaySE(holdCard.ThisCardData.CastCardSE);
 
-                                GameObject visualEffectPrefab = battleManager.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
                                 // ビジュアルエフェクトを生成
+                                GameObject visualEffectPrefab = visualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
                                 if (visualEffectPrefab != null)
                                 {
-                                    foreach (var enemy in battleManager.EnemyManagerInstance.Enemies)
+                                    foreach (var enemy in enemyManager.Enemies)
                                     {
                                         GameObject ve = Instantiate(visualEffectPrefab);
                                         ve.transform.position = enemy.transform.position;
                                     }
                                 }
-                                DeckManager deckManager = DeckManagerInstance;
-                                if (deckManager != null)
-                                {
-                                    deckManager.DiscardCardById(holdCard.HandIdx);
-                                }
-                                else
-                                {
-                                    Debug.LogError("DeckManager が見つかりません。カードを捨て札にできませんでした。");
-                                }
-                                Destroy(holdCard.gameObject); // カードをゲーム空間から削除
-                                battleManager.ResetHandCardView(); // 手札の配置リセット
+                                
+                                // カードを捨て札に置く
+                                deckManager.DiscardCardById(holdCard.HandIdx);
+
+                                // カードをゲーム空間から削除
+                                Destroy(holdCard.gameObject);
+
+                                // 手札の配置リセット
+                                battleManager.ResetHandCardView();
                             }
                             else
                             {
                                 // カードを選択した状態で、指定した長さだけマウスホバーしなかった場合は、カードを使用しなかったものとして
                                 // 消費したコストをもとに戻す
-                                battleManager.EnergyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
+                                energyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
                             }
                             break;
                         case CardData.Target.OnePlayer:
                             if(Vector3.Distance(holdPos, point) >= cardPlayDragDistance)
                             {
                                 Debug.Log($"クリックしてからマウスを離すまでのマウスの移動距離：{Vector3.Distance(holdPos, point)}");
-                                Creature player = battleManager.Player;
+                                
+                                // 掴んでいるカードを実行する
+                                Creature player = playerManager.Player;
                                 holdCard.Play(player);
+
+                                // 音声の再生
                                 audioController.PlaySE(holdCard.ThisCardData.CastCardSE);
 
-                                GameObject visualEffectPrefab = battleManager.VisualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
                                 // ビジュアルエフェクトを生成
+                                GameObject visualEffectPrefab = visualEffectLibrary.GetEffectById(holdCard.ThisCardData.VisualEffectID);
                                 if (visualEffectPrefab != null)
                                 {
                                     GameObject ve = Instantiate(visualEffectPrefab);
                                     ve.transform.position = player.transform.position;
                                 }
-                                DeckManager deckManager = DeckManagerInstance;
-                                if (deckManager != null)
-                                {
-                                    deckManager.DiscardCardById(holdCard.HandIdx);
-                                }
-                                else
-                                {
-                                    Debug.LogError("DeckManager が見つかりません。カードを捨て札にできませんでした。");
-                                }
-                                Destroy(holdCard.gameObject); // カードをゲーム空間から削除
-                                battleManager.ResetHandCardView(); // 手札の配置リセット
+                            
+                                // カードを捨て札に置く
+                                deckManager.DiscardCardById(holdCard.HandIdx);
+
+                                // カードをゲーム空間から削除
+                                Destroy(holdCard.gameObject);
+
+                                // 手札の配置リセット
+                                battleManager.ResetHandCardView();
                             }
                             else
                             {
                                 // カードを選択した状態で、指定した長さだけマウスホバーしなかった場合は、カードを使用しなかったものとして
                                 // 消費したコストをもとに戻す
-                                battleManager.EnergyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
+                                energyManager.RecoveryEnergy(holdCard.ThisCardData.Cost);
                             }
                             break;
                     }

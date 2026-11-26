@@ -33,6 +33,9 @@ namespace DIScope
         [field: SerializeField, Header("デッキマネージャー")]
         private DeckManager deckManager;
 
+        [field: SerializeField, Header("エナジーマネージャー")]
+        private EnergyManager energyManager;
+
         [field: SerializeField, Header("ビジュアルエフェクトライブラリ")]
         public VisualEffectLibrary VisualEffectLibrary { get; private set; }
 
@@ -59,20 +62,21 @@ namespace DIScope
             builder.Register<PlayerManager>(Lifetime.Singleton);
             builder.Register<DeckInfomation>(Lifetime.Singleton);
             builder.Register<CardActionDataFactory>(Lifetime.Singleton).As<ICardDataFactory>();
-            builder.RegisterComponent<BattleManager>(battleManager);
-            builder.RegisterComponent<EnemyManager>(enemyManager);
-            builder.RegisterComponent<CardDragHandler>(cardDragHandler);
-            builder.RegisterComponent<AudioController>(audioController);
-            builder.RegisterComponent<BattleRewardManager>(battleRewardManager);
-            builder.RegisterComponent<CardDataLibrary>(cardDataLibrary);
-            builder.RegisterComponent<DeckManager>(deckManager);
-            builder.RegisterComponent<VisualEffectLibrary>(VisualEffectLibrary);
-            builder.RegisterComponent<DamagePopupGenerator>(DamagePopupGenerator);
-            builder.RegisterComponent<HUDHealthBarController>(hUDHealthBarController);
-            builder.RegisterComponent<HUDCoinCounter>(hUDCoinCounter);
-            builder.RegisterComponent<HUDFloorNumberCounter>(hUDFloorNumberCounter);
-            builder.RegisterComponent<DrawPailGUI>(drawCard);
-            builder.RegisterComponent<DiscardPailGUI>(discardCard);
+            builder.RegisterComponent(battleManager);
+            builder.RegisterComponent(enemyManager);
+            builder.RegisterComponent(cardDragHandler);
+            builder.RegisterComponent(audioController);
+            builder.RegisterComponent(battleRewardManager);
+            builder.RegisterComponent(cardDataLibrary);
+            builder.RegisterComponent(deckManager);
+            builder.RegisterComponent(energyManager);
+            builder.RegisterComponent(VisualEffectLibrary);
+            builder.RegisterComponent(DamagePopupGenerator);
+            builder.RegisterComponent(hUDHealthBarController);
+            builder.RegisterComponent(hUDCoinCounter);
+            builder.RegisterComponent(hUDFloorNumberCounter);
+            builder.RegisterComponent(drawCard);
+            builder.RegisterComponent(discardCard);
         }
     }   
 }

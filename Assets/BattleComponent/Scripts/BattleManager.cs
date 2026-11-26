@@ -25,14 +25,14 @@ namespace BattleComponent
         [field:SerializeField, Header("カードプレハブ")]
         private GameObject cardTemplatePrefab;
 
-        [field:SerializeField, Header("プレイヤー")]
-        public Creature Player { get; private set;}
+        [field: SerializeField, Header("プレイヤー")]
+        private Creature player;
 
         [field:SerializeField, Header("エナジー管理オブジェクト")]
-        public EnergyManager EnergyManager { get; private set;}
+        private EnergyManager energyManager;
 
-        [field:SerializeField, Header("リワード画面マネージャ")]
-        public BattleRewardManager battleRewardManager { get; private set;}
+        [field: SerializeField, Header("リワード画面マネージャ")]
+        private BattleRewardManager battleRewardManager;
 
         [SerializeField, Header("現在のフェーズ")]
         private BattlePhase currentPhase = BattlePhase.Idle;
@@ -44,52 +44,40 @@ namespace BattleComponent
         private TemporaryMapData temporaryMapData;
 
         /// <summary>
-        /// ビジュアルエフェクトライブラリ
-        /// </summary>
-        [Inject]
-        public VisualEffectLibrary VisualEffectLibrary { get; private set; }
-
-        /// <summary>
-        /// ダメージポップジェネレーター
-        /// </summary>
-        [Inject]
-        public DamagePopupGenerator DamagePopupGenerator { get; private set; }
-
-        /// <summary>
         /// カードデータライブラリ
         /// </summary>
         [Inject]
-        public CardDataLibrary CardDataLibraryInstance { get; private set; }
+        private CardDataLibrary cardDataLibrary;
 
         /// <summary>
         /// デッキマネージャー
         /// </summary>
         [Inject]
-        public DeckManager DeckManager { get; private set; }
+        private DeckManager deckManager;
 
         /// <summary>
         /// エネミーマネージャー
         /// </summary>
         [Inject]
-        public EnemyManager EnemyManagerInstance { get; private set; }
+        private EnemyManager enemyManager;
 
         /// <summary>
         /// プレイヤーマネージャー
         /// </summary>
         [Inject]
-        public PlayerManager PlayerManagerInstance { get; private set; }
+        private PlayerManager playerManager;
 
         /// <summary>
         /// セーブデータホルダー
         /// </summary>
         [Inject]
-        public SaveDataHolder SaveDataHolderInstance { get; private set; }
+        private SaveDataHolder saveDataHolder;
 
         /// <summary>
         /// エネミー組み合わせデータマネージャー
         /// </summary>
         [Inject]
-        public EnemyCombinationsDataManager EnemyCombinationsDataManagerInstance { get; private set; }
+        private EnemyCombinationsDataManager enemyCombinationsDataManager;
 
         /// <summary>
         /// バトル中かどうか
@@ -104,13 +92,13 @@ namespace BattleComponent
         private void Start()
         {
             // プレイヤーマネージャーにプレイヤーをセット(カード効果モジュールに渡す用)
-            PlayerManagerInstance.SetPlayer(Player);
+            playerManager.SetPlayer(player);
 
             // エナジーの初期化（回復）
-            EnergyManager.RefreshEnergy();
+            energyManager.RefreshEnergy();
 
             // EnemyCombinationDataManagerから今回生成するエネミー群データを取得してEnemyManagerもセットする
-            EnemyManagerInstance.SetEnemy(EnemyCombinationsDataManagerInstance.GetData());
+            enemyManager.SetEnemy(enemyCombinationsDataManager.GetData());
 
             // バトルフェーズを初期化フェーズにする
             currentPhase = BattlePhase.InitializePhase;
@@ -125,17 +113,17 @@ namespace BattleComponent
                 // ここで一回だけＨＰの書き換え処理を行う。
 
                 // プレイヤーの体力値をセーブデータから取得
-                if (SaveDataHolderInstance != null)
-                    Player.SetHealth(SaveDataHolderInstance.SaveData.currentHealth);
+                if (saveDataHolder != null)
+                    player.SetHealth(saveDataHolder.SaveData.currentHealth);
                 isFirstUpdate = false;
 
                 // デッキデータのクリーンナップ(シャッフルも行う)
-                DeckManager.ClearDeck();
+                deckManager.ClearDeck();
             }
 
             // セーブデータエンティティの更新
-            SaveDataHolderInstance?.SetMaxHealth(Player.MaxHealth);
-            SaveDataHolderInstance?.SetCurrentHealth(Player.Hp);
+            saveDataHolder?.SetMaxHealth(player.MaxHealth);
+            saveDataHolder?.SetCurrentHealth(player.Hp);
 
             // バトルループ
             if (isBattleActive)
@@ -170,10 +158,10 @@ namespace BattleComponent
             {
                 case BattlePhase.InitializePhase:
                     // 全ての敵クリーチャーがStart処理を終えるまで待つ
-                    if(EnemyManagerInstance.Enemies.All(e => e.IsEndStartFunc()))
+                    if(enemyManager.Enemies.All(e => e.IsEndStartFunc()))
                     {
                         // 敵の次の行動を示す
-                        EnemyManagerInstance.Enemies.ForEach(e => e.RefreshActionIcon());
+                        enemyManager.Enemies.ForEach(e => e.RefreshActionIcon());
                         // ドローフェーズへ
                         currentPhase = BattlePhase.DrawPhase;
                     }
@@ -196,7 +184,7 @@ namespace BattleComponent
 
                 case BattlePhase.PlayerEndPhase:
                     // プレイヤーエンドフェーズ
-                    DeckManager.DiscardHandCardAll(); // 手札全捨て処理関数
+                    deckManager.DiscardHandCardAll(); // 手札全捨て処理関数
                     // 敵の行動フェーズへ
                     currentPhase = BattlePhase.EnemyBuffRefreshPhase;
                     break;
@@ -225,10 +213,10 @@ namespace BattleComponent
                 case BattlePhase.PlayerBuffRefreshPhase:
                     // バフや状態異常のリフレッシュ処理
                     RefreshPlayerBuffs();
-                    EnergyManager.RefreshEnergy();
+                    energyManager.RefreshEnergy();
 
                     // 敵の次の行動を示す
-                    EnemyManagerInstance.Enemies.ForEach(e => e.RefreshActionIcon());
+                    enemyManager.Enemies.ForEach(e => e.RefreshActionIcon());
 
                     currentPhase = BattlePhase.DrawPhase;
                     break;
@@ -272,7 +260,7 @@ namespace BattleComponent
         {
             // プレイヤーターン開始時の処理: カードを5枚引く
             for (int i = 0; i < 5; i++)
-                DeckManager.DrawCard();
+                deckManager.DrawCard();
 
             // 手札の見た目を修整
             ResetHandCardView();
@@ -295,7 +283,7 @@ namespace BattleComponent
                 }
 
                 // 手札の配置（アーチ状）のパラメータ
-                int cardCount = DeckManager.HandCount;
+                int cardCount = deckManager.HandCount;
                 float archRadius = 10f; // 弧の大きさ（調整可。単位はローカル座標）
                 float archAngle = 50f; // 全体で使う角度の最大値(度)。180より小
                 float angleStep = cardCount > 1 ? archAngle / (cardCount - 1) : 0;
@@ -305,7 +293,7 @@ namespace BattleComponent
                 for (int i = 0; i < cardCount; i++)
                 {
                     int reverseIndex = cardCount - 1 - i; // handの先頭が右端
-                    var handCard = DeckManager.Hand[reverseIndex];
+                    var handCard = deckManager.Hand[reverseIndex];
 
                     // プレハブの複製
                     GameObject cardObj = Instantiate(cardTemplatePrefab, handArea);
@@ -353,8 +341,8 @@ namespace BattleComponent
         /// <returns></returns>
         private bool IsPlayerDead()
         {
-            Debug.Log($"プレイヤーのHP：{Player.Hp}");
-            return Player.Hp <= 0;
+            Debug.Log($"プレイヤーのHP：{player.Hp}");
+            return player.Hp <= 0;
         }
 
         /// <summary>
@@ -363,10 +351,10 @@ namespace BattleComponent
         /// <returns>全てのエネミーが死んでいるか？</returns>
         private bool AreEnemiesDefeated()
         {
-            EnemyManagerInstance.Enemies.RemoveAll(enemy => enemy == null);
+            enemyManager.Enemies.RemoveAll(enemy => enemy == null);
 
             // 体力が0ならクリーチャを破壊する
-            foreach (var enemy in EnemyManagerInstance.Enemies)
+            foreach (var enemy in enemyManager.Enemies)
             {
                 if (enemy.Hp <= 0)
                 {
@@ -375,14 +363,14 @@ namespace BattleComponent
                     var enemyData = enemy.CreatureData;
                     if (enemyData is EnemyData)
                     {
-                        SaveDataHolderInstance.AddMoney(((EnemyData)enemyData).gold);
+                        saveDataHolder.AddMoney(((EnemyData)enemyData).gold);
                     }
                     Destroy(enemy.gameObject);
                 }
             }
 
 
-            return EnemyManagerInstance.Enemies.Count == 0;
+            return enemyManager.Enemies.Count == 0;
         }
 
         /// <summary>
@@ -390,7 +378,7 @@ namespace BattleComponent
         /// </summary>
         private void RefreshPlayerBuffs()
         {
-            Player.ResetBlock();
+            player.ResetBlock();
         }
 
         /// <summary>
@@ -398,7 +386,7 @@ namespace BattleComponent
         /// </summary>
         private void RefreshEnemiesBuffs()
         {
-            EnemyManagerInstance.Enemies.ForEach(e => e.ResetBlock());
+            enemyManager.Enemies.ForEach(e => e.ResetBlock());
         }
 
         private int currentActionEnemy = 0;
@@ -409,10 +397,10 @@ namespace BattleComponent
         /// <returns>エネミーの行動がすべて終わったか？</returns>
         private bool EnemyAction()
         {
-            if (EnemyManagerInstance.Enemies[currentActionEnemy].Hp == 0 || EnemyManagerInstance.Enemies[currentActionEnemy].Action())
+            if (enemyManager.Enemies[currentActionEnemy].Hp == 0 || enemyManager.Enemies[currentActionEnemy].Action())
             {
                 currentActionEnemy++;
-                if (EnemyManagerInstance.Enemies.Count <= currentActionEnemy)
+                if (enemyManager.Enemies.Count <= currentActionEnemy)
                 {
                     currentActionEnemy = 0;
                     return true;
@@ -421,7 +409,9 @@ namespace BattleComponent
             return false;
         }
 
-        // ゲーム終了要因
+        /// <summary>
+        /// ゲーム終了要因
+        /// </summary>
         private enum EndBattleFactor
         {
             PlayerWin,
@@ -446,14 +436,14 @@ namespace BattleComponent
                 //////////////////////////////
                 case EndBattleFactor.PlayerWin:
                     // ゲームデータの保存
-                    SaveDataHolderInstance.WriteSaveData();
+                    saveDataHolder.WriteSaveData();
 
-                    List<CardData> cardDatas = CardDataLibraryInstance.GetRandomCards(3);
+                    List<CardData> cardDatas = cardDataLibrary.GetRandomCards(3);
 
                     battleRewardManager?.EnableRewardView(cardDatas);
 
                     // デッキをリセット（全てのカードをデッキに戻す）
-                    DeckManager.ClearDeck();
+                    deckManager.ClearDeck();
 
                     // 一時的な情報としていたダンジョンマップデータを保存する
                     temporaryMapData.SaveDungeonMapData();
@@ -495,8 +485,8 @@ namespace BattleComponent
         private void DeleteGameData()
         {
             // プレイヤー情報の削除
-            SaveDataHolderInstance.DeleteSaveDataFile();
-            SaveDataHolderInstance.ClearSaveData();
+            saveDataHolder.DeleteSaveDataFile();
+            saveDataHolder.ClearSaveData();
 
             // ダンジョンマップファイルのパスを取得
             string mapSaveFilePath = Path.Combine(Application.persistentDataPath, $"{DungeonMapManager.saveDataFolderPath}/{DungeonMapManager.saveDataFileName}");
@@ -508,7 +498,7 @@ namespace BattleComponent
                 File.Delete(mapSaveFilePath);
             }
             // デッキデータファイルの削除
-            DeckManager.DeleteDeckData();
+            deckManager.DeleteDeckData();
         }
     }
 }
