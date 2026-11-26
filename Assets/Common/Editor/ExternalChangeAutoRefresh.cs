@@ -1,3 +1,4 @@
+// このファイルはAIで作成。(Claudeを使用)
 using System;
 using System.IO;
 using System.Threading;

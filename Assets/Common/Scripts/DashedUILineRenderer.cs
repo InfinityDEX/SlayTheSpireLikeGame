@@ -1,4 +1,5 @@
-// Note：時短の為AIで生成。詳細を確認できていない為、不具合が発生する可能性あり。
+// このファイルは時短の為AIで作成。(Cursorエディタを使用)
+// 動作確認済み。
 
 using System.Collections.Generic;
 using UnityEngine;

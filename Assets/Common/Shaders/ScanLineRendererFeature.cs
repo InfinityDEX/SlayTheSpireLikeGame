@@ -1,3 +1,4 @@
+// このファイルはAIで作成。(Claudeを使用)
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.RenderGraphModule;
