@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 using VContainer;
@@ -15,11 +14,6 @@ namespace CardsComponent
     /// </summary>
     public class DeckManager : MonoBehaviour
     {
-        /// <summary>
-        /// デフォルトデッキのファイルパス(Resourcesフォルダ内)
-        /// </summary>
-        private const string DefaultDeckDataPath = "MetaData/DefaultDeckData.json";
-
         /// <summary>
         /// 山札枚数
         /// </summary>
@@ -39,10 +33,6 @@ namespace CardsComponent
         /// 手札
         /// </summary>
         public List<CardInHand> Hand { get { return deckInfo.HandList; } }
-
-        ////デッキデータファイルのパス
-        //private const string DeckDataFolderPath = "SaveData";
-        //private const string DeckDataFileName = "DeckData.json";
 
         /// <summary>
         /// カードデータライブラリ
@@ -93,38 +83,6 @@ namespace CardsComponent
         /// </summary>
         private void LoadDeckFromJson()
         {
-            //// DeckData.jsonを読み込む
-            //string folderPath = Path.Combine(Application.persistentDataPath, DeckDataFolderPath);
-            //string filePath = Path.Combine(folderPath, DeckDataFileName);
-
-            ////  フォルダが存在しない場合は作成する
-            //if (!Directory.Exists(folderPath))
-            //{
-            //    Directory.CreateDirectory(folderPath);
-            //}
-
-            //// ファイルがない場合はデフォルトデッキデータをコピーして新規作成する。
-            //if (!File.Exists(filePath))
-            //{
-            //    Debug.Log($"{filePath}が見つかりません。Resourcesフォルダ内の{DefaultDeckDataPath}を複製して新規作成します: ");
-
-            //    // デフォルトデッキデータのパス
-            //    TextAsset defaultDeckTextAsset = Resources.Load<TextAsset>(DefaultDeckDataPath.Replace(".json", ""));
-            //    if (defaultDeckTextAsset != null)
-            //    {
-            //        // DefaultDeckData.jsonの内容をDeckData.jsonに新規作成
-            //        File.WriteAllText(filePath, defaultDeckTextAsset.text);
-            //        Debug.Log("DefaultDeckData.jsonをDeckData.jsonとしてコピーしました。");
-            //    }
-            //    else
-            //    {
-            //        Debug.LogError("DefaultDeckData.jsonがResources/MetaData/DefaultDeckDataとして見つかりません。");
-            //        return;
-            //    }
-            //}
-
-            //string json = System.IO.File.ReadAllText(filePath);
-
             DeckDataJson deckData = deckDataIO.LoadDeckDataFromJsonFile();
 
             List<CardData> cards = new(); 
@@ -151,25 +109,6 @@ namespace CardsComponent
         /// </summary>
         public void DeleteDeckData()
         {
-            //string folderPath = Path.Combine(Application.persistentDataPath, DeckDataFolderPath);
-            //string filePath = Path.Combine(folderPath, DeckDataFileName);
-
-            ////  フォルダが存在しない場合は削除することはできないので以降の処理をスキップする
-            //if (!Directory.Exists(folderPath))
-            //{
-            //    return;
-            //}
-
-            //if (File.Exists(filePath))
-            //{
-            //    File.Delete(filePath);
-            //    Debug.Log("Deckデータファイルを削除しました: " + filePath);
-            //}
-            //else
-            //{
-            //    Debug.LogWarning("Deckデータファイルが存在しません: " + filePath);
-            //}
-
             // デッキデータファイルを削除する
             deckDataIO.DeleteDeckDataJsonFile();
 
@@ -242,19 +181,6 @@ namespace CardsComponent
         /// <param name="cardData">削除したいカード</param>
         public void RemoveCard(CardData cardData)
         {
-            //if (cardData == null)
-            //{
-            //    throw new ArgumentNullException(nameof(cardData), "削除対象のカードの情報にnullが渡されました。カードは削除できません。");
-            //}
-            ////渡されたカードのカードIDと最初に一致したカードを除去する
-            ////選択したカードと直接紐づいているものを除去するわけではないが、処理後のデッキ構成は変わらない為これで問題なし
-            //var idx = deckInfo.DrawPileList.FindIndex(currentCardData => currentCardData.CardID == cardData.CardID);
-            //if (idx == -1)
-            //{
-            //    throw new InvalidOperationException($"指定されたID[{cardData.CardID}]を持つカードはデッキに登録されていません。カードは削除できません。");
-            //}
-            //deckInfo.DrawPile.RemoveAt(idx);
-
             // カードをデッキから削除
             deckInfo.RemoveCard(cardData);
         }
