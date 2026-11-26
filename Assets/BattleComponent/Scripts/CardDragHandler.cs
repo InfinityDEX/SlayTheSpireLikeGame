@@ -34,11 +34,6 @@ namespace BattleComponent
         private Vector3 dragOffset;
 
         /// <summary>
-        /// バトルマネージャー
-        /// </summary>
-        private BattleManager battleManager;
-
-        /// <summary>
         /// エナジーマネージャー
         /// </summary>
         private EnergyManager energyManager;
@@ -69,32 +64,37 @@ namespace BattleComponent
         private DeckManager deckManager;
 
         /// <summary>
+        /// 手札の見た目制御コンポーネント
+        /// </summary>
+        private HandView handView;
+
+        /// <summary>
         /// 依存性注入
         /// </summary>
-        /// <param name="battleManager">バトルマネージャー</param>
         /// <param name="energyManager">エナジーマネージャー</param>
         /// <param name="visualEffectLibrary">ビジュアルエフェクトライブラリ</param>
         /// <param name="playerManager">プレイヤーマネージャー</param>
         /// <param name="enemyManager">エネミーマネージャー</param>
         /// <param name="audioController">オーディオコントローラー</param>
         /// <param name="deckManager">デッキマネージャー</param>
+        /// <param name="handView">手札の見た目制御コンポーネント</param>
         [Inject]
         public void Init(
-            BattleManager battleManager,
             EnergyManager energyManager,
             VisualEffectLibrary visualEffectLibrary,
             PlayerManager playerManager,
             EnemyManager enemyManager,
             AudioController audioController,
-            DeckManager deckManager)
+            DeckManager deckManager,
+            HandView handView)
         {
-            this.battleManager = battleManager;
             this.energyManager = energyManager;
             this.visualEffectLibrary = visualEffectLibrary;
             this.enemyManager = enemyManager;
             this.playerManager = playerManager;
             this.audioController = audioController;
             this.deckManager = deckManager;
+            this.handView = handView;
         }
 
         private void Update()
@@ -155,7 +155,7 @@ namespace BattleComponent
                                 Destroy(holdCard.gameObject);
 
                                 // 手札の配置リセット
-                                battleManager.ResetHandCardView();
+                                handView.ResetHandCardView();
                             }
                             else
                             {
@@ -196,7 +196,7 @@ namespace BattleComponent
                                 Destroy(holdCard.gameObject);
 
                                 // 手札の配置リセット
-                                battleManager.ResetHandCardView();
+                                handView.ResetHandCardView();
                             }
                             else
                             {
@@ -232,7 +232,7 @@ namespace BattleComponent
                                 Destroy(holdCard.gameObject);
 
                                 // 手札の配置リセット
-                                battleManager.ResetHandCardView();
+                                handView.ResetHandCardView();
                             }
                             else
                             {
